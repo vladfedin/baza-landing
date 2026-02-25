@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="eb2ccc72-15ef-4b60-bb07-fa516fc6cb4c" name="landing.rolebaza.ru" url="https://landing.rolebaza.ru/">
+        <fileTransfer rootFolder="/var/www/landing.rolebaza.ru" accessType="SFTP" host="146.190.238.46" port="22" sshConfigId="b63e8cd5-fa7f-481b-9b44-624b532b460a" sshConfig="root@146.190.238.46:22 password">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

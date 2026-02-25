@@ -1,0 +1,517 @@
+/* =============================================================
+   РОЛЕБАЗА — Основные стили
+   Извлечено из Tailwind CDN-блока и стандартизировано
+   ============================================================= */
+
+/* ===== CSS-переменные (дизайн-токены) ===== */
+:root {
+    --gold-100: #FFF9E6;
+    --gold-200: #F7E6C0;
+    --gold-300: #EAD090;
+    --gold-400: #D4AF60;
+    --gold-500: #C29545;
+    --gold-600: #9E7530;
+    --gold-700: #7A5520;
+
+    --ember-500: #D63A3A;
+    --ember-700: #8F2020;
+
+    --bg-deep:    #1c1815;
+    --bg-base:    #26211c;
+    --bg-panel:   #2e2822;
+    --bg-overlay: rgba(28, 24, 21, 0.90);
+
+    --color-text-primary:   #F5E6CA;
+    --color-text-secondary: #dcd0bc;
+    --color-text-muted:     #a69b8d;
+
+    --border-primary: #594d3f;
+    --border-gold:    #c29545;
+
+    --font-display: 'Cinzel', serif;
+    --font-heading: 'Cormorant Garamond', serif;
+    --font-body:    'Fira Sans', sans-serif;
+
+    --turner-haze: #4a4238;
+    --turner-gold: #d4a755;
+}
+
+
+/* ===== Базовые элементы ===== */
+body {
+    font-family: var(--font-body);
+    color: var(--color-text-primary);
+    background-color: var(--bg-deep);
+    line-height: 1.625;
+    overflow-x: hidden;
+    background-image:
+        linear-gradient(to bottom, rgba(46, 38, 30, 0.9), rgba(28, 24, 21, 0.95)),
+        url("https://www.transparenttextures.com/patterns/aged-paper.png");
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    color: var(--gold-300);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    filter: drop-shadow(0 1px 2px rgba(0,0,0,0.4));
+}
+
+
+/* ===== Скроллбар ===== */
+::-webkit-scrollbar       { width: 10px; }
+::-webkit-scrollbar-track { background: #1c1815; }
+::-webkit-scrollbar-thumb {
+    background: #594d3f;
+    border: 1px solid #7a6a57;
+}
+::-webkit-scrollbar-thumb:hover { background: #7a6a57; }
+
+
+/* ================================================================
+   КОМПОНЕНТЫ
+   ================================================================ */
+
+/* ----- Кнопка «Гравировка» ----- */
+.btn-engraved {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem 2.5rem;
+    font-family: var(--font-display);
+    font-weight: 700;
+    color: var(--gold-200);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 1rem;
+    cursor: pointer;
+    overflow: hidden;
+    text-decoration: none;
+    background: linear-gradient(180deg, #594d3f 0%, #2e2822 100%);
+    border: 1px solid var(--gold-500);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.1),
+        0 4px 10px rgba(0, 0, 0, 0.5),
+        0 0 0 2px rgba(158, 117, 48, 0.15);
+    transition: color 0.3s, border-color 0.3s, box-shadow 0.3s, transform 0.3s;
+}
+
+.btn-engraved::before {
+    content: '';
+    position: absolute;
+    inset: 3px;
+    border: 1px solid var(--gold-500);
+    pointer-events: none;
+    opacity: 0.6;
+}
+
+.btn-engraved:hover {
+    color: #fff;
+    transform: translateY(-2px);
+    border-color: var(--gold-400);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.2),
+        0 6px 20px rgba(194, 149, 69, 0.3),
+        0 0 0 2px rgba(194, 149, 69, 0.4);
+    text-shadow: 0 0 10px var(--gold-400);
+}
+
+.btn-primary {
+    background: linear-gradient(180deg, #7A5520 0%, #3d2b10 100%);
+    border-color: var(--gold-400);
+    color: var(--gold-100);
+}
+
+
+/* ----- Колонка Гильдии ----- */
+.guild-column {
+    position: relative;
+    border: 1px solid var(--border-primary);
+    background: rgba(46, 40, 34, 0.7);
+    padding: 0.25rem;
+    backdrop-filter: blur(4px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+}
+
+.guild-column::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 12rem;
+    height: 1px;
+    background: radial-gradient(circle, var(--gold-500) 0%, transparent 100%);
+}
+
+.guild-column-inner {
+    border: 1px solid var(--gold-600);
+    height: 100%;
+    padding: 2rem;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.guild-column-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--gold-700);
+    position: relative;
+}
+
+.guild-column-header::after {
+    content: '◆';
+    position: absolute;
+    bottom: -0.75rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--bg-panel);
+    padding: 0 0.5rem;
+    color: var(--gold-500);
+    font-size: 0.75rem;
+}
+
+
+/* ----- Карточки-пергамент ----- */
+.parchment-card {
+    background-color: #eaddcf;
+    background-image: url("https://www.transparenttextures.com/patterns/aged-paper.png");
+    color: #2c241b;
+    padding: 1.5rem;
+    position: relative;
+    box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.1);
+    border: 1px solid #d4c5b5;
+    margin-bottom: 1.5rem;
+    transition: transform 0.3s;
+}
+
+.parchment-card:hover {
+    transform: scale(1.02);
+    z-index: 10;
+    box-shadow: 0 20px 25px -5px rgba(0,0,0,0.15);
+}
+
+.parchment-card::before {
+    content: '';
+    position: absolute;
+    top: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0.75rem;
+    height: 0.75rem;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, #d63a3a, #8f2020);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    z-index: 20;
+    border: 1px solid #5c1313;
+}
+
+.parchment-card::after {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: 52%;
+    width: 0.5rem;
+    height: 0.5rem;
+    background: rgba(0,0,0,0.3);
+    border-radius: 50%;
+    filter: blur(1px);
+}
+
+
+/* ----- Карточка Мастера ----- */
+.master-card {
+    background-color: #eaddcf;
+    background-image: url("https://www.transparenttextures.com/patterns/aged-paper.png");
+    color: #2c241b;
+    padding: 1.5rem;
+    position: relative;
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+    border: 1px solid #d4c5b5;
+    transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+}
+
+.master-card:hover {
+    transform: translateY(-0.5rem);
+    box-shadow: 0 20px 25px -5px rgba(0,0,0,0.15);
+    border-color: #c29545;
+}
+
+.master-card::before {
+    content: '';
+    position: absolute;
+    top: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0.75rem;
+    height: 0.75rem;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, #d63a3a, #8f2020);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    z-index: 20;
+    border: 1px solid #5c1313;
+}
+
+
+/* ----- Медальон героя ----- */
+.hero-medallion {
+    width: 6rem;
+    height: 6rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    margin: 0 auto 0.75rem;
+    background: radial-gradient(circle at center, #4a3b2a 0%, #1c1815 100%);
+    border: 2px solid var(--gold-500);
+    box-shadow:
+        0 0 0 3px rgba(28, 24, 21, 0.8),
+        0 0 0 4px var(--gold-600),
+        0 8px 16px rgba(0, 0, 0, 0.6);
+    transition: transform 0.5s, border-color 0.3s, box-shadow 0.3s;
+}
+
+.hero-medallion:hover {
+    transform: scale(1.1);
+    border-color: var(--gold-300);
+    box-shadow:
+        0 0 0 3px rgba(28, 24, 21, 0.8),
+        0 0 0 4px var(--gold-400),
+        0 0 24px rgba(194, 149, 69, 0.4);
+}
+
+.hero-medallion span {
+    color: var(--gold-200);
+    font-size: 1.5rem;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8));
+}
+
+
+/* ----- Фон «Turner» ----- */
+.turner-bg {
+    background:
+        radial-gradient(circle at 50% 30%, rgba(212, 167, 85, 0.2), transparent 60%),
+        linear-gradient(to bottom, #4a4238 0%, #26211c 100%);
+}
+
+
+/* ----- Логотип ----- */
+.rolebaza-title {
+    font-family: 'Cinzel', serif;
+    background: linear-gradient(180deg, #F7E6C0 20%, #C29545 60%, #7A5520 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    filter: drop-shadow(0 0 2px rgba(194, 149, 69, 0.5));
+}
+
+
+/* ----- Предмет арсенала ----- */
+.arsenal-item {
+    background-color: #eaddcf;
+    background-image: url("https://www.transparenttextures.com/patterns/aged-paper.png");
+    color: #2c241b;
+    padding: 1.5rem;
+    position: relative;
+    box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+    border: 1px solid #d4c5b5;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.arsenal-item:hover {
+    transform: scale(1.01);
+    z-index: 10;
+    box-shadow: 0 20px 25px -5px rgba(0,0,0,0.15);
+}
+
+.arsenal-item::before {
+    content: '';
+    position: absolute;
+    top: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0.75rem;
+    height: 0.75rem;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, #d63a3a, #8f2020);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    z-index: 20;
+    border: 1px solid #5c1313;
+}
+
+.arsenal-item h3 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.125rem;
+    margin-bottom: 0.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: #3d2b10;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.arsenal-item p {
+    font-size: 0.875rem;
+    font-family: var(--font-heading);
+    line-height: 1.375;
+    font-weight: 500;
+    color: #4a3b2a;
+}
+
+
+/* ===== Шапка сайта ===== */
+.site-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.25rem 1.5rem;
+    background: linear-gradient(to bottom, rgba(20, 16, 12, 0.88) 0%, rgba(20, 16, 12, 0) 100%);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    border-bottom: 1px solid rgba(194, 149, 69, 0.10);
+    transition: background 0.3s, border-color 0.3s, box-shadow 0.3s;
+}
+
+.site-header-scrolled {
+    background: rgba(20, 16, 12, 0.96) !important;
+    border-bottom-color: rgba(194, 149, 69, 0.22) !important;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.5);
+}
+
+
+/* ================================================================
+   АНИМАЦИИ
+   ================================================================ */
+
+/* Мерцание факела */
+.animate-torch  { animation: torch-flicker 10s infinite alternate; }
+.animate-float  { animation: float 6s ease-in-out infinite; }
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50%       { transform: translateY(-16px); }
+}
+
+@keyframes torch-flicker {
+    0%, 100% { opacity: 0.8; transform: scale(1);    filter: brightness(1)   sepia(0.2); }
+    50%       { opacity: 1;   transform: scale(1.05); filter: brightness(1.2) sepia(0.1); }
+    25%, 75%  { opacity: 0.9; }
+}
+
+@keyframes scroll-bounce {
+    0%, 100% { transform: translateY(0);   opacity: 0.75; }
+    50%       { transform: translateY(7px); opacity: 1; }
+}
+
+
+/* ================================================================
+   ВИНЬЕТКИ ПО БОКАМ (эффект горящих факелов)
+   ================================================================ */
+.side-vignette {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    width: 192px;
+    z-index: 9999;
+    pointer-events: none;
+}
+
+.side-vignette-left  { left: 0; }
+.side-vignette-right { right: 0; }
+
+.sv-layer { position: absolute; inset: 0; }
+
+.side-vignette-left .sv-layer {
+    background: linear-gradient(to right,
+        rgba(12, 8, 4, 0.90) 0%,
+        rgba(20, 14, 8, 0.65) 45%,
+        transparent 100%
+    );
+}
+
+.side-vignette-right .sv-layer {
+    background: linear-gradient(to left,
+        rgba(12, 8, 4, 0.90) 0%,
+        rgba(20, 14, 8, 0.65) 45%,
+        transparent 100%
+    );
+}
+
+/* Тёплый янтарный слой огня */
+.sv-warm { position: absolute; inset: 0; animation: flicker-warm 2.8s ease-in-out infinite; }
+
+.side-vignette-left .sv-warm {
+    background: linear-gradient(to right,
+        rgba(180, 90, 15, 0.13) 0%,
+        rgba(210, 130, 30, 0.07) 40%,
+        transparent 100%
+    );
+}
+
+.side-vignette-right .sv-warm {
+    background: linear-gradient(to left,
+        rgba(180, 90, 15, 0.13) 0%,
+        rgba(210, 130, 30, 0.07) 40%,
+        transparent 100%
+    );
+    animation-delay: -1.4s;
+}
+
+.sv-a { animation: flicker-a 4.3s ease-in-out infinite; }
+.sv-b { animation: flicker-b 3.1s ease-in-out infinite; opacity: 0.50; }
+.sv-c { animation: flicker-c 1.7s ease-in-out infinite; opacity: 0.28; }
+
+.side-vignette-right .sv-a { animation-delay: -1.6s; }
+.side-vignette-right .sv-b { animation-delay: -0.9s; }
+.side-vignette-right .sv-c { animation-delay: -0.4s; }
+
+@keyframes flicker-warm {
+    0%   { opacity: 0.6; }
+    30%  { opacity: 0.9; }
+    55%  { opacity: 0.7; }
+    70%  { opacity: 1.0; }
+    100% { opacity: 0.6; }
+}
+
+@keyframes flicker-a {
+    0%   { opacity: 0.75; }
+    15%  { opacity: 0.95; }
+    40%  { opacity: 0.65; }
+    65%  { opacity: 0.90; }
+    85%  { opacity: 0.70; }
+    100% { opacity: 0.75; }
+}
+
+@keyframes flicker-b {
+    0%   { opacity: 0.50; }
+    20%  { opacity: 0.75; }
+    50%  { opacity: 0.40; }
+    80%  { opacity: 0.65; }
+    100% { opacity: 0.50; }
+}
+
+@keyframes flicker-c {
+    0%   { opacity: 0.28; }
+    25%  { opacity: 0.45; }
+    50%  { opacity: 0.20; }
+    75%  { opacity: 0.38; }
+    100% { opacity: 0.28; }
+}
+
+@media (max-width: 1023px) {
+    .side-vignette {
+        display: none;
+    }
+}
