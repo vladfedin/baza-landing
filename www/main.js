@@ -97,7 +97,7 @@
 
     async function loadWaitlistCount() {
         try {
-            const response = await fetch('http://beta.rolebaza.ru/api/landing/waitlist/count', {
+            const response = await fetch('https://beta.rolebaza.ru/api/landing/waitlist/count', {
                 headers: { Accept: 'application/json' },
             });
             if (!response.ok) throw new Error(`HTTP ${response.status}`);
