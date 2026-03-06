@@ -511,58 +511,156 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* ================================================================
-   КАРТОЧКИ ОСНОВАТЕЛЕЙ
+   ОСНОВАТЕЛИ — медальоны + раскрывающаяся страница
    ================================================================ */
 
-.founder-card {
-    background: rgba(46, 40, 34, 0.7);
+/* --- Medallion row --- */
+.founder-medallion {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.founder-medallion-ring {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid var(--gold-700);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    transition: border-color 0.4s, box-shadow 0.4s, transform 0.4s;
+}
+
+.founder-medallion-ring img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: saturate(0.5) brightness(0.7);
+    transition: filter 0.4s;
+}
+
+.founder-medallion-label {
+    font-family: var(--font-display);
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--color-text-muted);
+    transition: color 0.3s;
+}
+
+/* Active medallion */
+.founder-medallion.is-active .founder-medallion-ring {
+    border-color: var(--gold-400);
+    transform: scale(1.15);
+    box-shadow:
+        0 0 0 3px rgba(28, 24, 21, 0.8),
+        0 0 0 4px var(--gold-500),
+        0 0 24px rgba(194, 149, 69, 0.35);
+}
+
+.founder-medallion.is-active .founder-medallion-ring img {
+    filter: saturate(1) brightness(1);
+}
+
+.founder-medallion.is-active .founder-medallion-label {
+    color: var(--gold-300);
+}
+
+/* Hover (non-active) */
+.founder-medallion:not(.is-active):hover .founder-medallion-ring {
+    border-color: var(--gold-600);
+    transform: scale(1.07);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5);
+}
+
+.founder-medallion:not(.is-active):hover .founder-medallion-ring img {
+    filter: saturate(0.8) brightness(0.85);
+}
+
+.founder-medallion:not(.is-active):hover .founder-medallion-label {
+    color: var(--gold-400);
+}
+
+
+/* --- Detail page (parchment scroll) --- */
+.founder-page {
+    display: none;
+    animation: founder-page-in 0.5s ease;
+}
+
+.founder-page.is-visible {
+    display: block;
+}
+
+@keyframes founder-page-in {
+    from { opacity: 0; transform: translateY(12px) scale(0.98); }
+    to   { opacity: 1; transform: translateY(0)   scale(1); }
+}
+
+.founder-page-inner {
+    background: rgba(46, 40, 34, 0.75);
     border: 1px solid var(--border-primary);
     padding: 0.25rem;
     backdrop-filter: blur(4px);
     box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
-    transition: transform 0.4s, box-shadow 0.4s, border-color 0.4s;
 }
 
-.founder-card:hover {
-    transform: translateY(-6px);
-    border-color: var(--gold-600);
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), 0 0 30px rgba(194, 149, 69, 0.15);
+.founder-page-inner > * {
+    /* Inner ornament border */
 }
 
-.founder-card-inner {
+.founder-page-inner {
+    position: relative;
+}
+
+/* Inner border + content layout */
+.founder-page-inner::before {
+    content: '';
+    position: absolute;
+    inset: 0.25rem;
     border: 1px solid var(--gold-700);
-    padding: 2rem 1.5rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    height: 100%;
+    pointer-events: none;
 }
 
-/* Photo with hover swap */
-.founder-photo-wrap {
-    width: 160px;
-    height: 160px;
-    border-radius: 50%;
+.founder-page-inner {
+    display: flex;
+    flex-direction: row;
+    gap: 0;
+    padding: 2.5rem;
+}
+
+/* Photo column */
+.founder-page-photo {
+    flex-shrink: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-right: 2.5rem;
+}
+
+.founder-page-photo-frame {
+    width: 200px;
+    height: 200px;
+    border-radius: 8px;
     overflow: hidden;
     position: relative;
-    margin-bottom: 1.25rem;
-    border: 3px solid var(--gold-500);
+    border: 2px solid var(--gold-600);
     box-shadow:
-        0 0 0 4px rgba(28, 24, 21, 0.8),
+        0 0 0 4px rgba(28, 24, 21, 0.7),
         0 0 0 5px var(--gold-700),
-        0 8px 20px rgba(0, 0, 0, 0.6);
-    transition: border-color 0.3s, box-shadow 0.3s;
+        0 10px 30px rgba(0, 0, 0, 0.5);
+    transition: border-color 0.4s, box-shadow 0.4s;
 }
 
-.founder-card:hover .founder-photo-wrap {
-    border-color: var(--gold-400);
-    box-shadow:
-        0 0 0 4px rgba(28, 24, 21, 0.8),
-        0 0 0 5px var(--gold-500),
-        0 0 30px rgba(194, 149, 69, 0.4);
-}
-
+/* Photo swap (fire effect) */
 .founder-photo {
     width: 100%;
     height: 100%;
@@ -577,85 +675,138 @@ h1, h2, h3, h4, h5, h6 {
     opacity: 0;
 }
 
-.founder-card:hover .founder-photo-normal {
+.founder-page-photo-frame:hover .founder-photo-normal {
     opacity: 0;
 }
 
-.founder-card:hover .founder-photo-fire {
+.founder-page-photo-frame:hover .founder-photo-fire {
     opacity: 1;
 }
 
-/* Fire glow on hover */
-.founder-card:hover .founder-photo-wrap {
+.founder-page-photo-frame:hover {
+    border-color: var(--ember-500);
     box-shadow:
-        0 0 0 4px rgba(28, 24, 21, 0.8),
-        0 0 0 5px var(--gold-500),
-        0 0 30px rgba(214, 58, 58, 0.3),
-        0 0 60px rgba(180, 90, 15, 0.2);
+        0 0 0 4px rgba(28, 24, 21, 0.7),
+        0 0 0 5px var(--gold-600),
+        0 0 30px rgba(214, 58, 58, 0.25),
+        0 0 60px rgba(180, 90, 15, 0.15);
 }
 
-.founder-title {
+/* Text column */
+.founder-page-text {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.founder-page-role {
     font-family: var(--font-display);
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.2em;
     color: var(--gold-500);
-    margin-bottom: 0.25rem;
+    margin-bottom: 0.15rem;
 }
 
-.founder-name {
+.founder-page-name {
     font-family: var(--font-heading);
-    font-size: 1.5rem;
+    font-size: 1.75rem;
     font-weight: 600;
     color: var(--gold-200);
     margin-bottom: 1rem;
+    text-transform: none;
+    letter-spacing: 0;
+    filter: none;
 }
 
-.founder-name--empty {
+.founder-page-name--empty {
     color: var(--color-text-muted);
     font-style: italic;
 }
 
-.founder-bio {
+.founder-page-bio {
     list-style: none;
     padding: 0;
     margin: 0 0 1.25rem 0;
+}
+
+.founder-page-bio li {
     font-family: var(--font-heading);
-    font-size: 0.95rem;
-    line-height: 1.6;
+    font-size: 1.1rem;
+    line-height: 1.7;
     color: var(--color-text-secondary);
+    padding: 0.1rem 0;
+    padding-left: 1.25rem;
+    position: relative;
 }
 
-.founder-bio li {
-    padding: 0.15rem 0;
+.founder-page-bio li::before {
+    content: '~';
+    position: absolute;
+    left: 0;
+    color: var(--gold-600);
+    font-weight: 600;
 }
 
-.founder-quote {
+.founder-page-quote {
     font-family: var(--font-heading);
     font-style: italic;
-    font-size: 0.9rem;
+    font-size: 1.1rem;
+    line-height: 1.6;
     color: var(--gold-400);
     border-top: 1px solid var(--gold-700);
     padding-top: 1rem;
     margin-top: auto;
-    line-height: 1.5;
+    margin-bottom: 0;
 }
 
-.founder-quote--empty {
+.founder-page-empty-hint {
+    font-family: var(--font-heading);
+    font-size: 1.15rem;
+    line-height: 1.8;
     color: var(--color-text-muted);
-    opacity: 0.5;
+    font-style: italic;
+    margin-top: 0.5rem;
 }
 
-.founder-card--empty {
-    opacity: 0.55;
+.founder-page-inner--empty {
+    opacity: 0.6;
 }
 
-.founder-card--empty:hover {
-    opacity: 0.7;
-    transform: none;
-    border-color: var(--border-primary);
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+/* --- Mobile --- */
+@media (max-width: 767px) {
+    .founder-medallion-ring {
+        width: 72px;
+        height: 72px;
+    }
+
+    .founder-page-inner {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 1.5rem;
+    }
+
+    .founder-page-photo {
+        padding-right: 0;
+        padding-bottom: 1.5rem;
+    }
+
+    .founder-page-photo-frame {
+        width: 160px;
+        height: 160px;
+    }
+
+    .founder-page-bio li {
+        padding-left: 0;
+        font-size: 1rem;
+    }
+
+    .founder-page-bio li::before {
+        display: none;
+    }
 }
 
 

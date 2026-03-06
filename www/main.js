@@ -154,6 +154,33 @@
 })();
 
 
+/* ===== Переключение основателей ===== */
+(function initFounders() {
+    var portraits = document.getElementById('founder-portraits');
+    var details   = document.getElementById('founder-details');
+    if (!portraits || !details) return;
+
+    var buttons = portraits.querySelectorAll('.founder-medallion');
+    var pages   = details.querySelectorAll('.founder-page');
+
+    function activate(index) {
+        buttons.forEach(function (btn, i) {
+            btn.classList.toggle('is-active', i === index);
+        });
+        pages.forEach(function (page, i) {
+            page.classList.toggle('is-visible', i === index);
+        });
+    }
+
+    buttons.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            var idx = parseInt(btn.getAttribute('data-founder'), 10);
+            activate(idx);
+        });
+    });
+})();
+
+
 /* ===== Форма регистрации в лист ожидания ===== */
 (function initWaitlistForm() {
     const waitlistForm = document.getElementById('waitlist-form');
