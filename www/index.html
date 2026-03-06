@@ -428,12 +428,12 @@
         </div>
 
         <!-- Портреты-медальоны -->
-        <div class="flex justify-center items-end gap-6 md:gap-10 mb-0 fade-in" id="founder-portraits">
-            <button class="founder-medallion is-active" data-founder="0" type="button">
+        <div class="flex justify-center items-end gap-6 md:gap-10 mb-8 fade-in" id="founder-portraits">
+            <button class="founder-medallion" data-founder="0" type="button">
                 <div class="founder-medallion-ring">
-                    <img src="./img/founders/fedin.jpg" alt="Демиург"/>
+                    <img src="./img/founders/placeholder.jpg" alt="Душа"/>
                 </div>
-                <span class="founder-medallion-label">Демиург</span>
+                <span class="founder-medallion-label">Душа</span>
             </button>
             <button class="founder-medallion" data-founder="1" type="button">
                 <div class="founder-medallion-ring">
@@ -441,24 +441,51 @@
                 </div>
                 <span class="founder-medallion-label">Иерофант</span>
             </button>
-            <button class="founder-medallion" data-founder="2" type="button">
+            <button class="founder-medallion is-active" data-founder="2" type="button">
                 <div class="founder-medallion-ring">
-                    <img src="./img/founders/placeholder.jpg" alt="Душа"/>
+                    <img src="./img/founders/fedin.jpg" alt="Демиург"/>
                 </div>
-                <span class="founder-medallion-label">Душа</span>
+                <span class="founder-medallion-label">Демиург</span>
             </button>
-        </div>
-
-        <!-- Connecting ornament -->
-        <div class="flex justify-center">
-            <div style="width:2px; height:32px; background: linear-gradient(to bottom, var(--gold-500), transparent); opacity:0.6;"></div>
         </div>
 
         <!-- Detail pages (only one visible at a time) -->
         <div class="max-w-4xl mx-auto fade-in" id="founder-details">
 
+            <!-- Душа — TBD -->
+            <div class="founder-page" data-page="0">
+                <div class="founder-page-inner founder-page-inner--empty">
+                    <div class="founder-page-photo">
+                        <div class="founder-page-photo-frame">
+                            <img class="founder-photo founder-photo-normal" src="./img/founders/placeholder.jpg" alt="Душа"/>
+                        </div>
+                    </div>
+                    <div class="founder-page-text">
+                        <div class="founder-page-role">Душа</div>
+                        <h3 class="founder-page-name founder-page-name--empty">Скоро...</h3>
+                        <p class="founder-page-empty-hint">Место духовного хранителя ждёт своего героя.<br/>История пишется.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Иерофант — TBD -->
+            <div class="founder-page" data-page="1">
+                <div class="founder-page-inner founder-page-inner--empty">
+                    <div class="founder-page-photo">
+                        <div class="founder-page-photo-frame">
+                            <img class="founder-photo founder-photo-normal" src="./img/founders/placeholder.jpg" alt="Иерофант"/>
+                        </div>
+                    </div>
+                    <div class="founder-page-text">
+                        <div class="founder-page-role">Иерофант</div>
+                        <h3 class="founder-page-name founder-page-name--empty">Скоро...</h3>
+                        <p class="founder-page-empty-hint">Место хранителя знаний ещё не занято.<br/>История пишется.</p>
+                    </div>
+                </div>
+            </div>
+
             <!-- Демиург — Владимир Федин -->
-            <div class="founder-page is-visible" data-page="0">
+            <div class="founder-page is-visible" data-page="2">
                 <div class="founder-page-inner">
                     <div class="founder-page-photo">
                         <div class="founder-page-photo-frame">
@@ -480,38 +507,6 @@
                         <blockquote class="founder-page-quote">
                             &laquo;Надо было прожить пол жизни, чтоб наконец моя страсть и&nbsp;все мои навыки встретились в&nbsp;одном проекте&raquo;
                         </blockquote>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Иерофант — TBD -->
-            <div class="founder-page" data-page="1">
-                <div class="founder-page-inner founder-page-inner--empty">
-                    <div class="founder-page-photo">
-                        <div class="founder-page-photo-frame">
-                            <img class="founder-photo founder-photo-normal" src="./img/founders/placeholder.jpg" alt="Иерофант"/>
-                        </div>
-                    </div>
-                    <div class="founder-page-text">
-                        <div class="founder-page-role">Иерофант</div>
-                        <h3 class="founder-page-name founder-page-name--empty">Скоро...</h3>
-                        <p class="founder-page-empty-hint">Место хранителя знаний ещё не занято.<br/>История пишется.</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Душа — TBD -->
-            <div class="founder-page" data-page="2">
-                <div class="founder-page-inner founder-page-inner--empty">
-                    <div class="founder-page-photo">
-                        <div class="founder-page-photo-frame">
-                            <img class="founder-photo founder-photo-normal" src="./img/founders/placeholder.jpg" alt="Душа"/>
-                        </div>
-                    </div>
-                    <div class="founder-page-text">
-                        <div class="founder-page-role">Душа</div>
-                        <h3 class="founder-page-name founder-page-name--empty">Скоро...</h3>
-                        <p class="founder-page-empty-hint">Место духовного хранителя ждёт своего героя.<br/>История пишется.</p>
                     </div>
                 </div>
             </div>
