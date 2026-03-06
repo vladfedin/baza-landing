@@ -1,0 +1,42 @@
+name: Deploy Landing
+
+on:
+  push:
+    branches: [main, dev]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set deploy target
+        run: |
+          if [ "${{ github.ref_name }}" = "main" ]; then
+            echo "VPS_HOST=${{ secrets.VPS_MASTER_HOST }}" >> $GITHUB_ENV
+          else
+            echo "VPS_HOST=${{ secrets.VPS_DEV_HOST }}" >> $GITHUB_ENV
+          fi
+
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H ${{ env.VPS_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Deploy via rsync
+        run: |
+          rsync -avz --delete \
+            --exclude '.git' \
+            --exclude '.github' \
+            -e "ssh -i ~/.ssh/deploy_key" \
+            www/ \
+            ${{ secrets.VPS_USER }}@${{ env.VPS_HOST }}:/opt/rolebaza-landing/
+
+      - name: Fix permissions
+        run: |
+          ssh -i ~/.ssh/deploy_key ${{ secrets.VPS_USER }}@${{ env.VPS_HOST }} \
+            "sudo chown -R root:root /opt/rolebaza-landing && \
+             sudo find /opt/rolebaza-landing -type d -exec chmod 755 {} \; && \
+             sudo find /opt/rolebaza-landing -type f -exec chmod 644 {} \;"
