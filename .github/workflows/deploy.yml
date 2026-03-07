@@ -18,6 +18,15 @@ jobs:
             echo "VPS_HOST=${{ secrets.VPS_DEV_HOST }}" >> $GITHUB_ENV
           fi
 
+      - name: Cache-bust static assets
+        run: |
+          CSS_HASH=$(md5sum www/styles.css | cut -c1-8)
+          JS_HASH=$(md5sum www/main.js | cut -c1-8)
+          SW_HASH=$(md5sum www/sw.js | cut -c1-8)
+          sed -i "s|./styles.css|./styles.css?v=${CSS_HASH}|g" www/index.html
+          sed -i "s|./main.js|./main.js?v=${JS_HASH}|g" www/index.html
+          sed -i "s|./sw.js|./sw.js?v=${SW_HASH}|g" www/index.html
+
       - name: Setup SSH
         run: |
           mkdir -p ~/.ssh
