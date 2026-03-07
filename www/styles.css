@@ -641,8 +641,8 @@ h1, h2, h3, h4, h5, h6 {
 .founder-page-photo {
     flex-shrink: 0;
     display: flex;
-    align-items: flex-start;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
     padding-right: 2.5rem;
 }
 
@@ -711,7 +711,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .founder-page-name {
-    font-family: var(--font-heading);
+    font-family: var(--font-body);
     font-size: 1.75rem;
     font-weight: 600;
     color: var(--gold-200);
@@ -733,8 +733,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .founder-page-bio li {
-    font-family: var(--font-heading);
-    font-size: 1.1rem;
+    font-family: var(--font-body);
+    font-size: 1rem;
     line-height: 1.7;
     color: var(--color-text-secondary);
     padding: 0.1rem 0;
@@ -750,18 +750,33 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: 600;
 }
 
-.founder-page-bio a {
-    color: var(--gold-400);
+.founder-channel-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 0.75rem;
+    padding: 6px 14px;
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--gold-300);
     text-decoration: none;
-    border-bottom: 1px solid rgba(212, 175, 55, 0.3);
-    transition: border-color 0.2s;
+    border: 1px solid rgba(212, 175, 55, 0.25);
+    border-radius: 6px;
+    background: rgba(212, 175, 55, 0.06);
+    transition: background 0.2s, border-color 0.2s, color 0.2s;
 }
-.founder-page-bio a:hover {
+.founder-channel-link:hover {
+    background: rgba(212, 175, 55, 0.14);
     border-color: var(--gold-400);
+    color: var(--gold-200);
+}
+.founder-channel-link svg {
+    flex-shrink: 0;
 }
 
 .founder-page-quote {
-    font-family: var(--font-heading);
+    font-family: var(--font-body);
     font-style: italic;
     font-size: 1.1rem;
     line-height: 1.6;
@@ -773,7 +788,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .founder-page-empty-hint {
-    font-family: var(--font-heading);
+    font-family: var(--font-body);
     font-size: 1.15rem;
     line-height: 1.8;
     color: var(--color-text-muted);
@@ -802,6 +817,8 @@ h1, h2, h3, h4, h5, h6 {
     .founder-page-photo {
         padding-right: 0;
         padding-bottom: 1.5rem;
+        flex-direction: column;
+        align-items: center;
     }
 
     .founder-page-photo-frame {
