@@ -162,6 +162,99 @@
 
     var buttons = portraits.querySelectorAll('.founder-medallion');
     var pages   = details.querySelectorAll('.founder-page');
+    var foundersCount = Math.min(buttons.length, pages.length);
+    if (foundersCount === 0) return;
+
+    var COUNTER_COOKIE = 'rb_founder_cycle_counter';
+    var COUNTER_STORAGE_KEY = 'rb_founder_cycle_counter';
+    var COUNTER_COOKIE_MAX_AGE = 60 * 60 * 24 * 365; // 1 year
+
+    function getCookieValue(name) {
+        var cookiePrefix = name + '=';
+        var parts = document.cookie ? document.cookie.split(';') : [];
+        for (var i = 0; i < parts.length; i++) {
+            var raw = parts[i].trim();
+            if (raw.indexOf(cookiePrefix) === 0) {
+                return decodeURIComponent(raw.slice(cookiePrefix.length));
+            }
+        }
+        return null;
+    }
+
+    function getRootDomain(hostname) {
+        if (!hostname) return null;
+        if (hostname === 'localhost') return null;
+        if (/^\d{1,3}(\.\d{1,3}){3}$/.test(hostname)) return null;
+
+        var parts = hostname.split('.');
+        if (parts.length < 2) return null;
+        return parts.slice(-2).join('.');
+    }
+
+    function writeCookie(name, value, withDomain) {
+        var cookieParts = [
+            name + '=' + encodeURIComponent(String(value)),
+            'path=/',
+            'max-age=' + COUNTER_COOKIE_MAX_AGE,
+            'samesite=lax',
+        ];
+
+        if (window.location.protocol === 'https:') {
+            cookieParts.push('secure');
+        }
+
+        if (withDomain) {
+            var rootDomain = getRootDomain(window.location.hostname);
+            if (rootDomain) {
+                cookieParts.push('domain=.' + rootDomain);
+            }
+        }
+
+        document.cookie = cookieParts.join('; ');
+    }
+
+    function writeCounterCookie(value) {
+        writeCookie(COUNTER_COOKIE, value, false);
+        if (getCookieValue(COUNTER_COOKIE) === String(value)) return true;
+
+        writeCookie(COUNTER_COOKIE, value, true);
+        return getCookieValue(COUNTER_COOKIE) === String(value);
+    }
+
+    function readCounterStorage() {
+        try {
+            return window.localStorage.getItem(COUNTER_STORAGE_KEY);
+        } catch (e) {
+            return null;
+        }
+    }
+
+    function writeCounterStorage(value) {
+        try {
+            window.localStorage.setItem(COUNTER_STORAGE_KEY, String(value));
+        } catch (e) {
+            // ignore storage errors (private mode / blocked storage)
+        }
+    }
+
+    function getCounter() {
+        var raw = getCookieValue(COUNTER_COOKIE);
+        if (raw === null) {
+            raw = readCounterStorage();
+        }
+        var value = raw === null ? 0 : parseInt(raw, 10);
+        return Number.isFinite(value) && value >= 0 ? value : 0;
+    }
+
+    function setCounter(value) {
+        var cookieWritten = writeCounterCookie(value);
+        if (!cookieWritten) {
+            writeCounterStorage(value);
+        } else {
+            // sync storage as backup for environments with flaky cookie behavior
+            writeCounterStorage(value);
+        }
+    }
 
     function activate(index) {
         buttons.forEach(function (btn, i) {
@@ -172,10 +265,16 @@
         });
     }
 
+    var counter = getCounter();
+    var initialIndex = counter % foundersCount;
+    activate(initialIndex);
+    setCounter(counter + 1);
+
     buttons.forEach(function (btn) {
         btn.addEventListener('click', function () {
             var idx = parseInt(btn.getAttribute('data-founder'), 10);
-            activate(idx);
+            if (!Number.isFinite(idx) || idx < 0) return;
+            activate(idx % foundersCount);
         });
     });
 })();

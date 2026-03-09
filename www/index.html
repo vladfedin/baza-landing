@@ -443,9 +443,9 @@
 
         <!-- Портреты-медальоны -->
         <div class="flex justify-center items-end gap-6 md:gap-10 mb-8 fade-in" id="founder-portraits">
-            <button class="founder-medallion" data-founder="0" type="button">
+            <button class="founder-medallion is-active" data-founder="0" type="button">
                 <div class="founder-medallion-ring">
-                    <img src="./img/founders/placeholder.jpg" alt="Душа"/>
+                    <img src="./img/founders/tiho.jpg" alt="Жорж Феанор Тихо́"/>
                 </div>
                 <span class="founder-medallion-label">Душа</span>
             </button>
@@ -455,7 +455,7 @@
                 </div>
                 <span class="founder-medallion-label">Иерофант</span>
             </button>
-            <button class="founder-medallion is-active" data-founder="2" type="button">
+            <button class="founder-medallion" data-founder="2" type="button">
                 <div class="founder-medallion-ring">
                     <img src="./img/founders/fedin.jpg" alt="Демиург"/>
                 </div>
@@ -466,18 +466,35 @@
         <!-- Detail pages (only one visible at a time) -->
         <div class="max-w-4xl mx-auto fade-in" id="founder-details">
 
-            <!-- Душа — TBD -->
-            <div class="founder-page" data-page="0">
-                <div class="founder-page-inner founder-page-inner--empty">
+            <!-- Душа — Жорж Феанор Тихо́ -->
+            <div class="founder-page is-visible" data-page="0">
+                <div class="founder-page-inner">
                     <div class="founder-page-photo">
                         <div class="founder-page-photo-frame">
-                            <img class="founder-photo founder-photo-normal" src="./img/founders/placeholder.jpg" alt="Душа"/>
+                            <img class="founder-photo founder-photo-normal" src="./img/founders/tiho.jpg" alt="Жорж Феанор Тихо́"/>
+                            <img class="founder-photo founder-photo-fire" src="./img/founders/tiho-fire.jpg" alt="Жорж Феанор Тихо́"/>
                         </div>
+                        <a class="founder-channel-link" href="https://vk.ru/dndpotustoronu" target="_blank" rel="noopener" aria-label="ВКонтакте Жоржа" title="ВКонтакте Жоржа">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                                <path d="m9.489.004.729-.003h3.564l.73.003.914.01.433.007.418.011.403.014.388.016.374.021.36.025.345.03.333.033c1.74.196 2.933.616 3.833 1.516.9.9 1.32 2.092 1.516 3.833l.034.333.029.346.025.36.02.373.025.588.012.41.013.644.009.915.004.98-.001 3.313-.003.73-.01.914-.007.433-.011.418-.014.403-.016.388-.021.374-.025.36-.03.345-.033.333c-.196 1.74-.616 2.933-1.516 3.833-.9.9-2.092 1.32-3.833 1.516l-.333.034-.346.029-.36.025-.373.02-.588.025-.41.012-.644.013-.915.009-.98.004-3.313-.001-.73-.003-.914-.01-.433-.007-.418-.011-.403-.014-.388-.016-.374-.021-.36-.025-.345-.03-.333-.033c-1.74-.196-2.933-.616-3.833-1.516-.9-.9-1.32-2.092-1.516-3.833l-.034-.333-.029-.346-.025-.36-.02-.373-.025-.588-.012-.41-.013-.644-.009-.915-.004-.98.001-3.313.003-.73.01-.914.007-.433.011-.418.014-.403.016-.388.021-.374.025-.36.03-.345.033-.333c.196-1.74.616-2.933 1.516-3.833.9-.9 2.092-1.32 3.833-1.516l.333-.034.346-.029.36-.025.373-.02.588-.025.41-.012.644-.013.915-.009ZM6.79 7.3H4.05c.13 6.24 3.25 9.99 8.72 9.99h.31v-3.57c2.01.2 3.53 1.67 4.14 3.57h2.84c-.78-2.84-2.83-4.41-4.11-5.01 1.28-.74 3.08-2.54 3.51-4.98h-2.58c-.56 1.98-2.22 3.78-3.8 3.95V7.3H10.5v6.92c-1.6-.4-3.62-2.34-3.71-6.92Z"/>
+                            </svg>
+                            По ту сторону страниц
+                        </a>
                     </div>
                     <div class="founder-page-text">
-                        <div class="founder-page-role">Душа</div>
-                        <h3 class="founder-page-name founder-page-name--empty">Ищет подходящий образ...</h3>
-                        <p class="founder-page-empty-hint">Душа проекта уже здесь, но&nbsp;пока присматривается и&nbsp;выбирает, в&nbsp;каком облике явиться миру.</p>
+                        <div class="founder-page-role">Душа проекта</div>
+                        <h3 class="founder-page-name">Жорж Феанор Тихо́</h3>
+                        <ul class="founder-page-bio">
+                            <li>Игрок, мастер и житель настольных ролевых миров — уже много лет</li>
+                            <li>Создатель проекта и канала «По Ту Сторону Страниц»</li>
+                            <li>Автор фэнтези-трилогии и цикла «Подземелья и Вопросы»</li>
+                            <li>Ларпер и мастер подземелий, превращающий воображение в приключение</li>
+                            <li>Любитель шахмат, хорошей еды и красиво собранных историй.</li>
+                            <li>Идейный вдохновитель и душа проекта РолеБаза</li>
+                        </ul>
+                        <blockquote class="founder-page-quote">
+                            &laquo;Если я и сяду разбираться, как работает VTT, то только если решу сделать его сам&raquo;
+                        </blockquote>
                     </div>
                 </div>
             </div>
@@ -499,7 +516,7 @@
             </div>
 
             <!-- Демиург — Владимир Федин -->
-            <div class="founder-page is-visible" data-page="2">
+            <div class="founder-page" data-page="2">
                 <div class="founder-page-inner">
                     <div class="founder-page-photo">
                         <div class="founder-page-photo-frame">
@@ -508,7 +525,7 @@
                         </div>
                         <a class="founder-channel-link" href="https://t.me/rolebaza_dev" target="_blank" rel="noopener">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M9.04 15.54l-.39 5.48c.56 0 .8-.24 1.09-.53l2.62-2.5 5.44 3.98c1 .55 1.7.26 1.97-.91l3.57-16.7c.32-1.47-.53-2.04-1.5-1.68L1.39 10.73c-1.42.55-1.4 1.35-.24 1.72l5.43 1.69 12.6-7.89c.6-.37 1.14-.17.69.21L9.04 15.54z"/></svg>
-                            Канал о&nbsp;разработке
+                            Разработка Ролебазы
                         </a>
                     </div>
                     <div class="founder-page-text">
