@@ -266,7 +266,7 @@ function initLogoExpand() {
       var rcx=0,rcy=0; s.forEach(function(pt){rcx+=pt[0];rcy+=pt[1];}); rcx/=4;rcy/=4;
       s.forEach(function(corner){
         var dx=corner[0]-rcx, dy=corner[1]-rcy;
-        var line = svgEl('line',{x1:rcx,y1:rcy,x2:rcx+dx*0.06,y2:rcy+dy*0.06,stroke:pal.accent,'stroke-linecap':'round','stroke-width':'0.4'},parent);
+        var line = svgEl('line',{x1:rcx,y1:rcy,x2:rcx+dx*0.06,y2:rcy+dy*0.06,stroke:pal.accent,'stroke-linecap':'round','stroke-width':'1.6'},parent);
         els.push(line);
       });
     }
