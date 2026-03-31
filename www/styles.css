@@ -131,8 +131,9 @@ a:hover { color: var(--accent-hover); }
 /* ── Logo stage (classic logo ↔ die field) ─────────────────── */
 .logo-stage {
   position: relative; display: grid; place-items: center;
-  cursor: pointer; width: 100%;
+  width: 100%;
 }
+.classic-logo, .hero-canvas { cursor: pointer; }
 .logo-stage > * { grid-area: 1 / 1; } /* stack children on top of each other */
 .classic-logo {
   width: 100%; max-width: 1170px;

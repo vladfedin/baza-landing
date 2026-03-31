@@ -302,37 +302,56 @@ function initLogoExpand() {
   // ── Classic logo ↔ die field state machine ──
   var classicLogo = document.getElementById('classic-logo');
   var logoStage = document.getElementById('logo-stage');
-  // States: 'classic' | 'transitioning' | 'die-collapsed' | 'die-expanded'
-  var phase = 'classic';
+  // States: 'loading' | 'classic' | 'transitioning' | 'die-collapsed' | 'die-expanded'
+  var phase = 'loading';
+  var logoLoaded = false;
+
+  // Load classic logo in background
+  var logoImg = new Image();
+  logoImg.onload = function() {
+    logoLoaded = true;
+    classicLogo.src = logoImg.src;
+    if (phase === 'loading') {
+      // Logo loaded, nobody clicked yet — show it
+      svg.classList.remove('visible');
+      classicLogo.classList.remove('fade-out');
+      phase = 'classic';
+    }
+    // If phase is already 'die-expanded' (user clicked during load) — do nothing,
+    // logo is ready for when they collapse back
+  };
+  logoImg.onerror = function() {
+    // Logo failed — stay on SVG die, treat as expanded-ready
+    if (phase === 'loading') {
+      phase = 'die-expanded';
+      expandRhombs();
+    }
+  };
+  logoImg.src = './img/logo.png';
 
   function showDieField() {
     if (phase !== 'classic') return;
     phase = 'transitioning';
-    // Fade out classic logo
     classicLogo.classList.add('fade-out');
     setTimeout(function() {
-      // Show SVG, expand
       svg.classList.add('visible');
       setTimeout(function() {
         expandRhombs();
         phase = 'die-expanded';
       }, 300);
-    }, 1000); // after classic fades out
+    }, 1000);
   }
 
   function showClassicLogo() {
-    if (phase !== 'die-collapsed') return;
+    if (phase !== 'die-collapsed' || !logoLoaded) return;
     phase = 'transitioning';
-    // Hide SVG
     svg.classList.remove('visible');
     setTimeout(function() {
-      // Show classic logo
       classicLogo.classList.remove('fade-out');
       phase = 'classic';
     }, 1000);
   }
 
-  // Compute max collapse delay for timing
   var maxCollapseDelay = 0;
   rhombs.forEach(function(rh) {
     if (rh.bfsStep === 0) return;
@@ -340,23 +359,28 @@ function initLogoExpand() {
     if (d > maxCollapseDelay) maxCollapseDelay = d;
   });
 
-  logoStage.addEventListener('click', function() {
-    if (phase === 'classic') {
+  function handleLogoClick() {
+    if (phase === 'loading') {
+      // Clicked on die before logo loaded — expand immediately
+      phase = 'die-expanded';
+      expandRhombs();
+    } else if (phase === 'classic') {
       showDieField();
     } else if (phase === 'die-expanded') {
       phase = 'transitioning';
       collapseRhombs();
-      // After collapse finishes → wait 3s → show classic logo
       setTimeout(function() {
         phase = 'die-collapsed';
-        setTimeout(showClassicLogo, 3000);
+        if (logoLoaded) setTimeout(showClassicLogo, 3000);
+        else { phase = 'die-expanded'; /* no logo, just re-expand */ }
       }, maxCollapseDelay);
     } else if (phase === 'die-collapsed') {
-      // Click during 3s pause → expand again instead
       phase = 'die-expanded';
       expandRhombs();
     }
-  });
+  }
+  classicLogo.addEventListener('click', handleLogoClick);
+  svg.addEventListener('click', handleLogoClick);
 
   // ── Sparkle system ──
   var sparkleTimers = new Map();
