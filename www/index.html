@@ -1,710 +1,394 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" data-theme="arcane">
 <head>
-    <meta charset="utf-8"/>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>Ролебаза — Виртуальный стол для настольных RPG</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ролебаза — Виртуальный стол для настольных RPG</title>
+  <meta name="description" content="Виртуальный стол для настольных ролевых игр. Создан для русскоязычного RPG-сообщества." />
+  <link rel="icon" href="./favicon.ico" />
+  <link rel="stylesheet" href="./styles.css" />
 
-    <!-- Шрифты -->
-    <link href="https://fonts.googleapis.com" rel="preconnect"/>
-    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800;900&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Fira+Sans:wght@300;400;500;600;700&display=swap"
-          rel="stylesheet"/>
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
-          rel="stylesheet"/>
-
-    <!-- Tailwind (утилиты) + наши стили -->
-    <script src="./vendor/tailwindcss-cdn-forms-container-queries.js"></script>
-    <link rel="stylesheet" href="./styles.css"/>
-
-    <!-- Favicon -->
-    <link rel="icon" href="./favicon.ico" sizes="any"/>
-
-    <!-- Yandex.Metrika -->
-    <script type="text/javascript">
-        (function (w, d) {
-            var isProductionLanding = w.location.hostname === 'rolebaza.ru' || w.location.hostname === 'www.rolebaza.ru';
-            if (!isProductionLanding) return;
-
-            var scriptSrc = 'https://mc.yandex.ru/metrika/tag.js?id=106941653';
-            w.ym = w.ym || function () { (w.ym.a = w.ym.a || []).push(arguments); };
-            w.ym.l = Date.now();
-
-            for (var j = 0; j < d.scripts.length; j++) {
-                if (d.scripts[j].src === scriptSrc) return;
-            }
-
-            var k = d.createElement('script');
-            var a = d.getElementsByTagName('script')[0];
-            k.async = 1;
-            k.src = scriptSrc;
-            k.onerror = function () {
-                console.warn('Yandex.Metrika script is unavailable in current network environment.');
-            };
-            a.parentNode.insertBefore(k, a);
-
-            w.ym(106941653, 'init', {
-                ssr: true,
-                webvisor: true,
-                clickmap: true,
-                ecommerce: 'dataLayer',
-                referrer: d.referrer,
-                url: w.location.href,
-                accurateTrackBounce: true,
-                trackLinks: true,
-            });
-        })(window, document);
-    </script>
-    <!-- /Yandex.Metrika -->
+  <!-- Yandex.Metrika (production only) -->
+  <script>
+    if (/rolebaza\.ru$/.test(location.hostname) && !/beta\./.test(location.hostname)) {
+      (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+      m[i].l=1*new Date();for(var j=0;j<document.scripts.length;j++){if(document.scripts[j].src===r)return;}
+      k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+      (window,document,"script","https://mc.yandex.ru/metrika/tag.js","ym");
+      ym(106941653,"init",{clickmap:true,trackLinks:true,accurateTrackBounce:true,webvisor:true});
+    }
+  </script>
 </head>
+<body>
 
-<body class="antialiased selection:bg-[var(--gold-700)] selection:text-[var(--gold-100)]">
-
-<!-- Скрипты -->
-<script src="./main.js" defer></script>
-<script>if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js');</script>
-
-<!-- Яндекс.Счетчик -->
-<noscript>
-    <div><img alt="" src="https://mc.yandex.ru/watch/106941653" style="position:absolute; left:-9999px;"/></div>
-</noscript>
-
-<!-- ======= HERO SECTION ======= -->
-<section class="hero min-h-screen relative flex items-start justify-center overflow-hidden">
-    <!-- Фон -->
-    <div class="absolute inset-0 z-0">
-        <img
-            alt="Atmospheric Fantasy Landscape"
-            class="w-full h-full object-cover"
-            src="./img/background.jpg"
-            style="filter: brightness(0.82) contrast(1.08) saturate(1.05);"
-        />
-        <div class="absolute inset-0 bg-gradient-to-b from-[#1a1410]/55 via-[#2e261d]/20 to-[#1c1815]"></div>
-        <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,rgba(212,167,85,0.08)_0%,rgba(28,24,21,0.85)_100%)]"></div>
-    </div>
-
-    <div class="container mx-auto px-4 relative z-10 py-4 pt-6">
-        <div class="text-center max-w-6xl mx-auto">
-
-            <!-- Логотип -->
-            <div class="flex items-center justify-center mb-2 animate-float">
-                <img
-                    alt="Rolebaza Logo"
-                    class="w-full max-w-[1170px] drop-shadow-[0_20px_80px_rgba(0,0,0,1)]"
-                    src="./img/logo.png"
-                />
-            </div>
-
-            <p class="font-[var(--font-heading)] text-xl md:text-2xl text-[var(--gold-200)] mb-6 tracking-wide drop-shadow-md mt-[-3rem]">
-                <b>ВИРТУАЛЬНЫЙ СТОЛ ДЛЯ НАСТОЛЬНЫХ РОЛЕВЫХ ИГР</b>
-            </p>
-
-            <!-- Преимущества (иконки) -->
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8 relative">
-                <!-- Золотая линия между медальонами (только desktop) -->
-                <div class="hidden md:block absolute top-[3rem] left-[6%] right-[6%] -z-10" style="
-                    height: 2px;
-                    background: linear-gradient(to right,
-                        transparent 0%,
-                        #9E7530     15%,
-                        #D4AF60     40%,
-                        #EAD090     50%,
-                        #D4AF60     60%,
-                        #9E7530     85%,
-                        transparent 100%
-                    );
-                    opacity: 0.85;
-                    box-shadow: 0 0 8px 1px rgba(212,175,96,0.35), 0 0 2px 0 rgba(234,208,144,0.5);
-                "></div>
-
-                <div class="flex flex-col items-center group">
-                    <div class="hero-medallion">
-                        <svg style="fill: #f7e6c0; width: 48px; height: 48px;" viewBox="0 0 98.92 122.88" xmlns="http://www.w3.org/2000/svg">
-                            <path clip-rule="evenodd" d="M78.77,0c-3.29,39.36-48.34,13.5-65.45,46.28c-2.42,5.34-4.03,10.29-4.8,14.84c-1.26,1.55-2.42,3.22-3.45,5 c-5.22,9.05-6.28,19.35-3.78,28.71c2.51,9.35,8.58,17.75,17.63,22.97c9.05,5.22,19.35,6.28,28.71,3.78 c9.35-2.51,17.75-8.58,22.97-17.63c2.31-4,3.8-8.24,4.54-12.54c5.32-3.1,10.02-7.48,13.62-13.28c6.08-14.12-5.01-25.38,10.17-35.32 c-9.38-4.72-15.1,0.16-20.58,9.7c-5.93,12.88-28.14-2.37-7.32-10.29C88.92,35.42,87.29,14.45,78.77,0L78.77,0L78.77,0z M37.02,84.91c0.11,0,0.23,0,0.34,0.01l13.03-9.76c1.51-1.13,3.66-0.83,4.79,0.68c1.13,1.51,0.83,3.66-0.68,4.79L41.6,90.3 c-0.36,2.21-2.27,3.9-4.58,3.9c-2.56,0-4.64-2.08-4.64-4.64c0-0.49,0.08-0.96,0.22-1.41L19.33,77.89 c-0.84-0.65-0.99-1.85-0.35-2.69c0.65-0.84,1.85-0.99,2.69-0.35l13.5,10.44C35.74,85.05,36.36,84.91,37.02,84.91L37.02,84.91z M53.96,57.11c16.06,9.27,21.08,28,11.8,44.06c-9.27,16.06-28,21.08-44.06,11.81c-16.06-9.27-21.08-28-11.8-44.06 C19.18,52.86,37.9,47.84,53.96,57.11L53.96,57.11z" fill-rule="evenodd"/>
-                        </svg>
-                    </div>
-                    <h3 class="text-[var(--gold-100)] text-base mb-1 font-bold group-hover:text-[var(--gold-300)]" style="transition:color 0.2s;">За 2 минуты</h3>
-                    <p class="text-[var(--gold-300)] text-xs max-w-[140px] font-medium opacity-80">Запусти сессию быстрее, чем закипит чайник</p>
-                </div>
-
-                <div class="flex flex-col items-center group">
-                    <div class="hero-medallion">
-                        <svg style="fill: #f7e6c0; width: 48px; height: 48px;" viewBox="0 0 122.88 91.26" xmlns="http://www.w3.org/2000/svg">
-                            <path clip-rule="evenodd" d="M14.85,45.46h6.65l2.39,12.65l3.5-12.65h6.6l3.53,12.67l2.41-12.67h6.62l-5,22.68h-6.87L30.7,53.86 l-3.95,14.28h-6.86L14.85,45.46L14.85,45.46z M8.32,0h106.24c4.58,0,8.32,3.74,8.32,8.32v74.62c0,4.57-3.74,8.32-8.32,8.32H8.32 C3.74,91.26,0,87.51,0,82.94V8.32C0,3.74,3.74,0,8.32,0L8.32,0z M117.97,23.29H5.29v60.46c0,0.64,0.25,1.2,0.67,1.63 c0.42,0.42,0.99,0.67,1.63,0.67h108.04c0.64,0,1.2-0.25,1.63-0.67c0.43-0.43,0.67-0.99,0.67-1.63V23.29H117.97L117.97,23.29z M106.64,9.35c2.27,0,4.11,1.84,4.11,4.11s-1.84,4.11-4.11,4.11c-2.27,0-4.11-1.84-4.11-4.11S104.38,9.35,106.64,9.35L106.64,9.35z M78.8,9.35c2.27,0,4.11,1.84,4.11,4.11s-1.84,4.11-4.11,4.11c-2.27,0-4.11-1.84-4.11-4.11S76.53,9.35,78.8,9.35L78.8,9.35z M92.72,9.35c2.27,0,4.11,1.84,4.11,4.11s-1.84,4.11-4.11,4.11c-2.27,0-4.11-1.84-4.11-4.11S90.45,9.35,92.72,9.35L92.72,9.35z M78.3,45.46h6.65l2.39,12.65l3.5-12.65h6.6l3.53,12.67l2.41-12.67h6.62l-5,22.68h-6.87l-3.98-14.28L90.2,68.14h-6.86L78.3,45.46 L78.3,45.46z M46.58,45.46h6.65l2.39,12.65l3.5-12.65h6.6l3.53,12.67l2.41-12.67h6.62l-5,22.68h-6.87l-3.98-14.28l-3.95,14.28 h-6.86L46.58,45.46L46.58,45.46z" fill-rule="evenodd"/>
-                        </svg>
-                    </div>
-                    <h3 class="text-[var(--gold-100)] text-base mb-1 font-bold group-hover:text-[var(--gold-300)]" style="transition:color 0.2s;">В браузере</h3>
-                    <p class="text-[var(--gold-300)] text-xs max-w-[140px] font-medium opacity-80">Без установки и настройки серверов</p>
-                </div>
-
-                <div class="flex flex-col items-center group">
-                    <div class="hero-medallion">
-                        <svg style="fill: #f7e6c0; width: 64px; height: 64px;" viewBox="0 0 84.31 122.88" xmlns="http://www.w3.org/2000/svg">
-                            <path clip-rule="evenodd" d="M13.37,59.62c-0.51,0.67-1.09,1.32-1.71,1.95c0.16,0.09,0.33,0.19,0.49,0.3c0.77,0.51,1.63,0.79,2.49,0.8 c0.84,0.01,1.67-0.22,2.4-0.71l0.03-0.02c-0.78-0.75-1.48-1.5-2.06-2.26v-1.96c0.84-0.33,1.43-1.14,1.43-2.1 c0-0.95-0.59-1.77-1.43-2.1v-4.01c0-0.45-0.37-0.82-0.82-0.82c-0.45,0-0.82,0.37-0.82,0.82v4.01c-0.84,0.33-1.43,1.14-1.43,2.1 c0,0.95,0.59,1.77,1.43,2.1V59.62L13.37,59.62z M68.18,59.62c-0.51,0.67-1.09,1.32-1.71,1.95c0.16,0.09,0.33,0.19,0.49,0.3 c0.77,0.51,1.63,0.79,2.49,0.8c0.84,0.01,1.67-0.22,2.4-0.71l0.03-0.02c-0.78-0.75-1.48-1.5-2.06-2.26v-1.96 c0.84-0.33,1.43-1.14,1.43-2.1c0-0.95-0.59-1.77-1.43-2.1v-4.01c0-0.45-0.37-0.82-0.82-0.82s-0.82,0.37-0.82,0.82v4.01 c-0.84,0.33-1.43,1.14-1.43,2.1c0,0.95,0.59,1.77,1.43,2.1V59.62L68.18,59.62z M81.29,122.88V104.5h0.99l-3.2-6.46v-12h3.24 c0.22,0,0.41-0.18,0.41-0.41v-2.59c0-0.22-0.18-0.41-0.41-0.41h-0.97c0.29-0.3,0.56-0.59,0.81-0.89c-1.49-0.17-2.6-0.69-3.64-1.18 c-1.47-0.69-2.77-1.3-5.02,0.02c-1.2,0.7-2.57,1.03-3.94,1.01c-1.39-0.02-2.78-0.39-4-1.1c-0.94-0.55-1.85-0.74-2.74-0.66 c-0.93,0.08-1.88,0.47-2.83,1.05l-0.02,0.01c-0.02-0.02-0.05-0.04-0.07-0.06c0.73-0.91,1.27-1.78,1.64-2.63 c0.35-0.09,0.71-0.15,1.06-0.18c1.36-0.12,2.74,0.15,4.11,0.96c0.88,0.51,1.88,0.79,2.86,0.8c0.96,0.01,1.92-0.22,2.76-0.71 c3.3-1.93,5.11-1.08,7.18-0.11c0.99,0.47,2.06,0.97,3.42,1.01c0.15,0.01,0.29,0.04,0.41,0.09c1.93-3.39,0.75-6.39-1.64-9.2 c-0.17,0.19-0.43,0.31-0.71,0.3c-1.61-0.06-2.73-0.67-3.77-1.23c-1.28-0.69-2.41-1.3-4.37,0.02c-1.04,0.7-2.23,1.03-3.43,1.01 c-1.21-0.02-2.42-0.39-3.48-1.1c-0.82-0.55-1.61-0.74-2.38-0.66c-0.81,0.09-1.63,0.47-2.46,1.05c-0.1,0.07-0.23,0.14-0.39,0.2 c-0.33-0.52-0.71-1.04-1.13-1.55c0.23-0.04,0.4-0.08,0.47-0.13c1.07-0.76,2.18-1.26,3.33-1.38c1.19-0.12,2.38,0.15,3.58,0.96 c0.77,0.51,1.63,0.79,2.49,0.8c0.84,0.01,1.67-0.22,2.4-0.71c2.87-1.93,4.45-1.08,6.25-0.11c0.63,0.34,1.3,0.7,2.07,0.89 c-2.1-2.06-4.67-4.03-6.89-6c-0.13,0.08-0.27,0.16-0.41,0.25c-1.04,0.7-2.23,1.03-3.43,1.01c-1.21-0.02-2.42-0.39-3.48-1.1 c-0.3-0.2-0.6-0.36-0.89-0.47c-1.99,1.8-4.22,3.5-6.09,5.27c-1.56-1.73-3.5-3.39-5.45-5.02l-0.69-12.61h0.85 c0.32,0,0.59-0.26,0.59-0.59v-2.81c0-0.32-0.26-0.59-0.59-0.59h-1.77l-10.7-31.23l0-0.05V8.67c1.03-0.39,1.77-1.39,1.77-2.57 c0-1.17-0.73-2.17-1.77-2.57V0.92c0-0.51-0.44-0.92-0.98-0.92c-0.54,0-0.98,0.41-0.98,0.92v2.62c-1.03,0.39-1.77,1.39-1.77,2.57 c0,1.17,0.73,2.17,1.77,2.57v6.61l0,0.02L28.72,46.56h-1.77c-0.32,0-0.59,0.26-0.59,0.59v2.81c0,0.32,0.26,0.59,0.59,0.59h1.58 l-1.67,20.36c-0.17,0.17-0.41,0.27-0.67,0.26c-1.61-0.06-2.73-0.67-3.77-1.23c-1.28-0.69-2.41-1.3-4.37,0.02 c-1.04,0.7-2.23,1.03-3.43,1.01c-1.21-0.02-2.42-0.39-3.48-1.1c-0.82-0.55-1.61-0.74-2.38-0.66c-0.81,0.09-1.63,0.47-2.46,1.05 c-0.44,0.31-1.49,0.51-2.53,0.59c-0.71,0.05-1.45,0.04-2.02-0.02c-0.81,1.11-1.41,2.27-1.65,3.51c0.4,0.06,1.21,0.06,2.03,0.01 C3,74.29,3.79,74.2,3.97,74.09c1.23-0.76,2.51-1.26,3.83-1.38c1.36-0.12,2.74,0.15,4.11,0.96c0.88,0.51,1.88,0.79,2.86,0.8 c0.96,0.01,1.92-0.22,2.76-0.71c3.3-1.93,5.11-1.08,7.18-0.11c0.59,0.27,1.2,0.56,1.88,0.76l-0.07,0.9h-2.38v0.14 c-0.14-0.06-0.28-0.13-0.41-0.19c-1.47-0.69-2.77-1.3-5.02,0.02c-1.2,0.7-2.57,1.03-3.94,1.01c-1.39-0.02-2.78-0.39-4-1.1 c-0.94-0.55-1.85-0.74-2.74-0.66c-0.93,0.08-1.88,0.47-2.83,1.05c-0.51,0.31-1.71,0.51-2.91,0.59C1.48,76.21,0.65,76.2,0,76.14 c0.09,1.11,0.45,2.28,1.15,3.55c0.31,0,0.65-0.02,0.99-0.04c0.87-0.05,1.66-0.14,1.83-0.25c1.23-0.76,2.51-1.26,3.83-1.38 c1.36-0.12,2.74,0.15,4.11,0.96c0.88,0.51,1.88,0.79,2.86,0.8c0.96,0.01,1.92-0.22,2.76-0.71c2.99-1.75,4.76-1.22,6.6-0.38v2.06 l-0.41-0.19c-1.47-0.69-2.77-1.3-5.02,0.02c-1.2,0.7-2.57,1.03-3.94,1.01c-1.39-0.02-2.78-0.39-4-1.1 c-0.94-0.55-1.85-0.74-2.74-0.66c-0.93,0.08-1.88,0.47-2.83,1.05c-0.5,0.31-1.68,0.51-2.86,0.58c0.29,0.38,0.6,0.77,0.94,1.16h-1.3 c-0.22,0-0.41,0.18-0.41,0.41v2.59c0,0.22,0.18,0.41,0.41,0.41h3.45V97.9L2,104.5H3v18.38H81.29L81.29,122.88z M61.86,72.82 c0.25-0.05,0.49-0.09,0.74-0.11c1.36-0.12,2.74,0.15,4.11,0.96c0.88,0.51,1.88,0.79,2.86,0.8c0.96,0.01,1.92-0.22,2.76-0.71 c3.3-1.93,5.11-1.08,7.18-0.11c0.99,0.47,2.06,0.97,3.42,1.02c0.58,0.02,1.03,0.44,1,0.94c-0.02,0.5-0.51,0.89-1.09,0.87 c-1.85-0.06-3.13-0.67-4.33-1.23c-1.47-0.69-2.77-1.3-5.02,0.02c-1.2,0.7-2.57,1.03-3.94,1.01c-1.39-0.02-2.78-0.39-4-1.1 c-0.94-0.55-1.85-0.74-2.74-0.66c-0.2,0.02-0.4,0.05-0.6,0.1C62.17,74.01,62.05,73.41,61.86,72.82L61.86,72.82z M64.44,109.99h2.39 v6.86h-2.39V109.99L64.44,109.99z M63.49,89.48c0-0.37,0.41-0.68,0.91-0.68c0.5,0,0.91,0.3,0.91,0.68v6.73 c0,0.37-0.41,0.67-0.91,0.67c-0.5,0-0.91-0.3-0.91-0.67V89.48L63.49,89.48z M74.36,89.48c0-0.37,0.41-0.68,0.91-0.68 c0.5,0,0.91,0.3,0.91,0.68v6.73c0,0.37-0.41,0.67-0.91,0.67c-0.5,0-0.91-0.3-0.91-0.67V89.48L74.36,89.48z M68.92,89.48 c0-0.37,0.41-0.68,0.91-0.68c0.5,0,0.91,0.3,0.91,0.68v6.73c0,0.37-0.41,0.67-0.91,0.67c-0.5,0-0.91-0.3-0.91-0.67V89.48 L68.92,89.48z M72.29,109.99h2.38v6.86h-2.38V109.99L72.29,109.99z M10.25,62.92c-2.31,2.09-4.95,4.05-6.98,6.14 c0.13-0.01,0.25-0.01,0.38-0.02c0.76-0.05,1.44-0.14,1.6-0.25c1.07-0.76,2.18-1.26,3.33-1.38c1.19-0.12,2.38,0.15,3.58,0.96 c0.77,0.51,1.63,0.79,2.49,0.8c0.84,0.01,1.67-0.22,2.4-0.71c2.87-1.93,4.45-1.08,6.25-0.11c0.63,0.34,1.3,0.7,2.07,0.89 c-2.1-2.06-4.67-4.03-6.89-6c-0.13,0.08-0.27,0.16-0.41,0.25c-1.04,0.7-2.23,1.03-3.43,1.01c-1.21-0.02-2.42-0.39-3.48-1.1 C10.84,63.18,10.54,63.02,10.25,62.92L10.25,62.92z M9.63,109.99h2.38v6.86H9.63V109.99L9.63,109.99z M8.68,89.48 c0-0.37,0.41-0.68,0.91-0.68s0.91,0.3,0.91,0.68v6.73c0,0.37-0.41,0.67-0.91,0.67s-0.91-0.3-0.91-0.67V89.48L8.68,89.48z M19.55,89.48c0-0.37,0.41-0.68,0.91-0.68c0.5,0,0.91,0.3,0.91,0.68v6.73c0,0.37-0.41,0.67-0.91,0.67c-0.5,0-0.91-0.3-0.91-0.67 V89.48L19.55,89.48z M14.11,89.48c0-0.37,0.41-0.68,0.91-0.68c0.5,0,0.91,0.3,0.91,0.68v6.73c0,0.37-0.41,0.67-0.91,0.67 c-0.5,0-0.91-0.3-0.91-0.67V89.48L14.11,89.48z M17.48,109.99h2.39v6.86h-2.39V109.99L17.48,109.99z M36.6,85.22v11.86l-3.23,6.51 h23.92h1.01l-0.47-1.05l-2.37-5.32v-12h0.91h2.33c0.22,0,0.41-0.18,0.41-0.41v-2.59c0-0.15-0.08-0.27-0.19-0.35h-1.47H33.7v-0.06 h-0.56c-0.22,0-0.41,0.18-0.41,0.41v2.59c0,0.22,0.18,0.41,0.41,0.41H36.6L36.6,85.22z M50.44,89.48c0-0.37,0.41-0.68,0.91-0.68 c0.5,0,0.91,0.3,0.91,0.68v6.73c0,0.37-0.41,0.67-0.91,0.67c-0.5,0-0.91-0.3-0.91-0.67V89.48L50.44,89.48z M40.48,109.84h2.39 c0.3,0,0.55,0.25,0.55,0.55v6.15c0,0.3-0.25,0.55-0.55,0.55h-2.39c-0.3,0-0.55-0.25-0.55-0.55v-6.15 C39.93,110.09,40.18,109.84,40.48,109.84L40.48,109.84z M48.97,109.84h2.39c0.3,0,0.55,0.25,0.55,0.55v6.15 c0,0.3-0.25,0.55-0.55,0.55h-2.39c-0.3,0-0.55-0.25-0.55-0.55v-6.15C48.42,110.09,48.67,109.84,48.97,109.84L48.97,109.84z M39.58,89.48c0-0.37,0.41-0.68,0.91-0.68c0.5,0,0.91,0.3,0.91,0.68v6.73c0,0.37-0.41,0.67-0.91,0.67c-0.5,0-0.91-0.3-0.91-0.67 V89.48L39.58,89.48z M45.01,89.48c0-0.37,0.41-0.68,0.91-0.68c0.5,0,0.91,0.3,0.91,0.68v6.73c0,0.37-0.41,0.67-0.91,0.67 c-0.5,0-0.91-0.3-0.91-0.67V89.48L45.01,89.48z M58.5,80.3c0.37-0.43,0.69-0.86,0.96-1.28l0,0c0.07-0.11,0.14-0.22,0.2-0.33 l0.05-0.09c0.06-0.1,0.12-0.21,0.17-0.31l0.05-0.1c0.05-0.1,0.1-0.21,0.15-0.31l0.04-0.09c0.04-0.1,0.09-0.21,0.13-0.31l0.03-0.09 c0.04-0.1,0.07-0.2,0.1-0.3l0.03-0.1c0.03-0.1,0.06-0.2,0.08-0.3l0.02-0.09c0.02-0.1,0.04-0.19,0.06-0.29l0.02-0.09 c0.02-0.1,0.03-0.19,0.04-0.28l0.01-0.11c0.01-0.09,0.02-0.18,0.02-0.27l0.01-0.11c0.03-0.74-0.07-1.47-0.29-2.18l0,0 c-0.03-0.1-0.07-0.21-0.1-0.31l-0.02-0.05c-0.04-0.11-0.08-0.21-0.12-0.32l-0.01-0.03c-0.04-0.11-0.09-0.21-0.14-0.31l-0.03-0.05 c-0.05-0.1-0.1-0.2-0.15-0.3l-0.02-0.04c-0.05-0.1-0.11-0.2-0.16-0.3l-0.03-0.06c-0.05-0.09-0.11-0.19-0.17-0.28l-0.05-0.07 c-0.06-0.09-0.12-0.18-0.18-0.27l-0.05-0.07c-3-4.46-9.65-8.37-12.87-12.48V56.2c0.79-0.35,1.34-1.14,1.34-2.06 c0-0.92-0.55-1.71-1.34-2.06v-4.04c0-0.5-0.41-0.91-0.91-0.91c-0.5,0-0.91,0.41-0.91,0.91v4.04c-0.79,0.35-1.34,1.14-1.34,2.06 c0,0.92,0.55,1.71,1.34,2.06v2.05c-5.57,7.2-18.88,11.71-10.72,22.05H58.5L58.5,80.3z M57.67,104.7H34.18v17.14h23.49V104.7 L57.67,104.7z M44.59,45.07l1.72-5.49l1.72,5.49H44.59L44.59,45.07z M32.36,45.07l1.72-5.49l1.72,5.49H32.36L32.36,45.07z M38.48,45.07l1.72-5.49l1.72,5.49H38.48L38.48,45.07z" fill-rule="evenodd"/>
-                        </svg>
-                    </div>
-                    <h3 class="text-[var(--gold-100)] text-base mb-1 font-bold group-hover:text-[var(--gold-300)]" style="transition:color 0.2s;">На русском</h3>
-                    <p class="text-[var(--gold-300)] text-xs max-w-[140px] font-medium opacity-80">Интерфейс создан для нас, не переведён</p>
-                </div>
-
-                <div class="flex flex-col items-center group">
-                    <div class="hero-medallion">
-                        <svg style="fill: #f7e6c0; width: 48px; height: 48px;" viewBox="0 0 495 512.43" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M236.46 424.54l-68.34 79.01c-5.49,6.12 -12.62,8.88 -19.61,8.88 -3.2,0 -6.45,-0.63 -9.5,-1.79 -3,-1.14 -5.85,-2.86 -8.34,-5.08 -5.31,-4.65 -8.8,-11.45 -8.8,-19.66l-2.92 -61.36 -73.58 0c-12.44,0 -23.78,-5.13 -31.99,-13.33 -8.27,-8.27 -13.38,-19.62 -13.38,-32.03l0 -333.81c0,-12.43 5.14,-23.81 13.35,-32.02 8.29,-8.21 19.63,-13.35 32.02,-13.35l404.26 0c12.45,0 23.81,5.14 32.02,13.35 8.21,8.21 13.35,19.57 13.35,32.02l0 333.81c0,12.45 -5.11,23.81 -13.34,32.02 -8.18,8.24 -19.54,13.34 -32.03,13.34l-213.17 0zm-94.97 -287.51l142.07 0c12.07,0 21.95,9.88 21.95,21.96l0 23.39 69.97 -42.04 0 132.69 -69.97 -37.76 0 30.43c0,12.07 -9.88,21.94 -21.95,21.94l-142.07 0c-12.09,0 -21.97,-9.87 -21.97,-21.94l0 -106.71c0,-12.08 9.88,-21.96 21.97,-21.96zm9.02 342.8l72.86 -84.26 226.26 0c4.51,0 8.63,-1.85 11.59,-4.81 2.99,-2.92 4.81,-7.03 4.81,-11.58l0 -333.81c0,-4.46 -1.86,-8.57 -4.85,-11.55 -2.98,-2.99 -7.09,-4.85 -11.55,-4.85l-404.26 0c-4.49,0 -8.59,1.86 -11.58,4.82 -2.96,3.01 -4.82,7.12 -4.82,11.58l0 333.81c0,4.51 1.85,8.63 4.8,11.59 2.95,2.95 7.09,4.8 11.6,4.8l101.1 0 4.04 84.26z" fill-rule="nonzero"/>
-                        </svg>
-                    </div>
-                    <h3 class="text-[var(--gold-100)] text-base mb-1 font-bold group-hover:text-[var(--gold-300)]" style="transition:color 0.2s;">С видеосвязью</h3>
-                    <p class="text-[var(--gold-300)] text-xs max-w-[140px] font-medium opacity-80">Встроенная видеосвязь для полного погружения</p>
-                </div>
-            </div>
-
-            <a class="btn-engraved btn-primary text-lg px-10 py-4 shadow-[0_0_30px_rgba(194,149,69,0.3)]" href="#waitlist">
-                <span class="mr-3 material-symbols-outlined">shield</span>
-                Забронировать место
-            </a>
-
-            <!-- Прокрутка вниз -->
-            <div onclick="window.scrollBy({ top: window.innerHeight, behavior: 'smooth' })"
-                 style="width:100%; height:64px; display:flex; align-items:center; justify-content:center; cursor:pointer; margin-top:48px;">
-                <svg class="scroll-bounce-svg" clip-rule="evenodd" fill-rule="evenodd" image-rendering="optimizeQuality"
-                     onmouseout="this.style.opacity='0.75'" onmouseover="this.style.opacity='1'"
-                     shape-rendering="geometricPrecision" text-rendering="geometricPrecision"
-                     style="width:64px; height:64px; fill:#C29545; opacity:0.75; animation:scroll-bounce 2.2s ease-in-out infinite; filter:drop-shadow(0 0 6px rgba(194,149,69,0.4)); transition:opacity 0.2s;"
-                     viewBox="0 0 267 512.46" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M133.5 0c36.67 0 70.05 15.03 94.25 39.21l.06.07C251.99 63.47 267 96.84 267 133.5v151.22c0 36.67-15.03 70.04-39.21 94.24l-.06.06c-24.2 24.18-57.57 39.19-94.23 39.19-36.67 0-70.05-15.02-94.25-39.21l-.06-.06C15.01 354.74 0 321.37 0 284.72V133.5c0-36.67 15.03-70.04 39.21-94.25l.06-.06C63.47 15.02 96.84 0 133.5 0zM98.79 447.32l34.7 34.72 34.77-34.72 15.16 15.24-49.98 49.9-49.89-49.9 15.24-15.24zm34.71-130.89c12.5 0 22.74-10.23 22.74-22.73v-30.34c0-12.51-10.24-22.74-22.74-22.74-12.5 0-22.73 10.23-22.73 22.74v30.34c0 12.5 10.23 22.73 22.73 22.73zm0-294.87c-30.81 0-58.8 12.59-79.05 32.85-20.31 20.3-32.89 48.29-32.89 79.09v151.22c0 30.8 12.58 58.79 32.85 79.05 20.29 20.3 48.28 32.88 79.09 32.88 30.81 0 58.8-12.58 79.05-32.85 20.3-20.29 32.89-48.28 32.89-79.08V133.5c0-30.8-12.59-58.79-32.85-79.05-20.29-20.3-48.28-32.89-79.09-32.89z" fill-rule="nonzero"/>
-                </svg>
-            </div>
-        </div>
-    </div>
-
-    <div class="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-[var(--bg-deep)] to-transparent pointer-events-none"></div>
-</section>
-
-
-<!-- ======= АРСЕНАЛ МАСТЕРА ======= -->
-<section class="section py-20 relative bg-[#2e2822]">
-    <div class="container mx-auto px-4">
-        <div class="text-center mb-16 fade-in">
-            <h2 class="text-4xl md:text-5xl mb-6 text-[var(--gold-200)]">Арсенал Мастера</h2>
-        </div>
-
-        <div class="max-w-4xl mx-auto fade-in">
-            <div class="guild-column bg-[#2b2520]">
-                <div class="guild-column-inner bg-[url('https://www.transparenttextures.com/patterns/aged-paper.png')] border-[#a8884d]">
-                    <div class="guild-column-header border-[#a8884d]">
-                        <h3 class="text-2xl text-[var(--gold-300)] tracking-widest">Инструментарий</h3>
-                        <p class="text-[var(--gold-500)] text-sm uppercase mt-1 tracking-wider">Инструменты для создания легендарных историй</p>
-                    </div>
-                    <div class="grid md:grid-cols-2 gap-6 relative">
-                        <div class="space-y-6">
-                            <div class="arsenal-item rotate-[-1deg]">
-                                <h3><span class="material-symbols-outlined text-[var(--gold-700)] text-2xl">map</span>Карты и Сцены</h3>
-                                <p>Загружай PNG/JPG, платформа сама подстроит сетку под твои нужды.</p>
-                            </div>
-                            <div class="arsenal-item rotate-[1deg]">
-                                <h3><span class="material-symbols-outlined text-[var(--gold-700)] text-2xl">visibility_off</span>Туман Войны</h3>
-                                <p>Скрывай тайны и открывай карту по мере продвижения группы.</p>
-                            </div>
-                            <div class="arsenal-item rotate-[-1deg]">
-                                <h3><span class="material-symbols-outlined text-[var(--gold-700)] text-2xl">flash_on</span>Инициатива</h3>
-                                <p>Удобный трекер боя с подсветкой текущего хода.</p>
-                            </div>
-                            <div class="arsenal-item rotate-[1deg]">
-                                <h3><span class="material-symbols-outlined text-[var(--gold-700)] text-2xl">assignment</span>Листы Персонажей</h3>
-                                <p>Универсальные бланки с привязкой к токенам.</p>
-                            </div>
-                        </div>
-                        <div class="space-y-6 md:mt-4">
-                            <div class="arsenal-item rotate-[1deg]">
-                                <h3><span class="material-symbols-outlined text-[var(--gold-700)] text-2xl">layers</span>Токены и Слои</h3>
-                                <p>Drag-n-drop миниатюр, библиотека + загрузка своих изображений.</p>
-                            </div>
-                            <div class="arsenal-item rotate-[-1deg]">
-                                <h3><span class="material-symbols-outlined text-[var(--gold-700)] text-2xl">casino</span>Кубики и Макросы</h3>
-                                <p>/roll 2d6+3, скрытые броски мастера, удобные формулы.</p>
-                            </div>
-                            <div class="arsenal-item rotate-[1deg]">
-                                <h3><span class="material-symbols-outlined text-[var(--gold-700)] text-2xl">favorite</span>HP и Статусы</h3>
-                                <p>Быстрое изменение здоровья и метки состояний на токенах.</p>
-                            </div>
-                            <div class="arsenal-item rotate-[-1deg]">
-                                <h3><span class="material-symbols-outlined text-[var(--gold-700)] text-2xl">diversity_3</span>Поиск Группы</h3>
-                                <p>Встроенная LFG система для поиска сопартийцев.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mt-8 text-center">
-                        <div class="inline-block border-y border-[var(--gold-600)] py-2 px-4 bg-[#3d2b10]/10">
-                            <p class="text-[#5e4b35] font-[var(--font-heading)] italic text-lg font-semibold">«Мощь, скрытая за простотой.»</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="text-center mt-12 fade-in">
-            <div class="inline-flex items-center gap-3 border border-[var(--gold-600)] bg-[#3d2b10]/20 px-6 py-3 rounded-sm backdrop-blur-sm">
-                <span class="material-symbols-outlined text-[var(--gold-400)]">lightbulb</span>
-                <p class="text-[var(--gold-200)] font-semibold">Всё это работает без регистрации для игроков — они просто переходят по ссылке.</p>
-            </div>
-        </div>
-
-        <!-- Прокрутка вниз -->
-        <div onclick="window.scrollBy({ top: window.innerHeight, behavior: 'smooth' })"
-             style="width:100%; height:64px; display:flex; align-items:center; justify-content:center; cursor:pointer; margin-top:48px;">
-            <svg onmouseout="this.style.opacity='0.75'" onmouseover="this.style.opacity='1'"
-                 style="width:64px; height:64px; fill:#C29545; opacity:0.75; animation:scroll-bounce 2.2s ease-in-out infinite; filter:drop-shadow(0 0 6px rgba(194,149,69,0.4)); transition:opacity 0.2s;"
-                 viewBox="0 0 267 512.46" xmlns="http://www.w3.org/2000/svg">
-                <path d="M133.5 0c36.67 0 70.05 15.03 94.25 39.21l.06.07C251.99 63.47 267 96.84 267 133.5v151.22c0 36.67-15.03 70.04-39.21 94.24l-.06.06c-24.2 24.18-57.57 39.19-94.23 39.19-36.67 0-70.05-15.02-94.25-39.21l-.06-.06C15.01 354.74 0 321.37 0 284.72V133.5c0-36.67 15.03-70.04 39.21-94.25l.06-.06C63.47 15.02 96.84 0 133.5 0zM98.79 447.32l34.7 34.72 34.77-34.72 15.16 15.24-49.98 49.9-49.89-49.9 15.24-15.24zm34.71-130.89c12.5 0 22.74-10.23 22.74-22.73v-30.34c0-12.51-10.24-22.74-22.74-22.74-12.5 0-22.73 10.23-22.73 22.74v30.34c0 12.5 10.23 22.73 22.73 22.73zm0-294.87c-30.81 0-58.8 12.59-79.05 32.85-20.31 20.3-32.89 48.29-32.89 79.09v151.22c0 30.8 12.58 58.79 32.85 79.05 20.29 20.3 48.28 32.88 79.09 32.88 30.81 0 58.8-12.58 79.05-32.85 20.3-20.29 32.89-48.28 32.89-79.08V133.5c0-30.8-12.59-58.79-32.85-79.05-20.29-20.3-48.28-32.89-79.09-32.89z" fill-rule="nonzero"/>
-            </svg>
-        </div>
-    </div>
-</section>
-
-
-<!-- ======= ГИЛЬДИЯ (ЛИСТ ОЖИДАНИЯ) ======= -->
-<section class="waitlist-section py-24 relative overflow-hidden bg-[#1c1815]" id="waitlist">
-    <!-- Фон -->
-    <div class="absolute inset-0 bg-[url('./img/mountain.jpg')] bg-cover bg-center opacity-66 mix-blend-luminosity filter blur-sm sepia-[0.5]"></div>
-    <div class="absolute inset-0 bg-gradient-to-t from-[#1c1815] via-[#2e261d]/80 to-[#1c1815]"></div>
-
-    <div class="container mx-auto px-4 relative z-10">
-        <div class="max-w-3xl mx-auto text-center fade-in">
-            <div class="w-32 h-32 mx-auto mb-8 rounded-full border-4 border-[var(--gold-500)] flex items-center justify-center bg-[#211c16] shadow-[0_0_50px_rgba(194,149,69,0.3)] animate-torch">
-                <span class="material-symbols-outlined text-6xl text-[var(--gold-300)]">shield_with_house</span>
-            </div>
-            <h2 class="text-4xl md:text-5xl mb-4 text-[var(--gold-200)] drop-shadow-md">Гильдия Первопроходцев</h2>
-            <p class="font-[var(--font-heading)] text-2xl text-[var(--gold-400)] italic mb-12">Впиши своё имя в историю создания</p>
-
-            <!-- Пергаментная карточка формы -->
-            <div class="relative bg-[#eaddcf] text-[#2c241b] p-8 md:p-12 shadow-2xl max-w-2xl mx-auto border-t-8 border-b-8 border-[#594d3f]">
-                <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/aged-paper.png')] opacity-60 pointer-events-none"></div>
-                <div class="absolute inset-0 shadow-[inset_0_0_60px_rgba(61,50,38,0.3)] pointer-events-none"></div>
-                <div class="relative z-10">
-                    <p class="font-[var(--font-heading)] text-xl leading-relaxed mb-8">
-                        Приветствую тебя, искатель приключений!<br/><br/>
-                        Наша гильдия собирает отважных душ для великого начинания. Вступая сейчас, ты становишься не просто пользователем, а <strong>Основателем</strong>.
-                    </p>
-                    <div class="h-px bg-[#8a7676] w-1/2 mx-auto my-6 opacity-50"></div>
-                    <h3 class="font-[var(--font-display)] font-bold text-xl mb-4 text-[#594426] uppercase tracking-wide">Дары Первопроходца</h3>
-                    <ul class="text-left max-w-md mx-auto space-y-3 mb-8 text-[#3d3226] font-medium">
-                        <li class="flex items-start gap-2"><span class="material-symbols-outlined text-[#8F2020] text-lg mt-0.5">verified</span> Доступ к альфе на 3 месяца раньше</li>
-                        <li class="flex items-start gap-2"><span class="material-symbols-outlined text-[#8F2020] text-lg mt-0.5">verified</span> Прямая связь с разработчиками</li>
-                        <li class="flex items-start gap-2"><span class="material-symbols-outlined text-[#8F2020] text-lg mt-0.5">verified</span> Уникальный значок «Основатель»</li>
-                        <li class="flex items-start gap-2"><span class="material-symbols-outlined text-[#8F2020] text-lg mt-0.5">verified</span> Специальные бонусы при релизе</li>
-                    </ul>
-
-                    <form class="space-y-4 text-left" id="waitlist-form">
-                        <div>
-                            <label class="block font-[var(--font-heading)] font-bold text-[#3d3226] mb-1 text-lg">Твоё имя в гильдии</label>
-                            <input class="w-full bg-[#f4ece4] border border-[#a89888] p-3 text-[#2c241b] focus:border-[#8F2020] focus:ring-1 focus:ring-[#8F2020] outline-none shadow-inner"
-                                   name="name" placeholder="Например: Даниэль Громовержец" required type="text"/>
-                        </div>
-                        <div>
-                            <label class="block font-[var(--font-heading)] font-bold text-[#3d3226] mb-1 text-lg">Голубиная почта (Email)</label>
-                            <input class="w-full bg-[#f4ece4] border border-[#a89888] p-3 text-[#2c241b] focus:border-[#8F2020] focus:ring-1 focus:ring-[#8F2020] outline-none shadow-inner"
-                                   name="email" placeholder="adventurer@tavern.ru" required type="email"/>
-                        </div>
-                        <!-- Honeypot -->
-                        <input aria-hidden="true" autocomplete="off" class="hidden" name="website" tabindex="-1" type="text"/>
-
-                        <div class="pt-2">
-                            <label class="block text-center font-[var(--font-heading)] font-bold text-[#3d3226] mb-2 text-lg">Твоя роль</label>
-                            <div class="flex gap-2">
-                                <label class="flex-1 cursor-pointer">
-                                    <input checked class="peer hidden" name="role" type="radio" value="gm"/>
-                                    <div class="border-2 border-[#a89888] bg-[#f4ece4] p-2 text-center peer-checked:border-[#8F2020] peer-checked:bg-[#e6d0bc] hover:bg-[#e6d0bc]" style="transition:background 0.2s, border-color 0.2s;">
-                                        <div class="flex justify-center mb-1"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#3d2b10" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11.562 3.266a.5.5 0 0 1 .876 0L15.39 8.87a1 1 0 0 0 1.516.294L21.183 5.5a.5.5 0 0 1 .798.519l-2.834 10.246a1 1 0 0 1-.956.734H5.81a1 1 0 0 1-.957-.734L2.02 6.02a.5.5 0 0 1 .798-.519l4.276 3.664a1 1 0 0 0 1.516-.294z"/><path d="M5 21h14"/></svg></div>
-                                        <div class="font-[var(--font-display)] text-xs font-bold uppercase text-[#3d3226]">Мастер</div>
-                                    </div>
-                                </label>
-                                <label class="flex-1 cursor-pointer">
-                                    <input class="peer hidden" name="role" type="radio" value="player"/>
-                                    <div class="border-2 border-[#a89888] bg-[#f4ece4] p-2 text-center peer-checked:border-[#8F2020] peer-checked:bg-[#e6d0bc] hover:bg-[#e6d0bc]" style="transition:background 0.2s, border-color 0.2s;">
-                                        <div class="flex justify-center mb-1"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#3d2b10" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="14.5 17.5 3 6 3 3 6 3 17.5 14.5"/><line x1="13" x2="19" y1="19" y2="13"/><line x1="16" x2="20" y1="16" y2="20"/><line x1="19" x2="21" y1="21" y2="19"/><polyline points="14.5 6.5 18 3 21 3 21 6 17.5 9.5"/><line x1="5" x2="9" y1="14" y2="18"/><line x1="7" x2="4" y1="17" y2="20"/><line x1="3" x2="5" y1="19" y2="21"/></svg></div>
-                                        <div class="font-[var(--font-display)] text-xs font-bold uppercase text-[#3d3226]">Игрок</div>
-                                    </div>
-                                </label>
-                                <label class="flex-1 cursor-pointer">
-                                    <input class="peer hidden" name="role" type="radio" value="both"/>
-                                    <div class="border-2 border-[#a89888] bg-[#f4ece4] p-2 text-center peer-checked:border-[#8F2020] peer-checked:bg-[#e6d0bc] hover:bg-[#e6d0bc]" style="transition:background 0.2s, border-color 0.2s;">
-                                        <div class="flex justify-center mb-1"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#3d2b10" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 11h.01"/><path d="M14 6h.01"/><path d="M18 6h.01"/><path d="M6.5 13.1h.01"/><path d="M22 5c0 9-4 12-6 12s-6-3-6-12c0-2 2-3 6-3s6 1 6 3"/><path d="M17.4 9.9c-.8.8-2 .8-2.8 0"/><path d="M10.1 7.1C9 7.2 7.7 7.7 6 8.6c-3.5 2-4.7 3.9-3.7 5.6 4.5 7.8 9.5 8.4 11.2 7.4.9-.5 1.9-2.1 1.9-4.7"/><path d="M9.1 16.5c.3-1.1 1.4-1.7 2.4-1.4"/></svg></div>
-                                        <div class="font-[var(--font-display)] text-xs font-bold uppercase text-[#3d3226]">Оба</div>
-                                    </div>
-                                </label>
-                            </div>
-                        </div>
-
-                        <button class="w-full mt-6 bg-[#8F2020] text-[#f4ece4] font-[var(--font-display)] font-bold uppercase py-4 text-lg hover:bg-[#721818] shadow-md border border-[#5c1313]"
-                                style="transition:background 0.2s;" type="submit">
-                            Вступить в Гильдию
-                        </button>
-                        <p style="padding-top: 6px;">Нажимая кнопку "Вступить в гильдию" вы соглашаетесь с <a href="./files/rolebaza_privacy_policy.pdf" style="color: #8F2020; text-decoration: underline; text-underline: #8F2020;" target="_blank">политикой обработки персональных данных</a>.</p>
-                        <p class="hidden mt-4 text-sm text-center font-semibold" id="waitlist-status"></p>
-                    </form>
-
-                    <div class="mt-8 pt-4 border-t border-[#a89888]/50">
-                        <p class="font-[var(--font-heading)] text-[#594426]">Уже присоединились:</p>
-                        <div class="flex items-center justify-center min-h-[56px]">
-                            <div aria-label="Loading waitlist count"
-                                 class="h-8 w-8 rounded-full border-4 border-[#c29545] border-t-transparent animate-spin"
-                                 id="member-count-spinner"></div>
-                            <div class="font-[var(--font-display)] text-4xl font-bold text-[#8F2020] hidden" id="member-count">0</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <p class="text-[var(--color-text-muted)] text-sm mt-8 flex items-center justify-center gap-2">
-                <span class="material-symbols-outlined text-sm">lock</span>
-                Твои данные под защитой магического контракта. Никакого спама.
-            </p>
-        </div>
-
-        <!-- Прокрутка вниз -->
-        <div onclick="window.scrollBy({ top: window.innerHeight, behavior: 'smooth' })"
-             style="width:100%; height:64px; display:flex; align-items:center; justify-content:center; cursor:pointer; margin-top:48px;">
-            <svg onmouseout="this.style.opacity='0.75'" onmouseover="this.style.opacity='1'"
-                 style="width:64px; height:64px; fill:#C29545; opacity:0.75; animation:scroll-bounce 2.2s ease-in-out infinite; filter:drop-shadow(0 0 6px rgba(194,149,69,0.4)); transition:opacity 0.2s;"
-                 viewBox="0 0 267 512.46" xmlns="http://www.w3.org/2000/svg">
-                <path d="M133.5 0c36.67 0 70.05 15.03 94.25 39.21l.06.07C251.99 63.47 267 96.84 267 133.5v151.22c0 36.67-15.03 70.04-39.21 94.24l-.06.06c-24.2 24.18-57.57 39.19-94.23 39.19-36.67 0-70.05-15.02-94.25-39.21l-.06-.06C15.01 354.74 0 321.37 0 284.72V133.5c0-36.67 15.03-70.04 39.21-94.25l.06-.06C63.47 15.02 96.84 0 133.5 0zM98.79 447.32l34.7 34.72 34.77-34.72 15.16 15.24-49.98 49.9-49.89-49.9 15.24-15.24zm34.71-130.89c12.5 0 22.74-10.23 22.74-22.73v-30.34c0-12.51-10.24-22.74-22.74-22.74-12.5 0-22.73 10.23-22.73 22.74v30.34c0 12.5 10.23 22.73 22.73 22.73zm0-294.87c-30.81 0-58.8 12.59-79.05 32.85-20.31 20.3-32.89 48.29-32.89 79.09v151.22c0 30.8 12.58 58.79 32.85 79.05 20.29 20.3 48.28 32.88 79.09 32.88 30.81 0 58.8-12.58 79.05-32.85 20.3-20.29 32.89-48.28 32.89-79.08V133.5c0-30.8-12.59-58.79-32.85-79.05-20.29-20.3-48.28-32.89-79.09-32.89z" fill-rule="nonzero"/>
-            </svg>
-        </div>
-    </div>
-</section>
-
-
-<!-- ======= FAQ ======= -->
-<section class="section py-20 bg-[#26211c] border-t border-[var(--border-primary)]">
-    <div class="container mx-auto px-4 max-w-4xl">
-        <div class="text-center mb-12 fade-in">
-            <h2 class="text-3xl md:text-4xl mb-2 text-[var(--gold-200)]">Мудрость Старцев</h2>
-            <p class="text-[var(--gold-300)] opacity-80">Ответы на частые вопросы</p>
-        </div>
-        <div class="grid gap-4 fade-in">
-            <details class="group bg-[#2e2822] border border-[var(--border-primary)] open:border-[var(--gold-500)]" style="transition:border-color 0.2s;">
-                <summary class="flex items-center justify-between p-6 cursor-pointer list-none">
-                    <span class="font-[var(--font-display)] text-[var(--gold-200)] text-lg">Когда запуск?</span>
-                    <span class="material-symbols-outlined text-[var(--gold-500)] group-open:rotate-180" style="transition:transform 0.3s;">expand_more</span>
-                </summary>
-                <div class="px-6 pb-6 text-[var(--color-text-secondary)] leading-relaxed border-t border-[rgba(194,149,69,0.1)] pt-4">
-                    Закрытая альфа стартует в апреле 2026 для членов Гильдии Первопроходцев. Открытая бета для всех — летом 2026.
-                </div>
-            </details>
-            <details class="group bg-[#2e2822] border border-[var(--border-primary)] open:border-[var(--gold-500)]" style="transition:border-color 0.2s;">
-                <summary class="flex items-center justify-between p-6 cursor-pointer list-none">
-                    <span class="font-[var(--font-display)] text-[var(--gold-200)] text-lg">Это будет бесплатно?</span>
-                    <span class="material-symbols-outlined text-[var(--gold-500)] group-open:rotate-180" style="transition:transform 0.3s;">expand_more</span>
-                </summary>
-                <div class="px-6 pb-6 text-[var(--color-text-secondary)] leading-relaxed border-t border-[rgba(194,149,69,0.1)] pt-4">
-                    Да! Базовый функционал всегда будет бесплатным — 2 активные кампании, 500 МБ хранилища, все основные функции. Расширенные возможности для активных мастеров будут доступны по подписке.
-                </div>
-            </details>
-            <details class="group bg-[#2e2822] border border-[var(--border-primary)] open:border-[var(--gold-500)]" style="transition:border-color 0.2s;">
-                <summary class="flex items-center justify-between p-6 cursor-pointer list-none">
-                    <span class="font-[var(--font-display)] text-[var(--gold-200)] text-lg">Чем вы лучше Roll20?</span>
-                    <span class="material-symbols-outlined text-[var(--gold-500)] group-open:rotate-180" style="transition:transform 0.3s;">expand_more</span>
-                </summary>
-                <div class="px-6 pb-6 text-[var(--color-text-secondary)] leading-relaxed border-t border-[rgba(194,149,69,0.1)] pt-4">
-                    Мы создаём платформу специально для русскоязычных игроков с нуля. Понятный интерфейс, серверы рядом (меньше пинг), больше бесплатного места (500 МБ vs 100 МБ) и фокус на простоту.
-                </div>
-            </details>
-            <details class="group bg-[#2e2822] border border-[var(--border-primary)] open:border-[var(--gold-500)]" style="transition:border-color 0.2s;">
-                <summary class="flex items-center justify-between p-6 cursor-pointer list-none">
-                    <span class="font-[var(--font-display)] text-[var(--gold-200)] text-lg">Будет ли мобильное приложение?</span>
-                    <span class="material-symbols-outlined text-[var(--gold-500)] group-open:rotate-180" style="transition:transform 0.3s;">expand_more</span>
-                </summary>
-                <div class="px-6 pb-6 text-[var(--color-text-secondary)] leading-relaxed border-t border-[rgba(194,149,69,0.1)] pt-4">
-                    Сначала отличная веб-версия (которая работает и с телефона в браузере!), затем нативные приложения для iOS и Android.
-                </div>
-            </details>
-        </div>
-
-        <!-- Прокрутка вниз -->
-        <div onclick="window.scrollBy({ top: window.innerHeight, behavior: 'smooth' })"
-             style="width:100%; height:64px; display:flex; align-items:center; justify-content:center; cursor:pointer; margin-top:48px;">
-            <svg onmouseout="this.style.opacity='0.75'" onmouseover="this.style.opacity='1'"
-                 style="width:64px; height:64px; fill:#C29545; opacity:0.75; animation:scroll-bounce 2.2s ease-in-out infinite; filter:drop-shadow(0 0 6px rgba(194,149,69,0.4)); transition:opacity 0.2s;"
-                 viewBox="0 0 267 512.46" xmlns="http://www.w3.org/2000/svg">
-                <path d="M133.5 0c36.67 0 70.05 15.03 94.25 39.21l.06.07C251.99 63.47 267 96.84 267 133.5v151.22c0 36.67-15.03 70.04-39.21 94.24l-.06.06c-24.2 24.18-57.57 39.19-94.23 39.19-36.67 0-70.05-15.02-94.25-39.21l-.06-.06C15.01 354.74 0 321.37 0 284.72V133.5c0-36.67 15.03-70.04 39.21-94.25l.06-.06C63.47 15.02 96.84 0 133.5 0zM98.79 447.32l34.7 34.72 34.77-34.72 15.16 15.24-49.98 49.9-49.89-49.9 15.24-15.24zm34.71-130.89c12.5 0 22.74-10.23 22.74-22.73v-30.34c0-12.51-10.24-22.74-22.74-22.74-12.5 0-22.73 10.23-22.73 22.74v30.34c0 12.5 10.23 22.73 22.73 22.73zm0-294.87c-30.81 0-58.8 12.59-79.05 32.85-20.31 20.3-32.89 48.29-32.89 79.09v151.22c0 30.8 12.58 58.79 32.85 79.05 20.29 20.3 48.28 32.88 79.09 32.88 30.81 0 58.8-12.58 79.05-32.85 20.3-20.29 32.89-48.28 32.89-79.08V133.5c0-30.8-12.59-58.79-32.85-79.05-20.29-20.3-48.28-32.89-79.09-32.89z" fill-rule="nonzero"/>
-            </svg>
-        </div>
-    </div>
-</section>
-
-
-<!-- ======= ОСНОВАТЕЛИ И ХРАНИТЕЛИ ======= -->
-<section class="section py-20 relative bg-[#1c1815]" id="founders">
-    <div class="container mx-auto px-4">
-        <div class="text-center mb-12 fade-in">
-            <h2 class="text-4xl md:text-5xl mb-4 text-[var(--gold-200)]">Основатели и Хранители</h2>
-            <p class="text-[var(--gold-400)] opacity-80 font-[var(--font-heading)] text-xl italic">По ту сторону Ролебазы</p>
-        </div>
-
-        <!-- Портреты-медальоны -->
-        <div class="flex justify-center items-end gap-6 md:gap-10 mb-8 fade-in" id="founder-portraits">
-            <button class="founder-medallion is-active" data-founder="0" type="button">
-                <div class="founder-medallion-ring">
-                    <img src="./img/founders/tiho.jpg" alt="Жорж Феанор Тихо́"/>
-                </div>
-                <span class="founder-medallion-label">Душа</span>
-            </button>
-            <button class="founder-medallion" data-founder="1" type="button">
-                <div class="founder-medallion-ring">
-                    <img src="./img/founders/egor.jpg" alt="Егор Грищенко"/>
-                </div>
-                <span class="founder-medallion-label">Иерофант</span>
-            </button>
-            <button class="founder-medallion" data-founder="2" type="button">
-                <div class="founder-medallion-ring">
-                    <img src="./img/founders/fedin.jpg" alt="Демиург"/>
-                </div>
-                <span class="founder-medallion-label">Демиург</span>
-            </button>
-        </div>
-
-        <!-- Detail pages (only one visible at a time) -->
-        <div class="max-w-4xl mx-auto fade-in" id="founder-details">
-
-            <!-- Душа — Жорж Феанор Тихо́ -->
-            <div class="founder-page is-visible" data-page="0">
-                <div class="founder-page-inner">
-                    <div class="founder-page-photo">
-                        <div class="founder-page-photo-frame">
-                            <img class="founder-photo founder-photo-normal" src="./img/founders/tiho.jpg" alt="Жорж Феанор Тихо́"/>
-                            <img class="founder-photo founder-photo-fire" src="./img/founders/tiho-fire.jpg" alt="Жорж Феанор Тихо́"/>
-                        </div>
-                        <a class="founder-channel-link" href="https://vk.ru/dndpotustoronu" target="_blank" rel="noopener" aria-label="ВКонтакте Жоржа" title="ВКонтакте Жоржа">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                                <path d="m9.489.004.729-.003h3.564l.73.003.914.01.433.007.418.011.403.014.388.016.374.021.36.025.345.03.333.033c1.74.196 2.933.616 3.833 1.516.9.9 1.32 2.092 1.516 3.833l.034.333.029.346.025.36.02.373.025.588.012.41.013.644.009.915.004.98-.001 3.313-.003.73-.01.914-.007.433-.011.418-.014.403-.016.388-.021.374-.025.36-.03.345-.033.333c-.196 1.74-.616 2.933-1.516 3.833-.9.9-2.092 1.32-3.833 1.516l-.333.034-.346.029-.36.025-.373.02-.588.025-.41.012-.644.013-.915.009-.98.004-3.313-.001-.73-.003-.914-.01-.433-.007-.418-.011-.403-.014-.388-.016-.374-.021-.36-.025-.345-.03-.333-.033c-1.74-.196-2.933-.616-3.833-1.516-.9-.9-1.32-2.092-1.516-3.833l-.034-.333-.029-.346-.025-.36-.02-.373-.025-.588-.012-.41-.013-.644-.009-.915-.004-.98.001-3.313.003-.73.01-.914.007-.433.011-.418.014-.403.016-.388.021-.374.025-.36.03-.345.033-.333c.196-1.74.616-2.933 1.516-3.833.9-.9 2.092-1.32 3.833-1.516l.333-.034.346-.029.36-.025.373-.02.588-.025.41-.012.644-.013.915-.009ZM6.79 7.3H4.05c.13 6.24 3.25 9.99 8.72 9.99h.31v-3.57c2.01.2 3.53 1.67 4.14 3.57h2.84c-.78-2.84-2.83-4.41-4.11-5.01 1.28-.74 3.08-2.54 3.51-4.98h-2.58c-.56 1.98-2.22 3.78-3.8 3.95V7.3H10.5v6.92c-1.6-.4-3.62-2.34-3.71-6.92Z"/>
-                            </svg>
-                            По Ту Сторону Страниц
-                        </a>
-                    </div>
-                    <div class="founder-page-text">
-                        <div class="founder-page-role">Душа Проекта</div>
-                        <h3 class="founder-page-name">Жорж Феанор Тихо́</h3>
-                        <ul class="founder-page-bio">
-                            <li>Игрок, мастер и житель настольных ролевых миров — уже много лет</li>
-                            <li>Создатель проекта и канала «По Ту Сторону Страниц»</li>
-                            <li>Автор фэнтези-трилогии и цикла «Подземелья и Вопросы»</li>
-                            <li>Ларпер и мастер подземелий, превращающий воображение в приключение</li>
-                            <li>Любитель шахмат, хорошей еды и красиво собранных историй</li>
-                            <li>Идейный вдохновитель и Душа проекта РолеБаза</li>
-                        </ul>
-                        <blockquote class="founder-page-quote">
-                            &laquo;Если я и сяду разбираться, как работает VTT, то только если решу сделать его сам&raquo;
-                        </blockquote>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Иерофант — Егор Грищенко -->
-            <div class="founder-page" data-page="1">
-                <div class="founder-page-inner">
-                    <div class="founder-page-photo">
-                        <div class="founder-page-photo-frame">
-                            <img class="founder-photo founder-photo-normal" src="./img/founders/egor.jpg" alt="Егор Грищенко"/>
-                            <img class="founder-photo founder-photo-fire" src="./img/founders/egor-fire.jpg" alt="Егор Грищенко"/>
-                        </div>
-                    </div>
-                    <div class="founder-page-text">
-                        <div class="founder-page-role">Иерофант</div>
-                        <h3 class="founder-page-name">Егор Грищенко</h3>
-                        <ul class="founder-page-bio">
-                            <li>Мастер настольных ролевых игр — уже 25 лет</li>
-                            <li>Со-основатель игровой студии Game Garden</li>
-                            <li>Продюсер, гейм-дизайнер, издатель (30+ игровых проектов)</li>
-                            <li>Доцент ВШЭ Школа Дизайна (Игры и Виртуальная реальность)</li>
-                            <li>Лектор ВШБИ Менеджмент Игровых Проектов</li>
-                        </ul>
-                        <blockquote class="founder-page-quote">
-                            &laquo;Не ты выбираешь проект, а&nbsp;проект выбирает тебя. Как понять, что он тебя выбрал? Он захочет тебя убить&raquo;
-                        </blockquote>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Демиург — Владимир Федин -->
-            <div class="founder-page" data-page="2">
-                <div class="founder-page-inner">
-                    <div class="founder-page-photo">
-                        <div class="founder-page-photo-frame">
-                            <img class="founder-photo founder-photo-normal" src="./img/founders/fedin.jpg" alt="Владимир Федин"/>
-                            <img class="founder-photo founder-photo-fire" src="./img/founders/fedin-fire.jpg" alt="Владимир Федин"/>
-                        </div>
-                        <a class="founder-channel-link" href="https://t.me/rolebaza_dev" target="_blank" rel="noopener">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M9.04 15.54l-.39 5.48c.56 0 .8-.24 1.09-.53l2.62-2.5 5.44 3.98c1 .55 1.7.26 1.97-.91l3.57-16.7c.32-1.47-.53-2.04-1.5-1.68L1.39 10.73c-1.42.55-1.4 1.35-.24 1.72l5.43 1.69 12.6-7.89c.6-.37 1.14-.17.69.21L9.04 15.54z"/></svg>
-                            Разработка Ролебазы
-                        </a>
-                    </div>
-                    <div class="founder-page-text">
-                        <div class="founder-page-role">Демиург</div>
-                        <h3 class="founder-page-name">Владимир Федин</h3>
-                        <ul class="founder-page-bio">
-                            <li>Игрок в настольные ролевые игры с прошлого тысячелетия</li>
-                            <li>Магистр информационных технологий — 20 лет</li>
-                            <li>Мастер обслуживания высоких нагрузок в геймдеве — 10 лет</li>
-                            <li>Руководитель людей-разработчиков и отец троих дочерей — 5 лет</li>
-                            <li>Погонщик цифровых зомби и стартапер — 1 год</li>
-                            <li>Демиург проекта Ролебаза с января 2026-го года</li>
-                        </ul>
-                        <blockquote class="founder-page-quote">
-                            &laquo;Надо было прожить пол жизни, чтоб наконец моя страсть и&nbsp;все мои навыки встретились в&nbsp;одном проекте&raquo;
-                        </blockquote>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </div>
-</section>
-
-
-<!-- ======= СРЕДСТВА СВЯЗИ ======= -->
-<section class="py-16 relative bg-[#1c1815]">
-    <div class="container mx-auto px-4 max-w-3xl text-center fade-in">
-        <div class="mb-2">
-            <span class="material-symbols-outlined text-4xl text-[var(--gold-400)]">mail</span>
-        </div>
-        <h2 class="text-3xl md:text-4xl mb-2 text-[var(--gold-200)]">Волшебные Средства Связи</h2>
-        <p class="text-[var(--gold-400)] opacity-80 mb-10">Следи за новостями и общайся с нами</p>
-
-        <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
-            <a href="https://t.me/rolebaza" target="_blank" rel="noopener noreferrer"
-               class="group flex items-center gap-3 w-56 px-5 py-3 rounded border border-[var(--gold-600)] bg-[#2e2822]/80 hover:border-[var(--gold-400)] hover:bg-[#3d3226]"
-               style="transition: background 0.25s, border-color 0.25s;">
-                <svg class="w-6 h-6 shrink-0" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M9.04 15.54l-.39 5.48c.56 0 .8-.24 1.09-.53l2.62-2.5 5.44 3.98c1 .55 1.7.26 1.97-.91l3.57-16.7c.32-1.47-.53-2.04-1.5-1.68L1.39 10.73c-1.42.55-1.4 1.35-.24 1.72l5.43 1.69 12.6-7.89c.6-.37 1.14-.17.69.21L9.04 15.54z"
-                          fill="var(--gold-400)" class="group-hover:fill-[var(--gold-200)]" style="transition: fill 0.25s;"/>
-                </svg>
-                <div class="text-left">
-                    <div class="text-[var(--gold-200)] font-semibold text-sm group-hover:text-[var(--gold-100)]" style="transition: color 0.25s;">Telegram</div>
-                    <div class="text-[var(--gold-500)] text-xs">Новости и чат</div>
-                </div>
-            </a>
-            <a href="https://vk.com/rolebaza" target="_blank" rel="noopener noreferrer"
-               class="group flex items-center gap-3 w-56 px-5 py-3 rounded border border-[var(--gold-600)] bg-[#2e2822]/80 hover:border-[var(--gold-400)] hover:bg-[#3d3226]"
-               style="transition: background 0.25s, border-color 0.25s;">
-                <svg class="w-6 h-6 shrink-0" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="m9.489.004.729-.003h3.564l.73.003.914.01.433.007.418.011.403.014.388.016.374.021.36.025.345.03.333.033c1.74.196 2.933.616 3.833 1.516.9.9 1.32 2.092 1.516 3.833l.034.333.029.346.025.36.02.373.025.588.012.41.013.644.009.915.004.98-.001 3.313-.003.73-.01.914-.007.433-.011.418-.014.403-.016.388-.021.374-.025.36-.03.345-.033.333c-.196 1.74-.616 2.933-1.516 3.833-.9.9-2.092 1.32-3.833 1.516l-.333.034-.346.029-.36.025-.373.02-.588.025-.41.012-.644.013-.915.009-.98.004-3.313-.001-.73-.003-.914-.01-.433-.007-.418-.011-.403-.014-.388-.016-.374-.021-.36-.025-.345-.03-.333-.033c-1.74-.196-2.933-.616-3.833-1.516-.9-.9-1.32-2.092-1.516-3.833l-.034-.333-.029-.346-.025-.36-.02-.373-.025-.588-.012-.41-.013-.644-.009-.915-.004-.98.001-3.313.003-.73.01-.914.007-.433.011-.418.014-.403.016-.388.021-.374.025-.36.03-.345.033-.333c.196-1.74.616-2.933 1.516-3.833.9-.9 2.092-1.32 3.833-1.516l.333-.034.346-.029.36-.025.373-.02.588-.025.41-.012.644-.013.915-.009ZM6.79 7.3H4.05c.13 6.24 3.25 9.99 8.72 9.99h.31v-3.57c2.01.2 3.53 1.67 4.14 3.57h2.84c-.78-2.84-2.83-4.41-4.11-5.01 1.28-.74 3.08-2.54 3.51-4.98h-2.58c-.56 1.98-2.22 3.78-3.8 3.95V7.3H10.5v6.92c-1.6-.4-3.62-2.34-3.71-6.92Z"
-                          fill="var(--gold-400)" class="group-hover:fill-[var(--gold-200)]" style="transition: fill 0.25s;"/>
-                </svg>
-                <div class="text-left">
-                    <div class="text-[var(--gold-200)] font-semibold text-sm group-hover:text-[var(--gold-100)]" style="transition: color 0.25s;">ВКонтакте</div>
-                    <div class="text-[var(--gold-500)] text-xs">Сообщество</div>
-                </div>
-            </a>
-            <a href="https://boosty.to/rolebaza" target="_blank" rel="noopener noreferrer"
-               class="group flex items-center gap-3 w-56 px-5 py-3 rounded border border-[var(--gold-600)] bg-[#2e2822]/80 hover:border-[var(--gold-400)] hover:bg-[#3d3226]"
-               style="transition: background 0.25s, border-color 0.25s;">
-                <svg class="w-6 h-6 shrink-0" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M7.73 3h5.47l-1.3 5.03h4.37L9.55 21l1.68-7.74H6L7.73 3z"
-                          fill="var(--gold-400)" class="group-hover:fill-[var(--gold-200)]" style="transition: fill 0.25s;"/>
-                </svg>
-                <div class="text-left">
-                    <div class="text-[var(--gold-200)] font-semibold text-sm group-hover:text-[var(--gold-100)]" style="transition: color 0.25s;">Boosty</div>
-                    <div class="text-[var(--gold-500)] text-xs">Поддержать проект</div>
-                </div>
-            </a>
-        </div>
-    </div>
-</section>
-
-
-<!-- Боковые виньетки факелов -->
-<div aria-hidden="true" class="side-vignette side-vignette-left">
-    <div class="sv-layer sv-a"></div>
-    <div class="sv-layer sv-b"></div>
-    <div class="sv-layer sv-c"></div>
-    <div class="sv-warm"></div>
-</div>
-<div aria-hidden="true" class="side-vignette side-vignette-right">
-    <div class="sv-layer sv-a"></div>
-    <div class="sv-layer sv-b"></div>
-    <div class="sv-layer sv-c"></div>
-    <div class="sv-warm"></div>
+<!-- ═══ FLOATING THEME SWITCHER ═══ -->
+<div class="theme-switcher">
+  <button class="theme-btn active" data-t="arcane" title="Arcane"></button>
+  <button class="theme-btn" data-t="dark" title="Dark"></button>
+  <button class="theme-btn" data-t="light" title="Light"></button>
+  <button class="theme-btn" data-t="parchment" title="Parchment"></button>
 </div>
 
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <!-- Background image (original) -->
+  <div class="hero-bg">
+    <img src="./img/background.jpg" alt="" />
+    <div class="hero-bg-overlay"></div>
+    <div class="hero-bg-vignette"></div>
+  </div>
 
-<!-- ======= ФУТЕР ======= -->
-<footer class="footer py-16 relative bg-[#1c1815] border-t border-[var(--border-primary)] overflow-hidden">
-    <!-- Декоративные фоновые картинки -->
-    <div class="absolute bottom-0 left-[-50px] w-[500px] h-[500px] opacity-10 pointer-events-none mix-blend-screen"
-         style="background: url('./img/celestial_map.jpg') center/cover;
-                mask-image: radial-gradient(circle at bottom left, black 30%, transparent 70%);
-                -webkit-mask-image: radial-gradient(circle at bottom left, black 30%, transparent 70%);
-                filter: grayscale(100%) sepia(50%) brightness(0.8);"></div>
-    <div class="absolute bottom-[-40px] right-[-50px] w-[650px] h-[450px] opacity-10 pointer-events-none mix-blend-screen"
-             style="background: url('./img/nurnberg_map.jpg') center/cover;
-                mask-image: radial-gradient(circle at bottom right, black 40%, transparent 70%);
-                -webkit-mask-image: radial-gradient(circle at bottom right, black 40%, transparent 70%);
-                filter: grayscale(100%) sepia(40%) brightness(0.8);"></div>
+  <div class="hero-content">
+    <svg id="logo-expand" class="hero-canvas" aria-label="Logo"></svg>
 
-    <!--         style="background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/Nuremberg_Chronicle_-_View_of_Nuremberg_%28CXIIIv-CXIVr%29.jpg/1280px-Nuremberg_Chronicle_-_View_of_Nuremberg_%28CXIIIv-CXIVr%29.jpg') center/cover; -->
-
-
-    <div class="container mx-auto px-4 relative z-10 text-center">
-        <div class="mb-6">
-            <a href="https://beta.rolebaza.ru/dice-wall"
-               style="display:inline-block; opacity:0.8; filter:drop-shadow(0 4px 12px rgba(0,0,0,0.8)); transition:opacity 0.3s, filter 0.3s;"
-               onmouseenter="this.style.opacity='1'; this.style.filter='drop-shadow(0 6px 24px rgba(212,175,96,0.45))'"
-               onmouseleave="this.style.opacity='0.8'; this.style.filter='drop-shadow(0 4px 12px rgba(0,0,0,0.8))'">
-              <!-- LogoDie (arcane palette) — static snapshot from client/src/components/LogoDie.tsx -->
-              <svg viewBox="61.80 56.20 76.40 86.50" width="106" height="120" style="display:block;" aria-label="Ролебаза">
-                <defs>
-                  <filter id="ftl"><feColorMatrix type="matrix" values="0.85 0 0 0 0.01  0 0.83 0 0 0  0 0 0.80 0 0  0 0 0 1 0"/></filter>
-                  <filter id="ftr"><feColorMatrix type="matrix" values="0.75 0 0 0 0.01  0 0.72 0 0 0  0 0 0.70 0 0  0 0 0 1 0"/></filter>
-                  <clipPath id="cl"><polygon points="63.80,81.30 98.09,101.10 98.09,140.70 63.80,120.90"/></clipPath>
-                  <clipPath id="cr"><polygon points="136.20,81.30 136.20,120.90 101.91,140.70 101.91,101.10"/></clipPath>
-                </defs>
-                <!-- Face backgrounds -->
-                <path d="M 95.67,60.70 Q 100.00,58.20 104.33,60.70 L 129.96,75.50 Q 134.29,78.00 129.96,80.50 L 104.33,95.30 Q 100.00,97.80 95.67,95.30 L 70.04,80.50 Q 65.71,78.00 70.04,75.50 Z" fill="rgba(212,175,96,0.22)"/>
-                <path d="M 63.80,86.30 Q 63.80,81.30 68.13,83.80 L 93.76,98.60 Q 98.09,101.10 98.09,106.10 L 98.09,135.70 Q 98.09,140.70 93.76,138.20 L 68.13,123.40 Q 63.80,120.90 63.80,115.90 Z" fill="rgba(212,175,96,0.14)"/>
-                <path d="M 131.87,83.80 Q 136.20,81.30 136.20,86.30 L 136.20,115.90 Q 136.20,120.90 131.87,123.40 L 106.24,138.20 Q 101.91,140.70 101.91,135.70 L 101.91,106.10 Q 101.91,101.10 106.24,98.60 Z" fill="rgba(212,175,96,0.09)"/>
-                <!-- Top: letter P -->
-                <path d="M200 0V1200L0 1300L400 1500L600 1400V200L800 100L400 -100ZM600 1400 1000 1600 1400 1400V800L800 500L600 600L1000 800V1200Z" fill="#D4AF60" transform="translate(100,78) scale(0.013672,-0.013672) translate(-700,-750)"/>
-                <!-- Left: masks -->
-                <g filter="url(#ftl)">
-                  <g clip-path="url(#cl)"><g transform="matrix(34.2936,19.8,0,39.6,63.8012,81.3)">
-                    <g transform="translate(0.14,0.14) scale(0.0075,0.0075)">
-                      <g transform="translate(0,96) scale(0.1,-0.1)" fill="#D4AF60" stroke="none">
-                        <path d="M424 873 c-116 -95 -161 -106 -312 -79 -115 21 -114 23 -59 -180 57 -210 58 -214 103 -264 59 -65 105 -85 199 -85 90 0 136 19 192 77 86 90 92 173 29 405 -24 89 -47 167 -51 173 -12 19 -33 10 -101 -47z m76 -75 c6 -24 23 -85 37 -137 33 -123 29 -193 -13 -253 -58 -82 -178 -112 -264 -66 -69 37 -95 84 -139 248 -22 80 -38 146 -37 148 2 1 27 -2 56 -8 120 -23 193 -6 280 65 30 24 58 44 62 45 4 0 12 -19 18 -42z"/>
-                        <path d="M395 709 c-27 -13 -46 -44 -39 -64 8 -19 38 -19 54 0 7 8 25 14 43 12 24 -1 32 3 35 17 8 37 -47 57 -93 35z"/>
-                        <path d="M203 655 c-31 -13 -50 -46 -38 -65 9 -15 41 -12 55 5 8 9 22 12 41 8 54 -10 49 45 -6 60 -11 4 -34 0 -52 -8z"/>
-                        <path d="M426 485 c-9 -25 -70 -47 -100 -35 -34 13 -58 2 -54 -24 4 -30 68 -50 117 -36 44 12 94 60 89 87 -4 23 -43 30 -52 8z"/>
-                        <path d="M654 505 c-4 -9 0 -23 7 -31 17 -16 103 -34 166 -34 l44 0 -76 -149 c-90 -177 -116 -203 -219 -209 -65 -4 -106 10 -166 58 -31 25 -63 17 -58 -13 4 -27 77 -83 126 -97 104 -29 217 2 283 78 48 54 193 360 179 377 -6 8 -48 15 -113 18 -56 4 -117 9 -134 13 -25 5 -34 2 -39 -11z"/>
-                        <path d="M642 381 c-24 -15 -10 -46 23 -49 17 -2 38 -11 48 -20 13 -12 22 -13 34 -6 27 17 26 32 -1 59 -26 26 -77 34 -104 16z"/>
-                        <path d="M474 235 c-11 -28 4 -45 40 -45 35 0 43 -5 71 -45 11 -16 17 -18 32 -9 26 17 18 54 -17 87 -24 21 -40 27 -75 27 -31 0 -47 -5 -51 -15z"/>
-                      </g>
-                    </g>
-                  </g></g>
-                </g>
-                <!-- Right: scroll + crosshair -->
-                <g filter="url(#ftr)">
-                  <g clip-path="url(#cr)"><g transform="matrix(34.2936,-19.8,0,39.6,101.9052,101.1)">
-                    <g transform="translate(0.14,0.14) scale(0.03,0.03) translate(24,0) scale(-1,1)">
-                      <path d="M19 17V5a2 2 0 0 0-2-2H4" fill="none" stroke="#D4AF60" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke" style="stroke-width:2.2px"/>
-                      <path d="M8 21h12a2 2 0 0 0 2-2v-1a1 1 0 0 0-1-1H11a1 1 0 0 0-1 1v1a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v2a1 1 0 0 0 1 1h3" fill="none" stroke="#D4AF60" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke" style="stroke-width:2.2px"/>
-                    </g>
-                  </g></g>
-                  <line x1="119.05" y1="111" x2="120.08" y2="109.22" stroke="#D4AF60" stroke-linecap="round" vector-effect="non-scaling-stroke" style="stroke-width:2.2px"/>
-                  <line x1="119.05" y1="111" x2="120.08" y2="111.59" stroke="#D4AF60" stroke-linecap="round" vector-effect="non-scaling-stroke" style="stroke-width:2.2px"/>
-                  <line x1="119.05" y1="111" x2="118.02" y2="112.78" stroke="#D4AF60" stroke-linecap="round" vector-effect="non-scaling-stroke" style="stroke-width:2.2px"/>
-                  <line x1="119.05" y1="111" x2="118.02" y2="110.41" stroke="#D4AF60" stroke-linecap="round" vector-effect="non-scaling-stroke" style="stroke-width:2.2px"/>
-                </g>
-              </svg>
-            </a>
-        </div>
-        <div class="flex justify-center gap-6 mb-8 text-[var(--color-text-muted)] text-sm">
-            <a class="hover:text-[var(--gold-400)]" href="#" style="transition:color 0.2s;">Правила таверны</a>
-            <span class="text-[var(--border-primary)]">•</span>
-            <a class="hover:text-[var(--gold-400)]" href="#" style="transition:color 0.2s;">Свиток конфиденциальности</a>
-        </div>
-        <p class="text-xs text-[var(--color-text-muted)] opacity-60">
-            © 2026 Ролебаза. Сделано с ❤️ для русскоязычного RPG-сообщества.
-        </p>
+    <div class="hero-text">
+      <h1 class="hero-tagline">Виртуальный стол для настольных ролевых игр</h1>
+      <p class="hero-subtitle">Создан для русскоязычного RPG&#8209;сообщества</p>
     </div>
+
+    <!-- 4 advantage cards with original SVGs -->
+    <div class="advantages">
+      <div class="advantage-card">
+        <div class="advantage-icon">
+          <svg style="fill:var(--accent);width:40px;height:40px" viewBox="0 0 98.92 122.88"><path clip-rule="evenodd" d="M78.77,0c-3.29,39.36-48.34,13.5-65.45,46.28c-2.42,5.34-4.03,10.29-4.8,14.84c-1.26,1.55-2.42,3.22-3.45,5 c-5.22,9.05-6.28,19.35-3.78,28.71c2.51,9.35,8.58,17.75,17.63,22.97c9.05,5.22,19.35,6.28,28.71,3.78 c9.35-2.51,17.75-8.58,22.97-17.63c2.31-4,3.8-8.24,4.54-12.54c5.32-3.1,10.02-7.48,13.62-13.28c6.08-14.12-5.01-25.38,10.17-35.32 c-9.38-4.72-15.1,0.16-20.58,9.7c-5.93,12.88-28.14-2.37-7.32-10.29C88.92,35.42,87.29,14.45,78.77,0z M37.02,84.91c0.11,0,0.23,0,0.34,0.01l13.03-9.76c1.51-1.13,3.66-0.83,4.79,0.68c1.13,1.51,0.83,3.66-0.68,4.79L41.6,90.3 c-0.36,2.21-2.27,3.9-4.58,3.9c-2.56,0-4.64-2.08-4.64-4.64c0-0.49,0.08-0.96,0.22-1.41L19.33,77.89 c-0.84-0.65-0.99-1.85-0.35-2.69c0.65-0.84,1.85-0.99,2.69-0.35l13.5,10.44C35.74,85.05,36.36,84.91,37.02,84.91z M53.96,57.11c16.06,9.27,21.08,28,11.8,44.06c-9.27,16.06-28,21.08-44.06,11.81c-16.06-9.27-21.08-28-11.8-44.06 C19.18,52.86,37.9,47.84,53.96,57.11z" fill-rule="evenodd"/></svg>
+        </div>
+        <h3>За 2 минуты</h3>
+        <p>Запусти сессию быстрее, чем закипит чайник</p>
+      </div>
+
+      <div class="advantage-card">
+        <div class="advantage-icon">
+          <svg style="fill:var(--accent);width:40px;height:40px" viewBox="0 0 122.88 91.26"><path clip-rule="evenodd" d="M14.85,45.46h6.65l2.39,12.65l3.5-12.65h6.6l3.53,12.67l2.41-12.67h6.62l-5,22.68h-6.87L30.7,53.86 l-3.95,14.28h-6.86L14.85,45.46z M8.32,0h106.24c4.58,0,8.32,3.74,8.32,8.32v74.62c0,4.57-3.74,8.32-8.32,8.32H8.32 C3.74,91.26,0,87.51,0,82.94V8.32C0,3.74,3.74,0,8.32,0z M117.97,23.29H5.29v60.46c0,0.64,0.25,1.2,0.67,1.63 c0.42,0.42,0.99,0.67,1.63,0.67h108.04c0.64,0,1.2-0.25,1.63-0.67c0.43-0.43,0.67-0.99,0.67-1.63V23.29z M106.64,9.35c2.27,0,4.11,1.84,4.11,4.11s-1.84,4.11-4.11,4.11c-2.27,0-4.11-1.84-4.11-4.11S104.38,9.35,106.64,9.35z M78.8,9.35c2.27,0,4.11,1.84,4.11,4.11s-1.84,4.11-4.11,4.11c-2.27,0-4.11-1.84-4.11-4.11S76.53,9.35,78.8,9.35z M92.72,9.35c2.27,0,4.11,1.84,4.11,4.11s-1.84,4.11-4.11,4.11c-2.27,0-4.11-1.84-4.11-4.11S90.45,9.35,92.72,9.35z M78.3,45.46h6.65l2.39,12.65l3.5-12.65h6.6l3.53,12.67l2.41-12.67h6.62l-5,22.68h-6.87l-3.98-14.28L90.2,68.14h-6.86L78.3,45.46z M46.58,45.46h6.65l2.39,12.65l3.5-12.65h6.6l3.53,12.67l2.41-12.67h6.62l-5,22.68h-6.87l-3.98-14.28l-3.95,14.28 h-6.86L46.58,45.46z" fill-rule="evenodd"/></svg>
+        </div>
+        <h3>В браузере</h3>
+        <p>Без установки и настройки серверов</p>
+      </div>
+
+      <div class="advantage-card">
+        <div class="advantage-icon">
+          <!-- Lucide languages icon -->
+          <svg style="width:40px;height:40px" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/></svg>
+        </div>
+        <h3>На русском</h3>
+        <p>Интерфейс создан для нас, не переведён</p>
+      </div>
+
+      <div class="advantage-card">
+        <div class="advantage-icon">
+          <svg style="fill:var(--accent);width:40px;height:40px" viewBox="0 0 495 512.43"><path d="M236.46 424.54l-68.34 79.01c-5.49,6.12 -12.62,8.88 -19.61,8.88 -3.2,0 -6.45,-0.63 -9.5,-1.79 -3,-1.14 -5.85,-2.86 -8.34,-5.08 -5.31,-4.65 -8.8,-11.45 -8.8,-19.66l-2.92 -61.36 -73.58 0c-12.44,0 -23.78,-5.13 -31.99,-13.33 -8.27,-8.27 -13.38,-19.62 -13.38,-32.03l0 -333.81c0,-12.43 5.14,-23.81 13.35,-32.02 8.29,-8.21 19.63,-13.35 32.02,-13.35l404.26 0c12.45,0 23.81,5.14 32.02,13.35 8.21,8.21 13.35,19.57 13.35,32.02l0 333.81c0,12.45 -5.11,23.81 -13.34,32.02 -8.18,8.24 -19.54,13.34 -32.03,13.34l-213.17 0zm-94.97 -287.51l142.07 0c12.07,0 21.95,9.88 21.95,21.96l0 23.39 69.97 -42.04 0 132.69 -69.97 -37.76 0 30.43c0,12.07 -9.88,21.94 -21.95,21.94l-142.07 0c-12.09,0 -21.97,-9.87 -21.97,-21.94l0 -106.71c0,-12.08 9.88,-21.96 21.97,-21.96zm9.02 342.8l72.86 -84.26 226.26 0c4.51,0 8.63,-1.85 11.59,-4.81 2.99,-2.92 4.81,-7.03 4.81,-11.58l0 -333.81c0,-4.46 -1.86,-8.57 -4.85,-11.55 -2.98,-2.99 -7.09,-4.85 -11.55,-4.85l-404.26 0c-4.49,0 -8.59,1.86 -11.58,4.82 -2.96,3.01 -4.82,7.12 -4.82,11.58l0 333.81c0,4.51 1.85,8.63 4.8,11.59 2.95,2.95 7.09,4.8 11.6,4.8l101.1 0 4.04 84.26z" fill-rule="nonzero"/></svg>
+        </div>
+        <h3>С видеосвязью</h3>
+        <p>Встроенная видеосвязь для полного погружения</p>
+      </div>
+    </div>
+
+    <a class="btn hero-cta" href="#waitlist">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>
+      Забронировать место
+    </a>
+  </div>
+
+  <div class="scroll-hint">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+  </div>
+</section>
+
+<!-- ═══ АРСЕНАЛ МАСТЕРА ═══ -->
+<section class="section">
+  <div class="container">
+    <div class="section-header fade-in">
+      <div class="eyebrow">Возможности</div>
+      <div class="section-title">Арсенал Мастера</div>
+      <p class="section-subtitle">Инструменты для создания легендарных историй</p>
+    </div>
+
+    <div class="arsenal-grid fade-in">
+      <!-- Lucide icons (24x24 viewBox, stroked) -->
+      <div class="arsenal-card">
+        <svg class="arsenal-icon" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.106 5.553a2 2 0 0 0 1.788 0l3.659-1.83A1 1 0 0 1 21 4.619v12.764a1 1 0 0 1-.553.894l-4.553 2.277a2 2 0 0 1-1.788 0l-4.212-2.106a2 2 0 0 0-1.788 0l-3.659 1.83A1 1 0 0 1 3 19.381V6.618a1 1 0 0 1 .553-.894l4.553-2.277a2 2 0 0 1 1.788 0z"/><path d="M15 5.764v15"/><path d="M9 3.236v15"/></svg>
+        <h3>Карты и Сцены</h3>
+        <p>Загружай PNG/JPG, платформа сама подстроит сетку под твои нужды.</p>
+      </div>
+      <div class="arsenal-card">
+        <svg class="arsenal-icon" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49"/><path d="M14.084 14.158a3 3 0 0 1-4.242-4.242"/><path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143"/><path d="m2 2 20 20"/></svg>
+        <h3>Туман Войны</h3>
+        <p>Скрывай тайны и открывай карту по мере продвижения группы.</p>
+      </div>
+      <div class="arsenal-card">
+        <svg class="arsenal-icon" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>
+        <h3>Инициатива</h3>
+        <p>Удобный трекер боя с подсветкой текущего хода.</p>
+      </div>
+      <div class="arsenal-card">
+        <svg class="arsenal-icon" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="18" x="8" y="3" rx="1"/><path d="M4 11a1 1 0 0 1 1-1h2"/><path d="M4 15a1 1 0 0 0 1 1h2"/><path d="M17 11h2a1 1 0 0 1 1 1"/><path d="M17 15h2a1 1 0 0 0 1-1"/></svg>
+        <h3>Листы Персонажей</h3>
+        <p>Универсальные бланки с привязкой к токенам.</p>
+      </div>
+      <div class="arsenal-card">
+        <svg class="arsenal-icon" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m6.08 9.5-3.5 1.6a1 1 0 0 0 0 1.81l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9a1 1 0 0 0 0-1.83l-3.5-1.59"/><path d="m6.08 14.5-3.5 1.6a1 1 0 0 0 0 1.81l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9a1 1 0 0 0 0-1.83l-3.5-1.59"/></svg>
+        <h3>Токены и Слои</h3>
+        <p>Drag-n-drop миниатюр, библиотека + загрузка своих изображений.</p>
+      </div>
+      <div class="arsenal-card">
+        <svg class="arsenal-icon" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><circle cx="12" cy="12" r="1"/></svg>
+        <h3>Кубики и Макросы</h3>
+        <p>/roll 2d6+3, скрытые броски мастера, удобные формулы.</p>
+      </div>
+      <div class="arsenal-card">
+        <svg class="arsenal-icon" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+        <h3>HP и Статусы</h3>
+        <p>Быстрое изменение здоровья и метки состояний на токенах.</p>
+      </div>
+      <div class="arsenal-card">
+        <svg class="arsenal-icon" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <h3>Поиск Группы</h3>
+        <p>Встроенная LFG система для поиска сопартийцев.</p>
+      </div>
+    </div>
+
+    <div class="arsenal-callout fade-in">
+      <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;flex-shrink:0"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>
+      <p>Всё это работает без регистрации для игроков — они просто переходят по ссылке.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ GUILD / WAITLIST ═══ -->
+<section class="section" id="waitlist">
+  <div class="container">
+    <div class="section-header fade-in">
+      <div class="eyebrow">Ранний доступ</div>
+      <div class="section-title">Гильдия Первопроходцев</div>
+      <p class="section-subtitle">Впиши своё имя в историю создания</p>
+    </div>
+
+    <div class="glass-card-static content-card fade-in" style="padding:40px;">
+      <div class="guild-intro">
+        Приветствую тебя, искатель приключений!<br><br>
+        Наша гильдия собирает отважных душ для великого начинания.
+        Вступая сейчас, ты становишься не просто пользователем, а <strong>Основателем</strong>.
+      </div>
+
+      <h3 class="guild-heading">Дары Первопроходца</h3>
+      <ul class="perks-list">
+        <li>Доступ к альфе на 3 месяца раньше</li>
+        <li>Прямая связь с разработчиками</li>
+        <li>Уникальный значок «Основатель»</li>
+        <li>Специальные бонусы при релизе</li>
+      </ul>
+
+      <form id="waitlist-form" autocomplete="off">
+        <div class="form-group">
+          <label class="form-label" for="wl-name">Твоё имя в гильдии</label>
+          <input class="form-input" type="text" id="wl-name" name="name" required placeholder="Например: Даниэль Громовержец" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="wl-email">Голубиная почта (Email)</label>
+          <input class="form-input" type="email" id="wl-email" name="email" required placeholder="adventurer@tavern.ru" />
+        </div>
+        <!-- honeypot -->
+        <div style="position:absolute;left:-9999px;"><input type="text" name="website" tabindex="-1" autocomplete="off" /></div>
+        <div class="form-group">
+          <label class="form-label">Твоя роль</label>
+          <div class="radio-group">
+            <div class="radio-pill"><input type="radio" name="role" id="role-gm" value="gm" checked /><label for="role-gm">Мастер</label></div>
+            <div class="radio-pill"><input type="radio" name="role" id="role-player" value="player" /><label for="role-player">Игрок</label></div>
+            <div class="radio-pill"><input type="radio" name="role" id="role-both" value="both" /><label for="role-both">Оба</label></div>
+          </div>
+        </div>
+        <button class="btn" type="submit">Вступить в Гильдию</button>
+        <div class="privacy-text">
+          Нажимая кнопку вы соглашаетесь с <a href="./files/rolebaza_privacy_policy.pdf" target="_blank">политикой обработки персональных данных</a>.
+        </div>
+      </form>
+
+      <div id="waitlist-status" class="status-msg"></div>
+
+      <div class="counter-row">
+        <span>Уже присоединились:</span>
+        <span id="member-count-spinner" class="counter-spinner"></span>
+        <span id="member-count" class="counter-value" style="display:none;">0</span>
+      </div>
+    </div>
+
+    <div class="security-text fade-in">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      Твои данные под защитой магического контракта. Никакого спама.
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FAQ ═══ -->
+<section class="section">
+  <div class="container">
+    <div class="section-header fade-in">
+      <div class="eyebrow">Вопросы и ответы</div>
+      <div class="section-title">Мудрость Старцев</div>
+    </div>
+
+    <div class="faq-list fade-in">
+      <details class="faq-item"><summary>Когда запуск?</summary><div class="faq-answer">Закрытая альфа стартует в апреле 2026 для членов Гильдии Первопроходцев. Открытая бета для всех — летом 2026.</div></details>
+      <details class="faq-item"><summary>Это будет бесплатно?</summary><div class="faq-answer">Да! Базовый функционал всегда будет бесплатным — 2 активные кампании, 500 МБ хранилища, все основные функции. Расширенные возможности для активных мастеров будут доступны по подписке.</div></details>
+      <details class="faq-item"><summary>Чем вы лучше Roll20?</summary><div class="faq-answer">Мы создаём платформу специально для русскоязычных игроков с нуля. Понятный интерфейс, серверы рядом (меньше пинг), больше бесплатного места (500 МБ vs 100 МБ) и фокус на простоту.</div></details>
+      <details class="faq-item"><summary>Будет ли мобильное приложение?</summary><div class="faq-answer">Сначала отличная веб-версия (которая работает и с телефона в браузере!), затем нативные приложения для iOS и Android.</div></details>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOUNDERS ═══ -->
+<section class="section" id="founders">
+  <div class="container">
+    <div class="section-header fade-in">
+      <div class="eyebrow">Команда</div>
+      <div class="section-title">Основатели и Хранители</div>
+      <p class="section-subtitle">По ту сторону Ролебазы</p>
+    </div>
+
+    <div class="founder-portraits fade-in" id="founder-portraits">
+      <button class="founder-btn active" data-founder="0">
+        <div class="founder-ring"><img src="./img/founders/tiho.jpg" alt="Жорж Феанор Тихо́" /></div>
+        <span class="founder-label">Душа</span>
+      </button>
+      <button class="founder-btn" data-founder="1">
+        <div class="founder-ring"><img src="./img/founders/egor.jpg" alt="Егор Грищенко" /></div>
+        <span class="founder-label">Иерофант</span>
+      </button>
+      <button class="founder-btn" data-founder="2">
+        <div class="founder-ring"><img src="./img/founders/fedin.jpg" alt="Владимир Федин" /></div>
+        <span class="founder-label">Демиург</span>
+      </button>
+    </div>
+
+    <div id="founder-details">
+      <div class="founder-page visible" data-page="0">
+        <div class="glass-card-static content-card founder-inner">
+          <div class="founder-photo-col">
+            <div class="founder-photo-frame">
+              <img src="./img/founders/tiho.jpg" alt="Жорж Феанор Тихо́" class="normal" />
+              <img src="./img/founders/tiho-fire.jpg" alt="" class="fire" />
+            </div>
+            <a class="founder-channel" href="https://vk.ru/dndpotustoronu" target="_blank">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m9.489.004.729-.003h3.564l.73.003.914.01.433.007.418.011.403.014.388.016.374.021.36.025.345.03.333.033c1.74.196 2.933.616 3.833 1.516.9.9 1.32 2.092 1.516 3.833l.034.333.029.346.025.36.02.373.025.588.012.41.013.644.009.915.004.98-.001 3.313-.003.73-.01.914-.007.433-.011.418-.014.403-.016.388-.021.374-.025.36-.03.345-.033.333c-.196 1.74-.616 2.933-1.516 3.833-.9.9-2.092 1.32-3.833 1.516l-.333.034-.346.029-.36.025-.373.02-.588.025-.41.012-.644.013-.915.009-.98.004-3.313-.001-.73-.003-.914-.01-.433-.007-.418-.011-.403-.014-.388-.016-.374-.021-.36-.025-.345-.03-.333-.033c-1.74-.196-2.933-.616-3.833-1.516-.9-.9-1.32-2.092-1.516-3.833l-.034-.333-.029-.346-.025-.36-.02-.373-.025-.588-.012-.41-.013-.644-.009-.915-.004-.98.001-3.313.003-.73.01-.914.007-.433.011-.418.014-.403.016-.388.021-.374.025-.36.03-.345.033-.333c.196-1.74.616-2.933 1.516-3.833.9-.9 2.092-1.32 3.833-1.516l.333-.034.346-.029.36-.025.373-.02.588-.025.41-.012.644-.013.915-.009ZM6.79 7.3H4.05c.13 6.24 3.25 9.99 8.72 9.99h.31v-3.57c2.01.2 3.53 1.67 4.14 3.57h2.84c-.78-2.84-2.83-4.41-4.11-5.01 1.28-.74 3.08-2.54 3.51-4.98h-2.58c-.56 1.98-2.22 3.78-3.8 3.95V7.3H10.5v6.92c-1.6-.4-3.62-2.34-3.71-6.92Z"/></svg>
+              По Ту Сторону Страниц
+            </a>
+          </div>
+          <div class="founder-text">
+            <div class="founder-role">Душа Проекта</div>
+            <div class="founder-name">Жорж Феанор Тихо&#769;</div>
+            <ul class="founder-bio"><li>Игрок, мастер и житель настольных ролевых миров — уже много лет</li><li>Создатель проекта и канала «По Ту Сторону Страниц»</li><li>Автор фэнтези-трилогии и цикла «Подземелья и Вопросы»</li><li>Ларпер и мастер подземелий, превращающий воображение в приключение</li><li>Любитель шахмат, хорошей еды и красиво собранных историй</li><li>Идейный вдохновитель и Душа проекта РолеБаза</li></ul>
+            <div class="founder-quote">&laquo;Если я и сяду разбираться, как работает VTT, то только если решу сделать его сам&raquo;</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="founder-page" data-page="1">
+        <div class="glass-card-static content-card founder-inner">
+          <div class="founder-photo-col">
+            <div class="founder-photo-frame">
+              <img src="./img/founders/egor.jpg" alt="Егор Грищенко" class="normal" />
+              <img src="./img/founders/egor-fire.jpg" alt="" class="fire" />
+            </div>
+          </div>
+          <div class="founder-text">
+            <div class="founder-role">Иерофант</div>
+            <div class="founder-name">Егор Грищенко</div>
+            <ul class="founder-bio"><li>Мастер настольных ролевых игр — уже 25 лет</li><li>Со-основатель игровой студии Game Garden</li><li>Продюсер, гейм-дизайнер, издатель (30+ игровых проектов)</li><li>Доцент ВШЭ Школа Дизайна (Игры и Виртуальная реальность)</li><li>Лектор ВШБИ Менеджмент Игровых Проектов</li></ul>
+            <div class="founder-quote">&laquo;Не ты выбираешь проект, а&nbsp;проект выбирает тебя. Как понять, что он тебя выбрал? Он захочет тебя убить&raquo;</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="founder-page" data-page="2">
+        <div class="glass-card-static content-card founder-inner">
+          <div class="founder-photo-col">
+            <div class="founder-photo-frame">
+              <img src="./img/founders/fedin.jpg" alt="Владимир Федин" class="normal" />
+              <img src="./img/founders/fedin-fire.jpg" alt="" class="fire" />
+            </div>
+            <a class="founder-channel" href="https://t.me/rolebaza_dev" target="_blank">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M9.04 15.54l-.39 5.48c.56 0 .8-.24 1.09-.53l2.62-2.5 5.44 3.98c1 .55 1.7.26 1.97-.91l3.57-16.7c.32-1.47-.53-2.04-1.5-1.68L1.39 10.73c-1.42.55-1.4 1.35-.24 1.72l5.43 1.69 12.6-7.89c.6-.37 1.14-.17.69.21L9.04 15.54z"/></svg>
+              Разработка Ролебазы
+            </a>
+          </div>
+          <div class="founder-text">
+            <div class="founder-role">Демиург</div>
+            <div class="founder-name">Владимир Федин</div>
+            <ul class="founder-bio"><li>Игрок в настольные ролевые игры с прошлого тысячелетия</li><li>Магистр информационных технологий — 20 лет</li><li>Мастер обслуживания высоких нагрузок в геймдеве — 10 лет</li><li>Руководитель людей-разработчиков и отец троих дочерей — 5 лет</li><li>Погонщик цифровых зомби и стартапер — 1 год</li><li>Демиург проекта Ролебаза с января 2026-го года</li></ul>
+            <div class="founder-quote">&laquo;Надо было прожить пол жизни, чтоб наконец моя страсть и&nbsp;все мои навыки встретились в&nbsp;одном проекте&raquo;</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SOCIAL ═══ -->
+<section class="section">
+  <div class="container">
+    <div class="section-header fade-in">
+      <div class="eyebrow">Связь</div>
+      <div class="section-title">Волшебные Средства Связи</div>
+      <p class="section-subtitle">Следи за новостями и общайся с нами</p>
+    </div>
+    <div class="social-grid fade-in">
+      <a class="glass-card social-card" href="https://t.me/rolebaza" target="_blank">
+        <svg class="social-icon" viewBox="0 0 24 24" fill="var(--accent)"><path d="M9.04 15.54l-.39 5.48c.56 0 .8-.24 1.09-.53l2.62-2.5 5.44 3.98c1 .55 1.7.26 1.97-.91l3.57-16.7c.32-1.47-.53-2.04-1.5-1.68L1.39 10.73c-1.42.55-1.4 1.35-.24 1.72l5.43 1.69 12.6-7.89c.6-.37 1.14-.17.69.21L9.04 15.54z"/></svg>
+        <div><div class="social-name">Telegram</div><div class="social-desc">Новости и чат</div></div>
+      </a>
+      <a class="glass-card social-card" href="https://vk.com/rolebaza" target="_blank">
+        <svg class="social-icon" viewBox="0 0 24 24" fill="var(--accent)"><path d="m9.489.004.729-.003h3.564l.73.003.914.01.433.007.418.011.403.014.388.016.374.021.36.025.345.03.333.033c1.74.196 2.933.616 3.833 1.516.9.9 1.32 2.092 1.516 3.833l.034.333.029.346.025.36.02.373.025.588.012.41.013.644.009.915.004.98-.001 3.313-.003.73-.01.914-.007.433-.011.418-.014.403-.016.388-.021.374-.025.36-.03.345-.033.333c-.196 1.74-.616 2.933-1.516 3.833-.9.9-2.092 1.32-3.833 1.516l-.333.034-.346.029-.36.025-.373.02-.588.025-.41.012-.644.013-.915.009-.98.004-3.313-.001-.73-.003-.914-.01-.433-.007-.418-.011-.403-.014-.388-.016-.374-.021-.36-.025-.345-.03-.333-.033c-1.74-.196-2.933-.616-3.833-1.516-.9-.9-1.32-2.092-1.516-3.833l-.034-.333-.029-.346-.025-.36-.02-.373-.025-.588-.012-.41-.013-.644-.009-.915-.004-.98.001-3.313.003-.73.01-.914.007-.433.011-.418.014-.403.016-.388.021-.374.025-.36.03-.345.033-.333c.196-1.74.616-2.933 1.516-3.833.9-.9 2.092-1.32 3.833-1.516l.333-.034.346-.029.36-.025.373-.02.588-.025.41-.012.644-.013.915-.009ZM6.79 7.3H4.05c.13 6.24 3.25 9.99 8.72 9.99h.31v-3.57c2.01.2 3.53 1.67 4.14 3.57h2.84c-.78-2.84-2.83-4.41-4.11-5.01 1.28-.74 3.08-2.54 3.51-4.98h-2.58c-.56 1.98-2.22 3.78-3.8 3.95V7.3H10.5v6.92c-1.6-.4-3.62-2.34-3.71-6.92Z"/></svg>
+        <div><div class="social-name">ВКонтакте</div><div class="social-desc">Сообщество</div></div>
+      </a>
+      <a class="glass-card social-card" href="https://boosty.to/rolebaza" target="_blank">
+        <svg class="social-icon" viewBox="0 0 24 24" fill="var(--accent)"><path d="M7.73 3h5.47l-1.3 5.03h4.37L9.55 21l1.68-7.74H6L7.73 3z"/></svg>
+        <div><div class="social-name">Boosty</div><div class="social-desc">Поддержать проект</div></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer class="footer">
+  <a href="https://beta.rolebaza.ru/dice-wall" class="footer-die">
+    <svg viewBox="61.80 56.20 76.40 86.50" width="80" height="90" style="display:block;" aria-label="Dice Wall">
+      <defs>
+        <filter id="ftl"><feColorMatrix type="matrix" values="0.85 0 0 0 0.01 0 0.83 0 0 0 0 0 0.80 0 0 0 0 0 1 0"/></filter>
+        <filter id="ftr"><feColorMatrix type="matrix" values="0.75 0 0 0 0.01 0 0.72 0 0 0 0 0 0.70 0 0 0 0 0 1 0"/></filter>
+        <clipPath id="fcl"><polygon points="63.80,81.30 98.09,101.10 98.09,140.70 63.80,120.90"/></clipPath>
+        <clipPath id="fcr"><polygon points="136.20,81.30 136.20,120.90 101.91,140.70 101.91,101.10"/></clipPath>
+      </defs>
+      <path d="M 95.67,60.70 Q 100,58.20 104.33,60.70 L 129.96,75.50 Q 134.29,78 129.96,80.50 L 104.33,95.30 Q 100,97.80 95.67,95.30 L 70.04,80.50 Q 65.71,78 70.04,75.50 Z" fill="var(--face-top)"/>
+      <path d="M 63.80,86.30 Q 63.80,81.30 68.13,83.80 L 93.76,98.60 Q 98.09,101.10 98.09,106.10 L 98.09,135.70 Q 98.09,140.70 93.76,138.20 L 68.13,123.40 Q 63.80,120.90 63.80,115.90 Z" fill="var(--face-left)"/>
+      <path d="M 131.87,83.80 Q 136.20,81.30 136.20,86.30 L 136.20,115.90 Q 136.20,120.90 131.87,123.40 L 106.24,138.20 Q 101.91,140.70 101.91,135.70 L 101.91,106.10 Q 101.91,101.10 106.24,98.60 Z" fill="var(--face-right)"/>
+      <path d="M200 0V1200L0 1300L400 1500L600 1400V200L800 100L400 -100ZM600 1400 1000 1600 1400 1400V800L800 500L600 600L1000 800V1200Z" fill="var(--accent)" transform="translate(100,78) scale(0.013672,-0.013672) translate(-700,-750)"/>
+      <g filter="url(#ftl)"><g clip-path="url(#fcl)"><g transform="matrix(34.2936,19.8,0,39.6,63.8012,81.3)"><g transform="translate(0.14,0.14) scale(0.0075,0.0075)"><g transform="translate(0,96) scale(0.1,-0.1)" fill="var(--accent)" stroke="none">
+        <path d="M424 873 c-116 -95 -161 -106 -312 -79 -115 21 -114 23 -59 -180 57 -210 58 -214 103 -264 59 -65 105 -85 199 -85 90 0 136 19 192 77 86 90 92 173 29 405 -24 89 -47 167 -51 173 -12 19 -33 10 -101 -47z m76 -75 c6 -24 23 -85 37 -137 33 -123 29 -193 -13 -253 -58 -82 -178 -112 -264 -66 -69 37 -95 84 -139 248 -22 80 -38 146 -37 148 2 1 27 -2 56 -8 120 -23 193 -6 280 65 30 24 58 44 62 45 4 0 12 -19 18 -42z"/>
+        <path d="M395 709 c-27 -13 -46 -44 -39 -64 8 -19 38 -19 54 0 7 8 25 14 43 12 24 -1 32 3 35 17 8 37 -47 57 -93 35z"/>
+        <path d="M203 655 c-31 -13 -50 -46 -38 -65 9 -15 41 -12 55 5 8 9 22 12 41 8 54 -10 49 45 -6 60 -11 4 -34 0 -52 -8z"/>
+        <path d="M426 485 c-9 -25 -70 -47 -100 -35 -34 13 -58 2 -54 -24 4 -30 68 -50 117 -36 44 12 94 60 89 87 -4 23 -43 30 -52 8z"/>
+        <path d="M654 505 c-4 -9 0 -23 7 -31 17 -16 103 -34 166 -34 l44 0 -76 -149 c-90 -177 -116 -203 -219 -209 -65 -4 -106 10 -166 58 -31 25 -63 17 -58 -13 4 -27 77 -83 126 -97 104 -29 217 2 283 78 48 54 193 360 179 377 -6 8 -48 15 -113 18 -56 4 -117 9 -134 13 -25 5 -34 2 -39 -11z"/>
+        <path d="M642 381 c-24 -15 -10 -46 23 -49 17 -2 38 -11 48 -20 13 -12 22 -13 34 -6 27 17 26 32 -1 59 -26 26 -77 34 -104 16z"/>
+        <path d="M474 235 c-11 -28 4 -45 40 -45 35 0 43 -5 71 -45 11 -16 17 -18 32 -9 26 17 18 54 -17 87 -24 21 -40 27 -75 27 -31 0 -47 -5 -51 -15z"/>
+      </g></g></g></g></g>
+      <g filter="url(#ftr)"><g clip-path="url(#fcr)"><g transform="matrix(34.2936,-19.8,0,39.6,101.9052,101.1)"><g transform="translate(0.14,0.14) scale(0.03,0.03) translate(24,0) scale(-1,1)">
+        <path d="M19 17V5a2 2 0 0 0-2-2H4" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke" style="stroke-width:1.8px"/>
+        <path d="M8 21h12a2 2 0 0 0 2-2v-1a1 1 0 0 0-1-1H11a1 1 0 0 0-1 1v1a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v2a1 1 0 0 0 1 1h3" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke" style="stroke-width:1.8px"/>
+      </g></g></g>
+      <line x1="119.05" y1="111" x2="120.08" y2="109.22" stroke="var(--accent)" stroke-linecap="round" vector-effect="non-scaling-stroke" style="stroke-width:1.8px"/>
+      <line x1="119.05" y1="111" x2="120.08" y2="111.59" stroke="var(--accent)" stroke-linecap="round" vector-effect="non-scaling-stroke" style="stroke-width:1.8px"/>
+      <line x1="119.05" y1="111" x2="118.02" y2="112.78" stroke="var(--accent)" stroke-linecap="round" vector-effect="non-scaling-stroke" style="stroke-width:1.8px"/>
+      <line x1="119.05" y1="111" x2="118.02" y2="110.41" stroke="var(--accent)" stroke-linecap="round" vector-effect="non-scaling-stroke" style="stroke-width:1.8px"/>
+      </g>
+    </svg>
+  </a>
+  <div class="footer-links">
+    <a href="#">Правила таверны</a>
+    <a href="#">Свиток конфиденциальности</a>
+  </div>
+  <p class="footer-copy">&copy; 2026 Ролебаза. Сделано с &#10084;&#65039; для русскоязычного RPG-сообщества.</p>
 </footer>
+
+<script src="./main.js" defer></script>
+<script>if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').catch(function(){});</script>
 </body>
 </html>
