@@ -60,7 +60,7 @@
 
 /* ── Reset & base ──────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; zoom: 1.25; }
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   color: var(--text-primary); background: var(--bg-base);
@@ -87,7 +87,7 @@ a:hover { color: var(--accent-hover); }
 /* ── Hero ──────────────────────────────────────────────────── */
 .hero {
   min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center;
-  position: relative; padding: 40px 20px; overflow: hidden;
+  position: relative; padding: 20px 20px 40px; overflow: hidden;
 }
 .hero-bg { position: absolute; inset: 0; z-index: 0; }
 .hero-bg img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.82) contrast(1.08) saturate(1.05); }
@@ -98,22 +98,33 @@ a:hover { color: var(--accent-hover); }
 
 /* ── Hero topbar (partners left, social right) ─────────────── */
 .hero-topbar {
-  position: relative; z-index: 3; width: 100%;
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 12px 0 0; max-width: 760px; margin: 0 auto;
+  position: absolute; top: 24px; left: 50%; transform: translateX(-50%);
+  z-index: 3; width: 100%;
+  display: flex; justify-content: space-between; align-items: flex-start;
+  padding: 0 16px; max-width: 1100px;
+  transition: opacity 0.3s ease;
 }
-.topbar-left, .topbar-right { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.topbar-col { }
+.topbar-col-left { text-align: left; }
+.topbar-col-right { text-align: right; }
+
 .topbar-label {
-  font-size: 11px; font-weight: 500; color: var(--text-muted); white-space: nowrap;
+  font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em;
+  color: var(--text-muted); padding: 0 4px 4px; white-space: nowrap;
+  list-style: none; cursor: default;
+  margin-bottom: 4px;
 }
+.topbar-label::-webkit-details-marker { display: none; }
 .topbar-chip {
-  display: inline-flex; align-items: center; gap: 5px;
-  padding: 5px 12px; font-size: 12px; font-weight: 500;
+  display: none; align-items: center; gap: 6px;
+  padding: 6px 14px; font-size: 14px; font-weight: 500; margin-top: 4px;
   color: var(--text-secondary); text-decoration: none;
   background: var(--bg-card); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--border-light); border-radius: 20px;
   transition: border-color 0.2s, color 0.2s, background 0.2s;
 }
+.topbar-col[open] > .topbar-chip { display: flex; width: fit-content; }
+.topbar-col-right > .topbar-chip { margin-left: auto; }
 .topbar-chip:hover { border-color: var(--border); color: var(--accent); }
 .topbar-chip svg { color: var(--accent); flex-shrink: 0; }
 
@@ -143,12 +154,12 @@ a:hover { color: var(--accent-hover); }
   50% { transform: translateY(-16px); }
 }
 
-.hero-text { margin-top: 28px; max-width: 760px; margin-left: auto; margin-right: auto; }
+.hero-text { margin-top: 12px; max-width: 760px; margin-left: auto; margin-right: auto; }
 .hero-tagline { font-size: 20px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-secondary); margin-bottom: 10px; }
 .hero-subtitle { font-size: 18px; font-weight: 500; color: var(--text-muted); letter-spacing: 0.04em; }
 
 /* ── Advantage cards ───────────────────────────────────────── */
-.advantages { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 36px; width: 100%; max-width: 760px; margin-left: auto; margin-right: auto; transition: opacity 0.4s ease; }
+.advantages { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 16px; width: 100%; max-width: 760px; margin-left: auto; margin-right: auto; transition: opacity 0.4s ease; }
 .advantage-card {
   display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px;
   padding: 16px 8px; background: var(--bg-card); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
@@ -224,6 +235,17 @@ a:hover { color: var(--accent-hover); }
 .arsenal-icon { width: 28px; height: 28px; margin-bottom: 10px; }
 .arsenal-card h3 { font-size: 18px; font-weight: 700; color: var(--text-primary); margin-bottom: 4px; }
 .arsenal-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.6; }
+.arsenal-card--video { position: relative; overflow: hidden; }
+.arsenal-video {
+  position: absolute; inset: -25%; width: 150%; height: 150%;
+  object-fit: cover; object-position: center; border-radius: inherit; opacity: 0.25;
+}
+.arsenal-card--video-fit .arsenal-video {
+  inset: 0; width: 100%; height: 100%;
+}
+.arsenal-card--video .arsenal-icon,
+.arsenal-card--video h3,
+.arsenal-card--video p { position: relative; z-index: 1; }
 
 .arsenal-callout {
   display: flex; align-items: center; gap: 10px; justify-content: center;
@@ -404,7 +426,7 @@ a:hover { color: var(--accent-hover); }
 .footer-die:hover { opacity: 1; filter: drop-shadow(0 6px 24px var(--accent-dim)); }
 
 /* ── Side vignettes (edge darkening) ────────────────────────── */
-.side-vignette { position: fixed; top: 0; bottom: 0; width: 192px; z-index: 9999; pointer-events: none; }
+.side-vignette { position: fixed; top: 0; bottom: 0; width: 192px; z-index: 2; pointer-events: none; }
 .side-vignette-left { left: 0; }
 .side-vignette-right { right: 0; }
 .sv-layer { position: absolute; inset: 0; }
@@ -445,7 +467,15 @@ a:hover { color: var(--accent-hover); }
   .role-cards { flex-direction: column; }
   .hero-cta { font-size: 13px; padding: 12px 24px; }
   .side-vignette { display: none; }
-  .hero-topbar { justify-content: center; }
+  /* Topbar: dropdown mode — summary becomes pill button */
+  .hero-topbar { max-width: 100%; padding: 0 16px; }
+  .topbar-label {
+    cursor: pointer; padding: 5px 12px; font-size: 11px;
+    background: var(--bg-card); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--border-light); border-radius: 16px;
+  }
+  .topbar-label::after { content: ' \25BE'; font-size: 9px; }
+  .topbar-col[open] > .topbar-label::after { content: ' \25B4'; }
 }
 @media (max-width: 480px) {
   .hero-tagline { font-size: 14px; }

@@ -536,7 +536,25 @@ document.addEventListener('DOMContentLoaded', initLogoExpand);
 /* (header removed — no scroll listener needed) */
 
 /* ═══════════════════════════════════════════════════════════
-   4. FADE-IN ON SCROLL
+   4. TOPBAR: open/close details on resize
+   ═══════════════════════════════════════════════════════════ */
+
+document.addEventListener('DOMContentLoaded', function () {
+  var cols = document.querySelectorAll('.topbar-col');
+  if (!cols.length) return;
+  function syncTopbar() {
+    var mobile = window.innerWidth <= 768;
+    cols.forEach(function (d) {
+      if (!mobile) d.setAttribute('open', '');
+      else d.removeAttribute('open');
+    });
+  }
+  syncTopbar();
+  window.addEventListener('resize', syncTopbar, { passive: true });
+});
+
+/* ═══════════════════════════════════════════════════════════
+   5. FADE-IN ON SCROLL
    ═══════════════════════════════════════════════════════════ */
 
 document.addEventListener('DOMContentLoaded', function () {
