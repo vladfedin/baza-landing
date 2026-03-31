@@ -21,31 +21,16 @@ function svgEl(tag, attrs, parent) {
 
 var THEMES = ['arcane', 'dark', 'light', 'parchment'];
 var PALETTES = {
-  arcane:    { accent: '#D4AF60', faceTop: 'rgba(212,175,96,0.22)', faceLeft: 'rgba(212,175,96,0.14)', faceRight: 'rgba(212,175,96,0.09)', isDark: true },
+  arcane:    { accent: '#D4AF60', faceTop: 'rgba(212,175,96,0.37)', faceLeft: 'rgba(212,175,96,0.29)', faceRight: 'rgba(212,175,96,0.24)', isDark: true },
   dark:      { accent: '#748ffc', faceTop: 'rgba(116,143,252,0.20)', faceLeft: 'rgba(116,143,252,0.13)', faceRight: 'rgba(116,143,252,0.08)', isDark: true },
   light:     { accent: '#3b5bdb', faceTop: 'rgba(59,91,219,0.08)',   faceLeft: 'rgba(59,91,219,0.14)',   faceRight: 'rgba(59,91,219,0.20)', isDark: false },
   parchment: { accent: '#6B4A1A', faceTop: 'rgba(107,74,26,0.07)',   faceLeft: 'rgba(107,74,26,0.13)',   faceRight: 'rgba(107,74,26,0.19)', isDark: false },
 };
 
-var currentTheme = localStorage.getItem('rb_theme') || 'arcane';
-if (THEMES.indexOf(currentTheme) < 0) currentTheme = 'arcane';
-
-function applyTheme(t) {
-  currentTheme = t;
-  document.documentElement.setAttribute('data-theme', t);
-  localStorage.setItem('rb_theme', t);
-  document.querySelectorAll('.theme-btn').forEach(function (btn) {
-    btn.classList.toggle('active', btn.getAttribute('data-t') === t);
-  });
-  // Update logo-expand SVG fills
-  if (window._logoExpand) window._logoExpand.recolor(PALETTES[t]);
-}
+var currentTheme = 'arcane';
 
 document.addEventListener('DOMContentLoaded', function () {
-  applyTheme(currentTheme);
-  document.querySelectorAll('.theme-btn').forEach(function (btn) {
-    btn.addEventListener('click', function () { applyTheme(btn.getAttribute('data-t')); });
-  });
+  document.documentElement.setAttribute('data-theme', 'arcane');
 });
 
 /* ═══════════════════════════════════════════════════════════
@@ -290,26 +275,88 @@ function initLogoExpand() {
     return els;
   }
 
-  // Expand / collapse
-  function toggleExpand() {
-    expanded = !expanded;
+  // ── Expand / collapse ──
+  function expandRhombs() {
+    expanded = true;
     rhombs.forEach(function(rh, i) {
       if (rh.bfsStep === 0) return;
       var stepFrom = Math.max(0, rh.bfsStep - 1);
-      var delay = expanded
-        ? stepFrom * STEP_MS + rh.rndOff * STEP_MS * 0.8
-        : (maxStep - rh.bfsStep) * STEP_MS * 0.7 + (1 - rh.rndOff) * STEP_MS * 0.5;
-      groups[i].style.transition = expanded
-        ? 'opacity 0.6s ease ' + delay + 'ms'
-        : 'opacity 0.5s ease ' + delay + 'ms';
-      groups[i].style.opacity = expanded ? '1' : '0';
+      var delay = stepFrom * STEP_MS + rh.rndOff * STEP_MS * 0.8;
+      groups[i].style.transition = 'opacity 0.6s ease ' + delay + 'ms';
+      groups[i].style.opacity = '1';
     });
-    if (expanded) startSparkles(); else stopSparkles();
+    startSparkles();
   }
 
-  svg.addEventListener('click', toggleExpand);
-  // Auto-expand after 800ms
-  setTimeout(function(){ if(!expanded) toggleExpand(); }, 800);
+  function collapseRhombs() {
+    expanded = false;
+    stopSparkles();
+    rhombs.forEach(function(rh, i) {
+      if (rh.bfsStep === 0) return;
+      var delay = (maxStep - rh.bfsStep) * STEP_MS * 0.7 + (1 - rh.rndOff) * STEP_MS * 0.5;
+      groups[i].style.transition = 'opacity 0.5s ease ' + delay + 'ms';
+      groups[i].style.opacity = '0';
+    });
+  }
+
+  // ── Classic logo ↔ die field state machine ──
+  var classicLogo = document.getElementById('classic-logo');
+  var logoStage = document.getElementById('logo-stage');
+  // States: 'classic' | 'transitioning' | 'die-collapsed' | 'die-expanded'
+  var phase = 'classic';
+
+  function showDieField() {
+    if (phase !== 'classic') return;
+    phase = 'transitioning';
+    // Fade out classic logo
+    classicLogo.classList.add('fade-out');
+    setTimeout(function() {
+      // Show SVG, expand
+      svg.classList.add('visible');
+      setTimeout(function() {
+        expandRhombs();
+        phase = 'die-expanded';
+      }, 300);
+    }, 1000); // after classic fades out
+  }
+
+  function showClassicLogo() {
+    if (phase !== 'die-collapsed') return;
+    phase = 'transitioning';
+    // Hide SVG
+    svg.classList.remove('visible');
+    setTimeout(function() {
+      // Show classic logo
+      classicLogo.classList.remove('fade-out');
+      phase = 'classic';
+    }, 1000);
+  }
+
+  // Compute max collapse delay for timing
+  var maxCollapseDelay = 0;
+  rhombs.forEach(function(rh) {
+    if (rh.bfsStep === 0) return;
+    var d = (maxStep - rh.bfsStep) * STEP_MS * 0.7 + (1 - rh.rndOff) * STEP_MS * 0.5 + 500;
+    if (d > maxCollapseDelay) maxCollapseDelay = d;
+  });
+
+  logoStage.addEventListener('click', function() {
+    if (phase === 'classic') {
+      showDieField();
+    } else if (phase === 'die-expanded') {
+      phase = 'transitioning';
+      collapseRhombs();
+      // After collapse finishes → wait 3s → show classic logo
+      setTimeout(function() {
+        phase = 'die-collapsed';
+        setTimeout(showClassicLogo, 3000);
+      }, maxCollapseDelay);
+    } else if (phase === 'die-collapsed') {
+      // Click during 3s pause → expand again instead
+      phase = 'die-expanded';
+      expandRhombs();
+    }
+  });
 
   // ── Sparkle system ──
   var sparkleTimers = new Map();
@@ -319,17 +366,53 @@ function initLogoExpand() {
   var maxThird = Math.floor(outerIndices.length / 3);
 
   var TIERS = [
-    {tier:'common', weight:889, duration:2500},
-    {tier:'uncommon', color:'#4ade80', weight:100, duration:10000},
-    {tier:'rare', color:'#60a5fa', weight:10, duration:20000},
-    {tier:'legendary', color:'#f59e0b', weight:1, duration:50000},
+    {tier:'common',    weight:889, duration:5000},
+    {tier:'uncommon',  color:'#4ade80', weight:100, duration:10000},
+    {tier:'rare',      color:'#60a5fa', weight:10,  duration:20000},
+    {tier:'epic',      color:'#b197fc', weight:4,   duration:30000},
+    {tier:'legendary', color:'#f59e0b', weight:1,   duration:40000},
   ];
+  var MAX_LEGENDARY = 3;
+  var TIER_RANK = {common:0, uncommon:1, rare:2, epic:3, legendary:4};
   var totalWeight = TIERS.reduce(function(s,t){return s+t.weight;},0);
   function rollTier(){
     var r=Math.random()*totalWeight;
     for(var i=0;i<TIERS.length;i++){r-=TIERS[i].weight;if(r<=0)return TIERS[i];}
     return TIERS[0];
   }
+
+  // ── Center die glow ──
+  // Track the 3 center <g> elements to apply increasing glow
+  var centerGroups = [];
+  rhombs.forEach(function(rh,i){ if(rh.bfsStep===0) centerGroups.push(groups[i]); });
+
+  function updateCenterGlow() {
+    // Count rare+ sparkles on field
+    var rareCount = 0;
+    sparkleState.forEach(function(s){
+      if(s.visible && TIER_RANK[s.tier] >= 2) rareCount++;
+    });
+    // Glow intensity: 0=none, 1-2=subtle, 3-4=medium, 5-6=strong, 7+=blazing
+    var glow = '';
+    var transition = 'filter 1.5s ease';
+    if (rareCount >= 7) {
+      glow = 'drop-shadow(0 0 6px rgba(245,158,11,0.7)) drop-shadow(0 0 14px rgba(245,158,11,0.5)) drop-shadow(0 0 28px rgba(245,158,11,0.3))';
+    } else if (rareCount >= 5) {
+      glow = 'drop-shadow(0 0 5px rgba(245,158,11,0.5)) drop-shadow(0 0 12px rgba(245,158,11,0.3))';
+    } else if (rareCount >= 3) {
+      glow = 'drop-shadow(0 0 4px rgba(212,175,96,0.5)) drop-shadow(0 0 8px rgba(212,175,96,0.25))';
+    } else if (rareCount >= 1) {
+      glow = 'drop-shadow(0 0 3px rgba(212,175,96,0.3))';
+    }
+    centerGroups.forEach(function(g){
+      g.style.transition = transition;
+      g.style.filter = g._baseFilter ? (g._baseFilter + ' ' + glow) : glow;
+    });
+  }
+  // Store base filters (tint) on center groups
+  centerGroups.forEach(function(g){ g._baseFilter = g.getAttribute('filter') ? '' : ''; });
+  // Note: center top has no filter, left has url(#le-tl), right has url(#le-tr)
+  // SVG filter attr and CSS filter are separate — CSS filter stacks on top, which is what we want.
 
   function startSparkles() {
     var startTimer = setTimeout(function(){
@@ -351,10 +434,20 @@ function initLogoExpand() {
         var idx=available[Math.floor(Math.random()*available.length)];
         var icon=freeIcons[Math.floor(Math.random()*freeIcons.length)];
 
+        // Tier counts for promotion chain: 3 green→blue, 4 blue→purple, 5 purple→legendary
         var activeTiers=[]; sparkleState.forEach(function(s){if(s.visible)activeTiers.push(s.tier);});
-        var uncommonCount=activeTiers.filter(function(t){return t==='uncommon';}).length;
-        var rareCount=activeTiers.filter(function(t){return t==='rare';}).length;
-        var tier=rareCount>=3?TIERS[3]:uncommonCount>=3?TIERS[2]:rollTier();
+        var uncommonCount = activeTiers.filter(function(t){return t==='uncommon';}).length;
+        var rareCount     = activeTiers.filter(function(t){return t==='rare';}).length;
+        var epicCount     = activeTiers.filter(function(t){return t==='epic';}).length;
+        var legendaryCount= activeTiers.filter(function(t){return t==='legendary';}).length;
+
+        var tier;
+        if (epicCount >= 5 && legendaryCount < MAX_LEGENDARY) tier = TIERS[4];  // 5 purple → legendary
+        else if (rareCount >= 4) tier = TIERS[3];      // 4 blue → purple
+        else if (uncommonCount >= 3) tier = TIERS[2];  // 3 green → blue
+        else tier = rollTier();
+        // Enforce legendary cap
+        if (tier.tier === 'legendary' && legendaryCount >= MAX_LEGENDARY) tier = TIERS[3];
 
         var pal = PALETTES[currentTheme];
         var strokeColor = tier.tier==='common' ? pal.accent : tier.color;
@@ -365,6 +458,7 @@ function initLogoExpand() {
         var sg=svgEl('g',null,groups[idx]);
         sg.style.opacity='0'; sg.style.transition='opacity 0.6s ease';
         if(tier.tier==='legendary') sg.style.filter='drop-shadow(0 0 4px '+strokeColor+') drop-shadow(0 0 8px '+strokeColor+')';
+        else if(tier.tier==='epic') sg.style.filter='drop-shadow(0 0 4px '+strokeColor+') drop-shadow(0 0 6px '+strokeColor+')';
         else if(tier.tier==='rare') sg.style.filter='drop-shadow(0 0 3px '+strokeColor+')';
 
         var clipId='le-sp-'+idx;
@@ -379,10 +473,13 @@ function initLogoExpand() {
           else svgEl('circle',{cx:el.cx,cy:el.cy,r:el.r,fill:'none',stroke:strokeColor,'stroke-width':'1.5','stroke-linecap':'round','stroke-linejoin':'round','vector-effect':'non-scaling-stroke',style:'stroke-width:2.5px'},gIcon);
         });
 
-        requestAnimationFrame(function(){sg.style.opacity=tier.tier==='legendary'?'1':'0.8';});
+        var isHighTier = tier.tier==='legendary' || tier.tier==='epic';
+        requestAnimationFrame(function(){sg.style.opacity=isHighTier?'1':'0.8';});
         if(tier.tier==='legendary') sg.style.animation='sparkle-pulse 2s ease-in-out infinite';
+        else if(tier.tier==='epic') sg.style.animation='sparkle-pulse 3s ease-in-out infinite';
 
         sparkleState.set(idx, {icon:icon,tier:tier.tier,g:sg,visible:true});
+        updateCenterGlow();
 
         var fadeTimer=setTimeout(function(){
           sg.style.opacity='0';
@@ -390,9 +487,11 @@ function initLogoExpand() {
             sg.parentNode.removeChild(sg);
             sparkleState.delete(idx);
             sparkleTimers.delete(idx);
+            updateCenterGlow();
           },600);
           sparkleTimers.set(idx,removeTimer);
           sparkleState.set(idx,{icon:icon,tier:tier.tier,g:sg,visible:false});
+          updateCenterGlow();
         },tier.duration);
         sparkleTimers.set(idx,fadeTimer);
 
@@ -407,6 +506,8 @@ function initLogoExpand() {
     sparkleTimers.clear();
     sparkleState.forEach(function(s){if(s.g&&s.g.parentNode)s.g.parentNode.removeChild(s.g);});
     sparkleState.clear();
+    // Reset center glow
+    centerGroups.forEach(function(g){ g.style.filter = ''; });
   }
 
   // Recolor API
