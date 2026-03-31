@@ -115,6 +115,7 @@ a:hover { color: var(--accent-hover); }
   margin-bottom: 4px;
 }
 .topbar-label::-webkit-details-marker { display: none; }
+.topbar-label-short { display: none; }
 .topbar-chip {
   display: none; align-items: center; gap: 6px;
   padding: 6px 14px; font-size: 14px; font-weight: 500; margin-top: 4px;
@@ -478,6 +479,8 @@ a:hover { color: var(--accent-hover); }
   .topbar-label::after { content: ' \25BE'; font-size: 8px; }
   .topbar-col[open] > .topbar-label::after { content: ' \25B4'; }
   .topbar-col[open] > .topbar-chip { font-size: 12px; padding: 4px 10px; }
+  .topbar-label-full { display: none; }
+  .topbar-label-short { display: inline; }
 }
 @media (max-width: 480px) {
   .hero-tagline { font-size: 14px; }
