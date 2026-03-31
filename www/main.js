@@ -259,16 +259,14 @@ function initLogoExpand() {
       var gm4 = svgEl('g',{transform:mtx(s,0,1,3)},gc2);
       var gm5 = svgEl('g',{transform:'translate('+spad+','+spad+') scale('+scs+','+scs+') translate(24,0) scale(-1,1)'},gm4);
       SCROLL_D.forEach(function(d){
-        var pe2 = svgEl('path',{d:d,fill:'none',stroke:pal.accent,'stroke-width':'1.5','stroke-linecap':'round','stroke-linejoin':'round','vector-effect':'non-scaling-stroke'},gm5);
-        pe2.style.strokeWidth = '3px';
+        var pe2 = svgEl('path',{d:d,fill:'none',stroke:pal.accent,'stroke-width':'1.5','stroke-linecap':'round','stroke-linejoin':'round'},gm5);
         els.push(pe2);
       });
       // crosshair
       var rcx=0,rcy=0; s.forEach(function(pt){rcx+=pt[0];rcy+=pt[1];}); rcx/=4;rcy/=4;
       s.forEach(function(corner){
         var dx=corner[0]-rcx, dy=corner[1]-rcy;
-        var line = svgEl('line',{x1:rcx,y1:rcy,x2:rcx+dx*0.06,y2:rcy+dy*0.06,stroke:pal.accent,'stroke-linecap':'round','vector-effect':'non-scaling-stroke'},parent);
-        line.style.strokeWidth = '3px';
+        var line = svgEl('line',{x1:rcx,y1:rcy,x2:rcx+dx*0.06,y2:rcy+dy*0.06,stroke:pal.accent,'stroke-linecap':'round','stroke-width':'0.4'},parent);
         els.push(line);
       });
     }
@@ -493,8 +491,8 @@ function initLogoExpand() {
         var gIcon=svgEl('g',{transform:'translate('+sPad+','+sPad+') scale('+ss+','+ss+')'},gmEl);
 
         ICONS[icon].forEach(function(el){
-          if(el.t==='path') svgEl('path',{d:el.d,fill:'none',stroke:strokeColor,'stroke-width':'1.5','stroke-linecap':'round','stroke-linejoin':'round','vector-effect':'non-scaling-stroke',style:'stroke-width:2.5px'},gIcon);
-          else svgEl('circle',{cx:el.cx,cy:el.cy,r:el.r,fill:'none',stroke:strokeColor,'stroke-width':'1.5','stroke-linecap':'round','stroke-linejoin':'round','vector-effect':'non-scaling-stroke',style:'stroke-width:2.5px'},gIcon);
+          if(el.t==='path') svgEl('path',{d:el.d,fill:'none',stroke:strokeColor,'stroke-width':'1.5','stroke-linecap':'round','stroke-linejoin':'round'},gIcon);
+          else svgEl('circle',{cx:el.cx,cy:el.cy,r:el.r,fill:'none',stroke:strokeColor,'stroke-width':'1.5','stroke-linecap':'round','stroke-linejoin':'round'},gIcon);
         });
 
         var isHighTier = tier.tier==='legendary' || tier.tier==='epic';

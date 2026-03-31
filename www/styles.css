@@ -469,14 +469,15 @@ a:hover { color: var(--accent-hover); }
   .hero-cta { font-size: 13px; padding: 12px 24px; }
   .side-vignette { display: none; }
   /* Topbar: dropdown mode — summary becomes pill button */
-  .hero-topbar { max-width: 100%; padding: 0 16px; }
+  .hero-topbar { max-width: 100%; padding: 0 10px; gap: 8px; }
   .topbar-label {
-    cursor: pointer; padding: 5px 12px; font-size: 11px;
+    cursor: pointer; padding: 4px 10px; font-size: 10px;
     background: var(--bg-card); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
     border: 1px solid var(--border-light); border-radius: 16px;
   }
-  .topbar-label::after { content: ' \25BE'; font-size: 9px; }
+  .topbar-label::after { content: ' \25BE'; font-size: 8px; }
   .topbar-col[open] > .topbar-label::after { content: ' \25B4'; }
+  .topbar-col[open] > .topbar-chip { font-size: 12px; padding: 4px 10px; }
 }
 @media (max-width: 480px) {
   .hero-tagline { font-size: 14px; }
