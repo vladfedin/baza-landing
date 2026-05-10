@@ -8,15 +8,24 @@
   <link rel="icon" href="./favicon.ico" />
   <link rel="stylesheet" href="./styles.css" />
 
-  <!-- Yandex.Metrika (production only) -->
+  <!-- Yandex.Metrika — deferred until analytics consent is granted -->
   <script>
-    if (/rolebaza\.ru$/.test(location.hostname) && !/beta\./.test(location.hostname)) {
-      (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
-      m[i].l=1*new Date();for(var j=0;j<document.scripts.length;j++){if(document.scripts[j].src===r)return;}
-      k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
-      (window,document,"script","https://mc.yandex.ru/metrika/tag.js","ym");
-      ym(106941653,"init",{clickmap:true,trackLinks:true,accurateTrackBounce:true,webvisor:true});
-    }
+    (function () {
+      var isProd = /rolebaza\.ru$/.test(location.hostname) && !/beta\./.test(location.hostname);
+      if (!isProd) return;
+      window._initMetrika = function () {
+        if (window._metrikaLoaded) return;
+        window._metrikaLoaded = true;
+        (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+        m[i].l=1*new Date();for(var j=0;j<document.scripts.length;j++){if(document.scripts[j].src===r)return;}
+        k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+        (window,document,"script","https://mc.yandex.ru/metrika/tag.js","ym");
+        ym(106941653,"init",{clickmap:true,trackLinks:true,accurateTrackBounce:true,webvisor:true});
+      };
+      try {
+        if (localStorage.getItem('rb_consent_analytics') === 'granted') window._initMetrika();
+      } catch (e) {}
+    })();
   </script>
 </head>
 <body>
@@ -253,8 +262,18 @@
           </div>
         </div>
 
-        <button class="guild-submit" type="submit">Вступить в Гильдию</button>
-        <p class="guild-privacy">Нажимая кнопку вы соглашаетесь с <a href="./files/rolebaza_privacy_policy.pdf" target="_blank">политикой обработки персональных данных</a>.</p>
+        <div class="consent-group">
+          <label class="consent-row">
+            <input type="checkbox" id="wl-consent-pdn" name="consent_pdn" required />
+            <span class="consent-row-text consent-required">Я ознакомлен(а) с <a href="./privacy.html" target="_blank" rel="noopener">Политикой обработки персональных данных</a> и даю <a href="./consent.html" target="_blank" rel="noopener">согласие на обработку</a> моих персональных данных в целях формирования листа ожидания «Ролебазы».</span>
+          </label>
+          <label class="consent-row">
+            <input type="checkbox" id="wl-consent-marketing" name="consent_marketing" />
+            <span class="consent-row-text">Согласен(на) получать <a href="./marketing-consent.html" target="_blank" rel="noopener">информационные сообщения</a> о запуске и обновлениях платформы. Можно отозвать в любой момент.</span>
+          </label>
+        </div>
+
+        <button class="guild-submit" type="submit" disabled>Вступить в Гильдию</button>
         <div id="waitlist-status" class="status-msg"></div>
       </form>
 
@@ -449,11 +468,34 @@
       </g>
     </svg>
   </a>
-  <div class="footer-links">
-    <a href="./files/rolebaza_privacy_policy.pdf" target="_blank">Свиток конфиденциальности</a>
-  </div>
   <p class="footer-copy">&copy; 2026 Ролебаза. Сделано с &#10084;&#65039; для русскоязычного RPG-сообщества.</p>
+
+  <div class="footer-legal">
+    <p class="footer-legal-operator">
+      Оператор персональных данных: <strong>Федин Владимир Андреевич</strong>, ИНН 623411297909.<br>
+      Контакт по вопросам обработки ПДн: <a href="mailto:privacy@rolebaza.ru">privacy@rolebaza.ru</a>
+    </p>
+    <nav class="footer-legal-links">
+      <a href="./privacy.html">Политика обработки ПДн</a>
+      <a href="./consent.html">Согласие на обработку</a>
+      <a href="./marketing-consent.html">Маркетинговое согласие</a>
+      <a href="./terms.html">Пользовательское соглашение</a>
+      <a href="./cookies.html">Cookies</a>
+    </nav>
+  </div>
 </footer>
+
+<!-- Cookie consent banner — gates Yandex.Metrika -->
+<div id="cookie-banner" class="cookie-banner" role="dialog" aria-labelledby="cookie-banner-title" aria-describedby="cookie-banner-text">
+  <p id="cookie-banner-text" class="cookie-banner-text">
+    <span id="cookie-banner-title"><strong>Сайт использует cookies.</strong></span>
+    Служебные cookies нужны для работы сайта. Аналитические cookies (Яндекс.Метрика) собирают обезличенную статистику посещений для улучшения сервиса — устанавливаются только с вашего согласия. Подробнее в <a href="./cookies.html">описании cookies</a> и <a href="./privacy.html">Политике</a>.
+  </p>
+  <div class="cookie-banner-actions">
+    <button type="button" class="cookie-btn cookie-btn-primary" id="cookie-accept">Принять все</button>
+    <button type="button" class="cookie-btn" id="cookie-decline">Только необходимые</button>
+  </div>
+</div>
 
 <script src="./main.js" defer></script>
 <script>if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').catch(function(){});</script>

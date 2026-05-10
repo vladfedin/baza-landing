@@ -716,36 +716,114 @@ document.addEventListener('DOMContentLoaded', function () {
   var form = document.getElementById('waitlist-form');
   if (!form) return;
 
+  var POLICY_VERSION = '2026-02-26';
+  var submitBtn = form.querySelector('.guild-submit');
+  var consentPdn = form.querySelector('#wl-consent-pdn');
+  var consentMarketing = form.querySelector('#wl-consent-marketing');
+
+  function syncSubmitState() {
+    if (!submitBtn || !consentPdn) return;
+    submitBtn.disabled = !consentPdn.checked;
+  }
+  if (consentPdn) consentPdn.addEventListener('change', syncSubmitState);
+  syncSubmitState();
+  // Reset checkboxes after form.reset() restores defaults
+  form.addEventListener('reset', function () { setTimeout(syncSubmitState, 0); });
+
   form.addEventListener('submit', function (e) {
     e.preventDefault();
     var status = document.getElementById('waitlist-status');
-    var btn = form.querySelector('.btn');
     if (status) { status.className = 'status-msg'; status.textContent = ''; }
+
+    if (!consentPdn || !consentPdn.checked) {
+      if (status) { status.className = 'status-msg visible error'; status.textContent = 'Для отправки необходимо согласие на обработку персональных данных.'; }
+      return;
+    }
 
     var name = (form.querySelector('[name="name"]').value || '').trim();
     var email = (form.querySelector('[name="email"]').value || '').trim();
     var role = (form.querySelector('[name="role"]:checked') || {}).value || 'gm';
     var hp = (form.querySelector('[name="website"]').value || '').trim();
+    var marketing = !!(consentMarketing && consentMarketing.checked);
+    var consentAt = new Date().toISOString();
 
-    if (btn) { btn.textContent = 'Записываем в летопись...'; btn.disabled = true; }
+    // Local proof of consent (fallback evidence in case of dispute).
+    try {
+      var record = { email: email, consent_pdn: true, consent_marketing: marketing, policy_version: POLICY_VERSION, at: consentAt };
+      localStorage.setItem('rb_last_consent', JSON.stringify(record));
+    } catch (e) {}
+
+    if (submitBtn) { submitBtn.textContent = 'Записываем в летопись...'; submitBtn.disabled = true; }
 
     fetch('https://beta.rolebaza.ru/api/landing/waitlist', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name: name, email: email, role: role, website: hp, source: location.href })
+      body: JSON.stringify({
+        name: name, email: email, role: role, website: hp, source: location.href,
+        consent_pdn: true, consent_marketing: marketing,
+        consent_policy_version: POLICY_VERSION, consent_at: consentAt
+      })
     })
     .then(function (r) { return r.json(); })
     .then(function (d) {
       if (d.total && window._waitlist) window._waitlist.updateTotal(d.total);
       if (status) { status.className = 'status-msg visible success'; status.textContent = 'Принято! Мы записали тебя в гильдию.'; }
-      if (btn) { btn.textContent = 'Вы приняты!'; }
+      if (submitBtn) { submitBtn.textContent = 'Вы приняты!'; }
       form.reset();
-      setTimeout(function () { if (btn) { btn.textContent = 'Вступить в Гильдию'; btn.disabled = false; } }, 3000);
+      setTimeout(function () {
+        if (submitBtn) { submitBtn.textContent = 'Вступить в Гильдию'; }
+        syncSubmitState();
+      }, 3000);
     })
     .catch(function () {
       if (status) { status.className = 'status-msg visible error'; status.textContent = 'Не удалось отправить форму. Попробуйте ещё раз через минуту.'; }
-      if (btn) { btn.textContent = 'Вступить в Гильдию'; btn.disabled = false; }
+      if (submitBtn) { submitBtn.textContent = 'Вступить в Гильдию'; }
+      syncSubmitState();
     });
+  });
+});
+
+/* ═══════════════════════════════════════════════════════════
+   8. COOKIE CONSENT BANNER
+   ═══════════════════════════════════════════════════════════ */
+
+document.addEventListener('DOMContentLoaded', function () {
+  var banner = document.getElementById('cookie-banner');
+  if (!banner) return;
+
+  var STORAGE_KEY = 'rb_consent_analytics';
+  var STORAGE_AT = 'rb_consent_analytics_at';
+
+  function read() {
+    try { return localStorage.getItem(STORAGE_KEY); } catch (e) { return null; }
+  }
+  function write(v) {
+    try {
+      localStorage.setItem(STORAGE_KEY, v);
+      localStorage.setItem(STORAGE_AT, new Date().toISOString());
+    } catch (e) {}
+  }
+  function hide() {
+    banner.classList.remove('visible');
+    setTimeout(function () { banner.style.display = 'none'; }, 300);
+  }
+  function show() {
+    banner.style.display = 'block';
+    requestAnimationFrame(function () { banner.classList.add('visible'); });
+  }
+
+  if (read() === null) show();
+
+  var acceptBtn = document.getElementById('cookie-accept');
+  var declineBtn = document.getElementById('cookie-decline');
+  if (acceptBtn) acceptBtn.addEventListener('click', function () {
+    write('granted');
+    if (typeof window._initMetrika === 'function') window._initMetrika();
+    hide();
+  });
+  if (declineBtn) declineBtn.addEventListener('click', function () {
+    write('denied');
+    hide();
   });
 });
 
