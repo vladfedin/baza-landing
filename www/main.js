@@ -716,7 +716,10 @@ document.addEventListener('DOMContentLoaded', function () {
   var form = document.getElementById('waitlist-form');
   if (!form) return;
 
-  var POLICY_VERSION = '2026-02-26';
+  var POLICY_VERSION = '2026-05-31';
+  var DEFAULT_BTN_LABEL = 'Получить магическую ссылку';
+  var PLATFORM_LOGIN_URL = 'https://beta.rolebaza.ru/';
+
   var submitBtn = form.querySelector('.guild-submit');
   var consentPdn = form.querySelector('#wl-consent-pdn');
   var consentMarketing = form.querySelector('#wl-consent-marketing');
@@ -729,6 +732,23 @@ document.addEventListener('DOMContentLoaded', function () {
   syncSubmitState();
   // Reset checkboxes after form.reset() restores defaults
   form.addEventListener('reset', function () { setTimeout(syncSubmitState, 0); });
+
+  // Fire-and-forget archival to the legacy waitlist endpoint. Keeps the
+  // landing counter ticking and preserves the historical lead trail (role,
+  // source URL, consents) — magic-register only takes email/displayName.
+  // Never blocks the user's primary feedback.
+  function archiveToWaitlist(payload) {
+    return fetch('https://beta.rolebaza.ru/api/landing/waitlist', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    })
+    .then(function (r) { return r.json(); })
+    .then(function (d) {
+      if (d && d.total && window._waitlist) window._waitlist.updateTotal(d.total);
+    })
+    .catch(function () { /* best-effort */ });
+  }
 
   form.addEventListener('submit', function (e) {
     e.preventDefault();
@@ -753,31 +773,79 @@ document.addEventListener('DOMContentLoaded', function () {
       localStorage.setItem('rb_last_consent', JSON.stringify(record));
     } catch (e) {}
 
-    if (submitBtn) { submitBtn.textContent = 'Записываем в летопись...'; submitBtn.disabled = true; }
+    if (submitBtn) { submitBtn.textContent = 'Отправляем магическую ссылку...'; submitBtn.disabled = true; }
 
-    fetch('https://beta.rolebaza.ru/api/landing/waitlist', {
+    var waitlistPayload = {
+      name: name, email: email, role: role, website: hp, source: location.href,
+      consent_pdn: true, consent_marketing: marketing,
+      consent_policy_version: POLICY_VERSION, consent_at: consentAt,
+    };
+
+    fetch('https://beta.rolebaza.ru/api/auth/magic/register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        name: name, email: email, role: role, website: hp, source: location.href,
-        consent_pdn: true, consent_marketing: marketing,
-        consent_policy_version: POLICY_VERSION, consent_at: consentAt
-      })
+        email: email,
+        displayName: name,
+        consentPdn: true,
+        consentMarketing: marketing,
+        consentPolicyVersion: POLICY_VERSION,
+      }),
     })
-    .then(function (r) { return r.json(); })
-    .then(function (d) {
-      if (d.total && window._waitlist) window._waitlist.updateTotal(d.total);
-      if (status) { status.className = 'status-msg visible success'; status.textContent = 'Принято! Мы записали тебя в гильдию.'; }
-      if (submitBtn) { submitBtn.textContent = 'Вы приняты!'; }
-      form.reset();
-      setTimeout(function () {
-        if (submitBtn) { submitBtn.textContent = 'Вступить в Гильдию'; }
-        syncSubmitState();
-      }, 3000);
+    .then(function (r) {
+      return r.json().then(function (body) { return { status: r.status, body: body }; });
+    })
+    .then(function (res) {
+      var s = res.status;
+      var code = res.body && res.body.error && res.body.error.code;
+
+      if (s >= 200 && s < 300) {
+        if (status) {
+          status.className = 'status-msg visible success';
+          status.textContent = 'Магическая ссылка отправлена! Проверь почту — кликни по ссылке из письма, чтобы войти на платформу.';
+        }
+        if (submitBtn) { submitBtn.textContent = 'Готово!'; }
+        form.reset();
+        setTimeout(function () {
+          if (submitBtn) { submitBtn.textContent = DEFAULT_BTN_LABEL; }
+          syncSubmitState();
+        }, 3500);
+        // Archive only on real new lead — duplicates and rate-limits skip this branch.
+        archiveToWaitlist(waitlistPayload);
+        return;
+      }
+
+      if (s === 409 || code === 'CONFLICT') {
+        if (status) {
+          status.className = 'status-msg visible error';
+          status.innerHTML = 'Этот e-mail уже зарегистрирован. <a href="' + PLATFORM_LOGIN_URL + '" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;">Войти →</a>';
+        }
+      } else if (s === 429 || code === 'TOO_MANY_REQUESTS' || code === 'COOLDOWN') {
+        if (status) {
+          status.className = 'status-msg visible error';
+          status.textContent = 'Слишком много попыток подряд. Попробуй через минуту.';
+        }
+      } else if (s === 503 || code === 'SERVICE_UNAVAILABLE') {
+        if (status) {
+          status.className = 'status-msg visible error';
+          status.textContent = 'Отправка писем временно недоступна. Попробуй позже.';
+        }
+      } else {
+        if (status) {
+          status.className = 'status-msg visible error';
+          status.textContent = 'Не удалось зарегистрироваться. Попробуй ещё раз через минуту.';
+        }
+      }
+
+      if (submitBtn) { submitBtn.textContent = DEFAULT_BTN_LABEL; }
+      syncSubmitState();
     })
     .catch(function () {
-      if (status) { status.className = 'status-msg visible error'; status.textContent = 'Не удалось отправить форму. Попробуйте ещё раз через минуту.'; }
-      if (submitBtn) { submitBtn.textContent = 'Вступить в Гильдию'; }
+      if (status) {
+        status.className = 'status-msg visible error';
+        status.textContent = 'Не удалось отправить форму. Проверь соединение и попробуй ещё раз.';
+      }
+      if (submitBtn) { submitBtn.textContent = DEFAULT_BTN_LABEL; }
       syncSubmitState();
     });
   });
