@@ -717,7 +717,7 @@ document.addEventListener('DOMContentLoaded', function () {
   if (!form) return;
 
   var POLICY_VERSION = '2026-05-31';
-  var DEFAULT_BTN_LABEL = 'Получить магическую ссылку';
+  var DEFAULT_BTN_LABEL = 'Получить волшебный ключ';
   var PLATFORM_LOGIN_URL = 'https://beta.rolebaza.ru/';
 
   var submitBtn = form.querySelector('.guild-submit');
@@ -773,7 +773,7 @@ document.addEventListener('DOMContentLoaded', function () {
       localStorage.setItem('rb_last_consent', JSON.stringify(record));
     } catch (e) {}
 
-    if (submitBtn) { submitBtn.textContent = 'Отправляем магическую ссылку...'; submitBtn.disabled = true; }
+    if (submitBtn) { submitBtn.textContent = 'Отправляем волшебный ключ...'; submitBtn.disabled = true; }
 
     var waitlistPayload = {
       name: name, email: email, role: role, website: hp, source: location.href,
@@ -802,7 +802,7 @@ document.addEventListener('DOMContentLoaded', function () {
       if (s >= 200 && s < 300) {
         if (status) {
           status.className = 'status-msg visible success';
-          status.textContent = 'Магическая ссылка отправлена! Проверь почту — кликни по ссылке из письма, чтобы войти на платформу.';
+          status.textContent = 'Волшебный ключ отправлен! Проверь почту и используй его, чтобы войти на платформу.';
         }
         if (submitBtn) { submitBtn.textContent = 'Готово!'; }
         form.reset();
