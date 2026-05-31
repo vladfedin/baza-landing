@@ -895,4 +895,50 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 });
 
+/* ═══════════════════════════════════════════════════════════
+   9. ARSENAL VIDEO LAZY-LOAD
+   ═══════════════════════════════════════════════════════════ */
+
+/*
+  Four <video> tags in the Arsenal section ship as ~8.4 MB total.
+  Loading them eagerly delays the rest of the page and burns mobile
+  traffic on visitors who never scroll there. We swap src ↔ data-src
+  + preload="none" in the HTML and only attach the real src once the
+  tag enters the viewport. Pause + reset when it leaves, so a long
+  visit doesn't keep all four decoding off-screen.
+*/
+document.addEventListener('DOMContentLoaded', function () {
+  var videos = document.querySelectorAll('video.arsenal-video[data-src]');
+  if (!videos.length) return;
+
+  // Old browsers without IntersectionObserver: load eagerly, never pause.
+  if (typeof IntersectionObserver === 'undefined') {
+    videos.forEach(function (v) {
+      if (!v.src) { v.src = v.getAttribute('data-src'); v.load(); }
+    });
+    return;
+  }
+
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      var v = e.target;
+      if (e.isIntersecting) {
+        if (!v.src) {
+          v.src = v.getAttribute('data-src');
+          v.load();
+        }
+        // autoplay attribute usually kicks play() automatically after load,
+        // but Safari can need a nudge — and play() is idempotent if already
+        // playing. Promise rejection on autoplay refusal is fine to swallow.
+        var p = v.play();
+        if (p && typeof p.catch === 'function') p.catch(function () {});
+      } else if (!v.paused) {
+        v.pause();
+      }
+    });
+  }, { rootMargin: '300px 0px', threshold: 0.01 });
+
+  videos.forEach(function (v) { io.observe(v); });
+});
+
 })();
