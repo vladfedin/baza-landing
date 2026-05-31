@@ -264,7 +264,7 @@ a:hover { color: var(--accent-hover); }
   position: relative; text-align: center;
 }
 .guild-parchment .guild-intro {
-  font-size: 20px; line-height: 1.7; margin-bottom: 0; color: #3d3226;
+  font-size: 20px; line-height: 1.7; margin-bottom: 28px; color: #3d3226;
 }
 .guild-divider { height: 1px; background: #a89888; width: 50%; margin: 24px auto; opacity: 0.5; }
 .guild-heading { font-size: 20px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #594426; margin-bottom: 16px; }
