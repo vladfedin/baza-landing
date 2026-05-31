@@ -682,3 +682,17 @@ a:hover { color: var(--accent-hover); }
 .footer-legal-links { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
 .footer-legal-links a { color: inherit; font-size: 11px; text-decoration: none; }
 .footer-legal-links a:hover { text-decoration: underline; }
+
+/* Bot-only block — hidden visually but readable to crawlers and LLM
+   agents that ingest raw HTML. aria-hidden on the element keeps it
+   out of screen-reader output. See <aside class="bot-only"> in
+   index.html for the rationale. */
+.bot-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
