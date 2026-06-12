@@ -86,15 +86,22 @@ a:hover { color: var(--accent-hover); }
 
 /* ── Hero ──────────────────────────────────────────────────── */
 .hero {
-  min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center;
-  position: relative; padding: 20px 20px 40px; overflow: hidden;
+  min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
+  position: relative; padding: 16px 20px 80px; overflow: hidden;
 }
 .hero-bg { position: absolute; inset: 0; z-index: 0; }
 .hero-bg img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.82) contrast(1.08) saturate(1.05); }
 .hero-bg-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(26,20,16,0.55) 0%, rgba(46,38,29,0.20) 50%, var(--bg-base) 100%); }
 .hero-bg-vignette { position: absolute; inset: 0; background: radial-gradient(circle at 50% 40%, rgba(212,167,85,0.08) 0%, rgba(28,24,21,0.85) 100%); }
 
-.hero-content { position: relative; z-index: 2; text-align: center; width: 100%; padding: 0 16px; }
+.hero-content { position: relative; z-index: 2; text-align: center; width: 100%; padding: 0 16px; display: flex; flex-direction: column; align-items: center; }
+
+.hero-pretitle {
+  position: relative; z-index: 3;
+  font-size: 18px; font-weight: 800; text-transform: uppercase;
+  color: var(--text-muted); opacity: 1;
+  margin-bottom: 64px; text-align: center;
+}
 
 /* ── Hero topbar (partners left, social right) ─────────────── */
 .hero-topbar {
@@ -132,19 +139,19 @@ a:hover { color: var(--accent-hover); }
 /* ── Logo stage (classic logo ↔ die field) ─────────────────── */
 .logo-stage {
   position: relative; display: grid; place-items: center;
-  width: 100%;
+  width: 100%; max-height: 260px; overflow: visible;
 }
 .classic-logo, .hero-canvas { cursor: pointer; }
 .logo-stage > * { grid-area: 1 / 1; } /* stack children on top of each other */
 .classic-logo {
-  width: 100%; max-width: 1170px;
-  filter: drop-shadow(0 20px 80px rgba(0,0,0,1));
+  width: auto; max-width: 520px; max-height: 260px; object-fit: contain;
+  filter: drop-shadow(0 12px 40px rgba(0,0,0,0.9));
   animation: logo-float 6s ease-in-out infinite;
   transition: opacity 1s ease;
 }
 .classic-logo.fade-out { opacity: 0; pointer-events: none; }
 .hero-canvas {
-  flex-shrink: 0; max-width: 100%; height: auto;
+  flex-shrink: 0; max-width: 520px; max-height: 260px; height: auto;
   transition: filter 0.3s, opacity 1s ease;
   opacity: 0;
 }
@@ -153,15 +160,15 @@ a:hover { color: var(--accent-hover); }
 
 @keyframes logo-float {
   0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-16px); }
+  50% { transform: translateY(-8px); }
 }
 
-.hero-text { margin-top: 12px; max-width: 760px; margin-left: auto; margin-right: auto; }
+.hero-text { margin-top: 8px; max-width: 760px; margin-left: auto; margin-right: auto; }
 .hero-tagline { font-size: 20px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-secondary); margin-bottom: 10px; }
 .hero-subtitle { font-size: 18px; font-weight: 500; color: var(--text-muted); letter-spacing: 0.04em; }
 
 /* ── Advantage cards ───────────────────────────────────────── */
-.advantages { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 16px; width: 100%; max-width: 760px; margin-left: auto; margin-right: auto; transition: opacity 0.4s ease; }
+.advantages { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 12px; width: 100%; max-width: 760px; margin-left: auto; margin-right: auto; transition: opacity 0.4s ease; }
 .advantage-card {
   display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px;
   padding: 16px 8px; background: var(--bg-card); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
@@ -190,8 +197,9 @@ a:hover { color: var(--accent-hover); }
 
 /* ── Scroll-down mouse (section divider) ───────────────────── */
 .scroll-down {
+  position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
   display: flex; align-items: center; justify-content: center;
-  margin-top: 48px; cursor: pointer;
+  cursor: pointer; z-index: 2;
 }
 .scroll-down svg {
   width: 56px; height: 56px; fill: var(--accent); opacity: 0.7;
@@ -299,11 +307,11 @@ a:hover { color: var(--accent-hover); }
 .guild-submit {
   width: 100%; margin-top: 20px; padding: 16px; font-size: 16px; font-weight: 700;
   font-family: inherit; text-transform: uppercase; letter-spacing: 0.06em;
-  color: #f4ece4; background: #8F2020; border: 1px solid #5c1313;
-  border-radius: 8px; cursor: pointer; transition: background 0.2s, transform 0.2s;
+  color: #1a1208; background: linear-gradient(135deg,#c8993a,#EAD070); border: 1px solid #a87c28;
+  border-radius: 8px; cursor: pointer; transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
 }
-.guild-submit:hover { background: #721818; transform: translateY(-2px); }
-.guild-submit:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+.guild-submit:hover { background: linear-gradient(135deg,#b8882a,#D4AF60); transform: translateY(-2px); box-shadow: 0 4px 16px rgba(212,175,96,0.4); }
+.guild-submit:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
 .guild-privacy { font-size: 12px; color: #6b5d4f; margin-top: 10px; }
 .guild-privacy a { color: #8F2020; text-decoration: underline; }
 .guild-counter {
