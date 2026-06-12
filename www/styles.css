@@ -98,9 +98,9 @@ a:hover { color: var(--accent-hover); }
 
 .hero-pretitle {
   position: relative; z-index: 3;
-  font-size: 18px; font-weight: 800; text-transform: uppercase;
-  color: var(--text-muted); opacity: 1;
-  margin-bottom: 64px; text-align: center;
+  font-size: 13px; font-weight: 600; text-transform: uppercase;
+  color: var(--text-muted); opacity: 0.75;
+  margin-bottom: 8px; text-align: center;
 }
 
 /* ── Hero topbar (partners left, social right) ─────────────── */
@@ -487,6 +487,14 @@ a:hover { color: var(--accent-hover); }
   .topbar-col[open] > .topbar-chip { font-size: 12px; padding: 4px 10px; }
   .topbar-label-full { display: none; }
   .topbar-label-short { display: inline; }
+  /* Hide pretitle on mobile — no room next to topbar chips */
+  .hero-pretitle { display: none; }
+  /* Tighter hero top padding on mobile */
+  .hero { padding-top: 70px; }
+  /* Smaller logo stage on mobile — no overflow:hidden (breaks drop-shadow) */
+  .logo-stage { max-height: 180px; width: 100%; }
+  .classic-logo { max-height: 180px; max-width: 90%; width: auto; filter: drop-shadow(0 6px 16px rgba(0,0,0,0.9)); }
+  .hero-canvas { max-height: 180px; max-width: 90%; }
 }
 @media (max-width: 480px) {
   .hero-tagline { font-size: 14px; }
