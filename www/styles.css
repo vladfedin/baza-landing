@@ -271,9 +271,6 @@ a:hover { color: var(--accent-hover); }
   box-shadow: 0 12px 40px rgba(0,0,0,0.25);
   position: relative; text-align: center;
 }
-.guild-parchment .guild-intro {
-  font-size: 20px; line-height: 1.7; margin-bottom: 28px; color: #3d3226;
-}
 .perks-list-parchment { list-style: none; text-align: left; max-width: 400px; margin: 0 auto 28px; }
 .perks-list-parchment li {
   display: flex; align-items: center; gap: 8px;
