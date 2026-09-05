@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Гайды РолеБазы — короткие ответы на вопросы стола</title>
+<meta name="description" content="Микрогайды РолеБазы: видео на 10–30 секунд и текст на минуту — как создать стол, позвать игроков, бросить кубы и провести бой.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="РолеБаза">
+<meta property="og:url" content="https://rolebaza.ru/guides/">
+<meta property="og:title" content="Гайды РолеБазы">
+<meta property="og:description" content="Короткие видео и тексты: от первого стола до боя и компендиумов.">
+<meta property="og:image" content="https://rolebaza.ru/guides/start-table/poster.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+  :root {
+    --ink: #131118; --ink-2: #1a1720; --plate: #201c28;
+    --plate-edge: rgba(201, 164, 92, 0.22);
+    --brass: #c9a45c; --brass-dim: #8a7448;
+    --bone: #e9e2d2; --bone-dim: #a89f8c;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: radial-gradient(1100px 500px at 50% -10%, #26202e 0%, transparent 60%), var(--ink);
+    color: var(--bone);
+    font-family: Georgia, 'Iowan Old Style', 'Palatino Linotype', serif;
+    min-height: 100vh; padding: 56px 24px 90px;
+  }
+  body::after {
+    content: ''; position: fixed; inset: 0; pointer-events: none; opacity: 0.05;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  .wrap { max-width: 1180px; margin: 0 auto; }
+  header { text-align: center; margin-bottom: 54px; }
+  .over-title { font-size: 12px; letter-spacing: 0.55em; text-transform: uppercase; color: var(--brass-dim); margin-bottom: 16px; }
+  h1 { font-size: clamp(28px, 4vw, 46px); font-weight: 400; font-variant: small-caps; letter-spacing: 0.07em; display: flex; align-items: center; justify-content: center; gap: 16px; }
+  h1 svg { width: 0.82em; height: 0.82em; color: var(--brass); flex: none; }
+  .sub { margin-top: 12px; color: var(--bone-dim); font-size: 15.5px; font-style: italic; }
+
+  .sect { margin: 40px 0 18px; font-size: 12px; letter-spacing: 0.32em; text-transform: uppercase; color: var(--bone-dim); }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+
+  .card {
+    display: block; border-radius: 6px; overflow: hidden; text-decoration: none; color: var(--bone);
+    background: linear-gradient(180deg, rgba(255,255,255,0.015), transparent 40%), var(--plate);
+    border: 1px solid var(--plate-edge);
+    transition: border-color 0.25s ease, transform 0.25s ease;
+    position: relative;
+  }
+  a.card:hover { border-color: rgba(201,164,92,0.5); transform: translateY(-3px); }
+  .card .cover { aspect-ratio: 16 / 9; background-size: cover; background-position: center; position: relative; }
+  .card .cover .dur {
+    position: absolute; right: 10px; bottom: 10px; font-size: 12px; letter-spacing: 0.08em;
+    background: rgba(19,17,24,0.8); border: 1px solid rgba(255,255,255,0.14); border-radius: 3px; padding: 3px 9px;
+  }
+  .card .cover .play {
+    position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+    width: 54px; height: 54px; border-radius: 50%; border: 2px solid var(--brass);
+    background: rgba(19,17,24,0.55); display: flex; align-items: center; justify-content: center;
+  }
+  .card .cover .play::after { content: ''; margin-left: 5px; border-left: 16px solid var(--brass); border-top: 10px solid transparent; border-bottom: 10px solid transparent; }
+  .card .body { padding: 16px 18px 18px; }
+  .card .role { font-size: 10.5px; letter-spacing: 0.26em; text-transform: uppercase; color: var(--brass); margin-bottom: 8px; display: flex; align-items: center; gap: 7px; }
+  .card .role svg { width: 13px; height: 13px; }
+  .card h3 { font-size: 19px; font-weight: 400; font-variant: small-caps; letter-spacing: 0.04em; margin-bottom: 6px; }
+  .card p { font-size: 13.5px; color: var(--bone-dim); line-height: 1.45; }
+
+  .card.soon { opacity: 0.78; }
+  .card.soon .cover {
+    background: radial-gradient(75% 75% at 50% 40%, rgba(255,190,96,0.07), transparent 75%), var(--ink-2);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .card.soon .cover svg { width: 46px; height: 46px; color: var(--brass-dim); stroke-width: 1.2; }
+  .card .soon-tag {
+    position: absolute; top: 12px; right: 12px; font-size: 10.5px; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--bone-dim); border: 1px solid rgba(255,255,255,0.12); border-radius: 3px; padding: 4px 10px;
+    background: rgba(19,17,24,0.6);
+  }
+
+  footer { margin-top: 70px; text-align: center; font-size: 11.5px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--brass-dim); }
+
+  @media (max-width: 1020px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 640px)  { .grid { grid-template-columns: 1fr; } body { padding: 40px 16px 70px; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="over-title">РолеБаза</div>
+    <h1><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m16.24 7.76-1.804 5.411a2 2 0 0 1-1.265 1.265L7.76 16.24l1.804-5.411a2 2 0 0 1 1.265-1.265z"/></svg>Гайды</h1>
+    <div class="sub">Каждый отвечает на один вопрос: видео на полминуты, текст — на минуту</div>
+  </header>
+
+  <div class="sect">Первые десять минут</div>
+  <div class="grid">
+    <a class="card" href="start-table/">
+      <div class="cover" style="background-image:url('start-table/poster.jpg')">
+        <div class="play"></div><div class="dur">0:13</div>
+      </div>
+      <div class="body">
+        <div class="role"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><circle cx="12" cy="12" r="10"/><path d="m16.24 7.76-1.804 5.411a2 2 0 0 1-1.265 1.265L7.76 16.24l1.804-5.411a2 2 0 0 1 1.265-1.265z"/></svg>Мастеру</div>
+        <h3>Стол за две минуты</h3>
+        <p>Комната, карта, приглашение — до первой игры три клика.</p>
+      </div>
+    </a>
+    <span class="card soon">
+      <div class="cover"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></div>
+      <div class="soon-tag">скоро</div>
+      <div class="body">
+        <div class="role">Мастеру</div>
+        <h3>Зови друзей — ссылкой</h3>
+        <p>Группа заходит без регистрации: даже самые ленивые успеют к первому броску.</p>
+      </div>
+    </span>
+    <span class="card soon">
+      <div class="cover"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h20"/><path d="M21 3v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V3"/><path d="m7 21 5-5 5 5"/></svg></div>
+      <div class="soon-tag">скоро</div>
+      <div class="body">
+        <div class="role">Игроку</div>
+        <h3>Зашёл по ссылке — играй</h3>
+        <p>Имя, свой токен, микрофон — будь готов раньше всех.</p>
+      </div>
+    </span>
+  </div>
+
+  <div class="sect">Первая сессия</div>
+  <div class="grid">
+    <span class="card soon">
+      <div class="cover"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3 6 6 .9-4.4 4.3 1 6.3L12 16.6 6.4 19.5l1-6.3L3 8.9 9 8z"/></svg></div>
+      <div class="soon-tag">скоро</div>
+      <div class="body">
+        <div class="role">Игроку</div>
+        <h3>Кубы: бросай как надо</h3>
+        <p>Преимущество, модификатор и кому показать результат.</p>
+      </div>
+    </span>
+    <span class="card soon">
+      <div class="cover"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></svg></div>
+      <div class="soon-tag">скоро</div>
+      <div class="body">
+        <div class="role">Мастеру</div>
+        <h3>Оживи героя: токен и лист</h3>
+        <p>Портрет, владелец, полоска здоровья — игроки двигают своих героев сами.</p>
+      </div>
+    </span>
+    <span class="card soon">
+      <div class="cover"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18M3 15h18M9 3v18M15 3v18"/></svg></div>
+      <div class="soon-tag">скоро</div>
+      <div class="body">
+        <div class="role">Мастеру</div>
+        <h3>Подгони сетку под карту</h3>
+        <p>Калибровка по двум клеткам — и токены ходят по нарисованному.</p>
+      </div>
+    </span>
+  </div>
+
+  <div class="sect">Настоящая игра</div>
+  <div class="grid">
+    <span class="card soon">
+      <div class="cover"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12a10 10 0 1 1 20 0 10 10 0 0 1-20 0Z" opacity="0.4"/><path d="M12 2a10 10 0 0 1 10 10H12Z"/></svg></div>
+      <div class="soon-tag">скоро</div>
+      <div class="body">
+        <div class="role">Мастеру</div>
+        <h3>Спрячь то, что рано видеть</h3>
+        <p>Туман войны: карта раскрывается по мере продвижения группы.</p>
+      </div>
+    </span>
+    <span class="card soon">
+      <div class="cover"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"/><path d="M8 5v14M16 5v14" opacity="0.4"/></svg></div>
+      <div class="soon-tag">скоро</div>
+      <div class="body">
+        <div class="role">Мастеру</div>
+        <h3>Держи игроков в кадре</h3>
+        <p>Границы, стартовая точка и проверка «глазами игрока».</p>
+      </div>
+    </span>
+    <span class="card soon">
+      <div class="cover"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2.5 19 7l-9.5 9.5H5V12z"/><path d="M13 19h8"/></svg></div>
+      <div class="soon-tag">скоро</div>
+      <div class="body">
+        <div class="role">Мастеру</div>
+        <h3>Бой: инициатива за 10 секунд</h3>
+        <p>Участники, порядок ходов и «Закончить ход» — без потери темпа.</p>
+      </div>
+    </span>
+    <span class="card soon">
+      <div class="cover"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="22" x2="18" y1="12" y2="12"/><line x1="6" x2="2" y1="12" y2="12"/><line x1="12" x2="12" y1="6" y2="2"/><line x1="12" x2="12" y1="22" y2="18"/></svg></div>
+      <div class="soon-tag">скоро</div>
+      <div class="body">
+        <div class="role">Игроку</div>
+        <h3>Атакуй в один клик</h3>
+        <p>Правый клик по токену, действие, цель — урон посчитается сам.</p>
+      </div>
+    </span>
+    <span class="card soon">
+      <div class="cover"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V6l12-3v12"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="15" r="3"/></svg></div>
+      <div class="soon-tag">скоро</div>
+      <div class="body">
+        <div class="role">Мастеру</div>
+        <h3>Музыка для всех</h3>
+        <p>Эмбиент и боевая тема по каналам — звучит у каждого за столом.</p>
+      </div>
+    </span>
+  </div>
+
+  <div class="sect">Сэкономить часы</div>
+  <div class="grid">
+    <span class="card soon">
+      <div class="cover"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5M12 22V12"/></svg></div>
+      <div class="soon-tag">скоро</div>
+      <div class="body">
+        <div class="role">Мастеру</div>
+        <h3>Не собирай с нуля</h3>
+        <p>Сокровищница и компендиумы: готовый стол и бестиарий за минуты.</p>
+      </div>
+    </span>
+    <span class="card soon">
+      <div class="cover"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M15.2 3a2 2 0 0 1 1.4.6l3.8 3.8a2 2 0 0 1 .6 1.4V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/><path d="M17 21v-7a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v7"/><path d="M7 3v4a1 1 0 0 0 1 1h7"/></svg></div>
+      <div class="soon-tag">скоро</div>
+      <div class="body">
+        <div class="role">Мастеру</div>
+        <h3>Точка сохранения</h3>
+        <p>Снапшот перед боссом — и любой эксперимент обратим.</p>
+      </div>
+    </span>
+  </div>
+
+  <footer>РолеБаза · гайды сообщества и команды</footer>
+</div>
+</body>
+</html>

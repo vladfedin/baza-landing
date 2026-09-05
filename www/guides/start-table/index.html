@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Стол за две минуты — гайды РолеБазы</title>
+<meta name="description" content="Создай комнату, положи карту и позови друзей — до первой игры три клика. Микрогайд РолеБазы: видео 13 секунд, чтение 40 секунд.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="РолеБаза">
+<meta property="og:url" content="https://rolebaza.ru/guides/start-table/">
+<meta property="og:title" content="Стол за две минуты — гайды РолеБазы">
+<meta property="og:description" content="Создай комнату, положи карту и позови друзей — до первой игры три клика.">
+<meta property="og:image" content="https://rolebaza.ru/guides/start-table/poster.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+  :root {
+    --ink: #131118; --ink-2: #1a1720; --plate: #201c28;
+    --plate-edge: rgba(201, 164, 92, 0.22);
+    --brass: #c9a45c; --brass-dim: #8a7448;
+    --bone: #e9e2d2; --bone-dim: #a89f8c;
+    --glow: rgba(255, 190, 96, 0.10);
+    --warn: #e8a54b; --warn-bg: rgba(232, 165, 75, 0.08);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: radial-gradient(1100px 500px at 50% -10%, #26202e 0%, transparent 60%), var(--ink);
+    color: var(--bone);
+    font-family: Georgia, 'Iowan Old Style', 'Palatino Linotype', serif;
+    min-height: 100vh; padding: 48px 24px 80px;
+  }
+  body::after {
+    content: ''; position: fixed; inset: 0; pointer-events: none; opacity: 0.05;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  .guide { max-width: 860px; margin: 0 auto; }
+  .crumb { margin-bottom: 22px; font-size: 12px; letter-spacing: 0.24em; text-transform: uppercase; }
+  .crumb a { color: var(--brass); text-decoration: none; }
+  .crumb a:hover { color: var(--bone); }
+  .g-head { margin-bottom: 26px; }
+  .g-role {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase;
+    color: var(--brass); border: 1px solid var(--brass-dim); border-radius: 3px;
+    padding: 5px 12px; margin-bottom: 16px;
+  }
+  h1 { font-size: clamp(26px, 4vw, 38px); font-weight: 400; font-variant: small-caps; letter-spacing: 0.05em; line-height: 1.2; }
+  h1 em { font-style: normal; color: var(--brass); }
+  .g-meta { margin-top: 10px; font-size: 14px; color: var(--bone-dim); display: flex; gap: 22px; flex-wrap: wrap; }
+  .g-meta svg { width: 15px; height: 15px; vertical-align: -2.5px; color: var(--brass-dim); }
+
+  .g-video { position: relative; border-radius: 6px; overflow: hidden; border: 1px solid var(--plate-edge); background: var(--plate); aspect-ratio: 16 / 9; margin-bottom: 34px; }
+  .g-video video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+
+  .g-steps { display: flex; flex-direction: column; gap: 18px; margin-bottom: 34px; }
+  .step {
+    display: grid; grid-template-columns: 340px 1fr; gap: 22px; align-items: center;
+    background: linear-gradient(180deg, rgba(255,255,255,0.015), transparent 40%), var(--plate);
+    border: 1px solid var(--plate-edge); border-radius: 4px; padding: 18px;
+  }
+  .step .shot { aspect-ratio: 16 / 9; border-radius: 3px; overflow: hidden; border: 1px solid rgba(255,255,255,0.07); background: var(--ink-2); }
+  .step .shot img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .step .txt { font-size: 15.5px; line-height: 1.55; }
+  .step .n {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 26px; height: 26px; border-radius: 50%;
+    border: 1px solid var(--brass-dim); color: var(--brass);
+    font-size: 14px; margin-right: 10px; vertical-align: -7px;
+  }
+  .step .txt b { color: var(--brass); font-weight: 400; }
+
+  .trap {
+    display: grid; grid-template-columns: 26px 1fr; gap: 14px;
+    border: 1px solid rgba(232,165,75,0.4); border-radius: 4px;
+    background: var(--warn-bg); padding: 16px 18px; margin-bottom: 34px;
+    font-size: 15px; line-height: 1.55;
+  }
+  .trap svg { width: 22px; height: 22px; color: var(--warn); margin-top: 2px; }
+  .trap b { color: var(--warn); font-weight: 400; }
+  .trap a { color: var(--warn); }
+
+  .next h2 { font-size: 12px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--bone-dim); font-weight: 400; margin-bottom: 14px; }
+  .next-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .next-row a, .next-row span.soon {
+    display: block; padding: 14px 16px; border-radius: 4px;
+    border: 1px solid rgba(255,255,255,0.06); background: var(--ink-2);
+    color: var(--bone); text-decoration: none; font-size: 14px; line-height: 1.4;
+    transition: border-color 0.25s ease, transform 0.25s ease;
+  }
+  .next-row a:hover { border-color: rgba(201,164,92,0.45); transform: translateY(-2px); }
+  .next-row i { display: block; margin-top: 5px; font-size: 12px; color: var(--bone-dim); font-style: normal; }
+  .next-row .soon { opacity: 0.65; }
+
+  @media (max-width: 720px) {
+    .step { grid-template-columns: 1fr; }
+    .next-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<article class="guide">
+  <nav class="crumb"><a href="../">← Все гайды</a></nav>
+
+  <header class="g-head">
+    <div class="g-role">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m16.24 7.76-1.804 5.411a2 2 0 0 1-1.265 1.265L7.76 16.24l1.804-5.411a2 2 0 0 1 1.265-1.265z"/></svg>
+      Для Мастера
+    </div>
+    <h1>Стол за две минуты: <em>комната, карта, приглашение</em></h1>
+    <div class="g-meta">
+      <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> видео 13 сек · чтение 40 сек</span>
+      <span>До первой игры — три клика. Проверь сам, пока заваривается чай.</span>
+    </div>
+  </header>
+
+  <div class="g-video">
+    <video src="start-table.mp4" poster="poster.jpg" muted autoplay loop playsinline></video>
+  </div>
+
+  <div class="g-steps">
+    <div class="step">
+      <div class="shot"><img src="step-1.jpg" alt="Экран «Мои игры», кнопка создания комнаты" loading="lazy"></div>
+      <div class="txt"><span class="n">1</span>На главной открой <b>Мои игры</b> и жми <b>Создать комнату</b>. Комната — твоё игровое пространство с постоянной ссылкой.</div>
+    </div>
+    <div class="step">
+      <div class="shot"><img src="step-2.jpg" alt="Перетаскивание файла карты на пустой стол" loading="lazy"></div>
+      <div class="txt"><span class="n">2</span><b>Перетащи картинку карты</b> — PNG или JPG — прямо на стол. Она сама ляжет фоном сцены.</div>
+    </div>
+    <div class="step">
+      <div class="shot"><img src="step-3.jpg" alt="Готовый стол: карта таверны, сетка, токены" loading="lazy"></div>
+      <div class="txt"><span class="n">3</span>Готово — жми <b>Пригласить</b> и отправь ссылку группе. Гости входят по ней сразу, без регистрации.</div>
+    </div>
+  </div>
+
+  <div class="trap">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16h.01"/><path d="M12 8v4"/><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 20h16a2 2 0 0 0 1.73-2"/></svg>
+    <div><b>Играют не там, где ищут.</b> Первая ссылка в поиске ведёт на страницу-презентацию. Рабочий стол живёт на <a href="https://beta.rolebaza.ru">beta.rolebaza.ru</a> — сохрани в закладки.</div>
+  </div>
+
+  <nav class="next">
+    <h2>Что дальше</h2>
+    <div class="next-row">
+      <span class="soon"><b>Подгони сетку под карту</b><i>чтобы токены ходили по клеткам · скоро</i></span>
+      <span class="soon"><b>Оживи героя: токен и лист</b><i>раздай персонажей игрокам · скоро</i></span>
+      <span class="soon"><b>Кубы: бросай как надо</b><i>покажи этот гайд игрокам · скоро</i></span>
+    </div>
+  </nav>
+</article>
+
+</body>
+</html>

@@ -1,0 +1,640 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>РолеБаза — Гайды сообщества: первый конкурс</title>
+<meta name="description" content="Итоги первого конкурса гайдов РолеБазы: пьедестал, награды, разбор работ победителей, метрики и номинации.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="РолеБаза">
+<meta property="og:url" content="https://rolebaza.ru/tutorials-contest/">
+<meta property="og:title" content="Гайды сообщества — первый конкурс РолеБазы">
+<meta property="og:description" content="Три победителя: Илья Лемешев — золото, Александр — серебро, Daria Di — бронза. Пьедестал почёта, награды и разбор работ.">
+<meta property="og:image" content="https://rolebaza.ru/tutorials-contest/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="characters/favicon.ico">
+<style>
+  :root {
+    --ink: #131118;
+    --ink-2: #1a1720;
+    --plate: #201c28;
+    --plate-edge: rgba(201, 164, 92, 0.22);
+    --brass: #c9a45c;
+    --brass-dim: #8a7448;
+    --bone: #e9e2d2;
+    --bone-dim: #a89f8c;
+    --glow: rgba(255, 190, 96, 0.10);
+    --grid: rgba(255,255,255,0.07);
+    --baseline: rgba(255,255,255,0.16);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background:
+      radial-gradient(1200px 600px at 50% -10%, #26202e 0%, transparent 60%),
+      radial-gradient(900px 500px at 85% 110%, #1e1a26 0%, transparent 55%),
+      var(--ink);
+    color: var(--bone);
+    font-family: Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif;
+    min-height: 100vh;
+    padding: 64px 48px 96px;
+    position: relative;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.05;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  header { text-align: center; margin-bottom: 72px; animation: rise 0.9s ease-out both; }
+
+  .logo-head { display: flex; justify-content: center; margin-bottom: 20px;
+    --face-top: #5a4830; --face-left: #453623; --face-right: #372b1a; --accent: #e8c877; }
+  .logo-head a { display: block; }
+  .logo-head svg { filter: drop-shadow(0 6px 12px rgba(0,0,0,0.5)); transition: transform 0.25s ease; }
+  .logo-head a:hover svg { transform: translateY(-3px) scale(1.06); }
+
+  .over-title {
+    font-size: 12px; letter-spacing: 0.55em; text-transform: uppercase;
+    color: var(--brass-dim); margin-bottom: 18px;
+  }
+
+  h1 {
+    font-size: clamp(30px, 4.4vw, 52px); font-weight: 400;
+    font-variant: small-caps; letter-spacing: 0.08em; color: var(--bone);
+    display: flex; align-items: center; justify-content: center; gap: 18px;
+  }
+  h1 .h1-icon { width: 0.82em; height: 0.82em; color: var(--brass); flex: none; }
+
+  .sub-title { margin-top: 14px; color: var(--bone-dim); font-size: 15px; font-style: italic; }
+
+  .nav-link {
+    display: inline-block; margin-top: 20px; font-size: 12px; letter-spacing: 0.3em;
+    text-transform: uppercase; color: var(--brass); text-decoration: none;
+    border-bottom: 1px solid var(--brass-dim); padding-bottom: 3px;
+  }
+  .nav-link:hover { color: var(--bone); border-color: var(--brass); }
+
+
+  main { max-width: 1280px; margin: 0 auto; display: flex; flex-direction: column; gap: 56px; }
+
+  .plate {
+    background: linear-gradient(180deg, rgba(255,255,255,0.015), transparent 40%), var(--plate);
+    border: 1px solid var(--plate-edge);
+    border-radius: 4px;
+    padding: 30px 34px 36px;
+    position: relative;
+    animation: rise 0.8s ease-out both;
+  }
+  .plate:nth-of-type(1) { animation-delay: 0.08s; }
+  .plate:nth-of-type(2) { animation-delay: 0.16s; }
+  .plate:nth-of-type(3) { animation-delay: 0.24s; }
+  .plate:nth-of-type(4) { animation-delay: 0.32s; }
+  .plate:nth-of-type(5) { animation-delay: 0.40s; }
+  .plate:nth-of-type(6) { animation-delay: 0.48s; }
+  .plate:nth-of-type(7) { animation-delay: 0.56s; }
+
+  .plate { scroll-margin-top: 28px; }
+  .plate:target { animation: flash 1.6s ease-out 1; }
+  @keyframes flash {
+    0%   { border-color: rgba(230,193,95,0.95); box-shadow: 0 0 0 1px rgba(230,193,95,0.55), 0 0 36px rgba(230,193,95,0.28); }
+    100% { border-color: var(--plate-edge); box-shadow: none; }
+  }
+
+  .pod a.p-jump { display: block; text-decoration: none; color: inherit; }
+  .pod a.p-jump img { transition: transform 0.25s ease; }
+  .pod a.p-jump:hover img { transform: translateY(-5px); }
+  .pod a.p-jump:hover .p-name { color: var(--brass); }
+  .pod .p-name { transition: color 0.25s ease; }
+
+  a.nom-card { text-decoration: none; color: var(--bone); }
+
+  .plate::before, .plate::after {
+    content: ''; position: absolute; width: 14px; height: 14px;
+    border-color: var(--brass-dim); border-style: solid; opacity: 0.8;
+  }
+  .plate::before { top: -1px; left: -1px; border-width: 1px 0 0 1px; }
+  .plate::after  { bottom: -1px; right: -1px; border-width: 0 1px 1px 0; }
+
+  .plate-head { display: flex; align-items: baseline; gap: 18px; margin-bottom: 26px; }
+  .numeral { font-size: 15px; color: var(--brass); letter-spacing: 0.2em; white-space: nowrap; }
+  .numeral.gold   { color: #e6c15f; }
+  .numeral.silver { color: #c3c9d4; }
+  .numeral.bronze { color: #c77f52; }
+
+  /* ── пьедестал ── */
+  .podium-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; align-items: end; }
+  .pod { display: flex; flex-direction: column; }
+  .pod .p-img { display: flex; align-items: flex-end; justify-content: center; height: 210px; position: relative; }
+  .pod .p-img::after {
+    content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
+    width: 52%; height: 12px; border-radius: 50%;
+    background: radial-gradient(50% 50% at 50% 50%, rgba(0,0,0,0.55), transparent 70%);
+  }
+  .pod .p-img img { max-height: 100%; max-width: 92%; object-fit: contain; position: relative; z-index: 1; filter: drop-shadow(0 10px 14px rgba(0,0,0,0.45)); }
+  .pod .p-name { text-align: center; font-variant: small-caps; letter-spacing: 0.06em; font-size: 19px; margin: 12px 0 12px; }
+  .pod .step {
+    display: flex; align-items: center; justify-content: center;
+    font-size: 44px; border-radius: 3px 3px 0 0; border: 1px solid; border-bottom: none;
+  }
+  .pod.gold   .step { height: 96px; color: #e6c15f; border-color: rgba(230,193,95,0.5);
+    background: linear-gradient(180deg, rgba(230,193,95,0.18), rgba(230,193,95,0.03)); }
+  .pod.silver .step { height: 70px; color: #c3c9d4; border-color: rgba(195,201,212,0.4);
+    background: linear-gradient(180deg, rgba(195,201,212,0.14), rgba(195,201,212,0.02)); }
+  .pod.bronze .step { height: 52px; color: #c77f52; border-color: rgba(199,127,82,0.45);
+    background: linear-gradient(180deg, rgba(199,127,82,0.15), rgba(199,127,82,0.02)); }
+  .pod .awards {
+    list-style: none; border-top: 1px solid rgba(255,255,255,0.09);
+    padding: 14px 6px 0; margin: 0;
+  }
+  .pod .awards li {
+    font-size: 13.5px; line-height: 1.45; color: var(--bone);
+    padding-left: 16px; position: relative; margin-bottom: 7px;
+  }
+  .pod .awards li::before { content: ''; position: absolute; left: 0; top: 8px; width: 6px; height: 1px; }
+  .pod.gold   .awards li::before { background: #e6c15f; }
+  .pod.silver .awards li::before { background: #c3c9d4; }
+  .pod.bronze .awards li::before { background: #c77f52; }
+  .podium-note { margin-top: 22px; font-size: 13px; color: var(--bone-dim); font-style: italic; text-align: center; }
+  .plate-head h2 {
+    font-size: 24px; font-weight: 400; font-variant: small-caps;
+    letter-spacing: 0.06em; white-space: nowrap;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .plate-head h2 svg { color: var(--brass); flex: none; }
+  .plate-head .thread {
+    flex: 1; height: 1px;
+    background: linear-gradient(90deg, var(--plate-edge), transparent);
+    transform: translateY(-6px);
+  }
+
+  .icon { width: 20px; height: 20px; stroke-width: 1.75; vertical-align: -4px; }
+  .icon-s { width: 15px; height: 15px; stroke-width: 1.75; vertical-align: -2.5px; }
+
+  /* ── интро ── */
+  .intro-grid { display: grid; grid-template-columns: 1fr 300px; gap: 30px; align-items: center; }
+  .intro-text p { line-height: 1.65; margin-bottom: 14px; color: var(--bone); }
+  .intro-text p.dim { color: var(--bone-dim); font-size: 14px; }
+  .intro-text .accent { color: var(--brass); }
+
+  .mimic-frame { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+  .mimic-frame img {
+    max-width: 100%; max-height: 280px; object-fit: contain;
+    filter: drop-shadow(0 10px 14px rgba(0,0,0,0.45));
+  }
+  .mimic-frame .cap-t { font-size: 11px; letter-spacing: 0.34em; text-transform: uppercase; color: var(--bone-dim); text-align: center; }
+
+  .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-top: 28px; }
+  .kpi {
+    text-align: center; padding: 20px 12px 18px; border-radius: 3px;
+    background:
+      radial-gradient(75% 55% at 50% 42%, var(--glow), transparent 75%),
+      linear-gradient(180deg, rgba(255,255,255,0.02), transparent 55%),
+      var(--ink-2);
+    border: 1px solid rgba(255,255,255,0.045);
+  }
+  .kpi .v { font-size: 34px; color: var(--bone); font-variant-numeric: tabular-nums; }
+  .kpi .l { margin-top: 8px; font-size: 11px; letter-spacing: 0.28em; text-transform: uppercase; color: var(--bone-dim); }
+
+  /* ── карточки участников ── */
+  .work-grid { display: grid; grid-template-columns: 240px 1fr; gap: 30px; }
+  .portrait { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+  .portrait .frame {
+    height: 280px; width: 100%; display: flex; align-items: flex-end; justify-content: center;
+    position: relative; border-radius: 3px; padding: 14px 8px 10px;
+    background:
+      radial-gradient(75% 55% at 50% 42%, var(--glow), transparent 75%),
+      linear-gradient(180deg, rgba(255,255,255,0.02), transparent 55%),
+      var(--ink-2);
+    border: 1px solid rgba(255,255,255,0.045);
+    transition: border-color 0.25s ease;
+  }
+  .portrait .frame:hover { border-color: rgba(201, 164, 92, 0.45); }
+  .portrait .frame::after {
+    content: ''; position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%);
+    width: 62%; height: 14px; border-radius: 50%;
+    background: radial-gradient(50% 50% at 50% 50%, rgba(0,0,0,0.55), transparent 70%);
+    z-index: 0;
+  }
+  .portrait .frame img {
+    max-height: 100%; max-width: 100%; object-fit: contain; position: relative; z-index: 1;
+    filter: drop-shadow(0 10px 14px rgba(0,0,0,0.45));
+  }
+  .portrait .cap-t {
+    font-size: 11px; letter-spacing: 0.34em; text-transform: uppercase; color: var(--bone-dim); text-align: center;
+  }
+  .p-links { display: flex; flex-direction: column; align-items: center; gap: 8px; font-size: 14px; margin-top: 2px; }
+  .p-links a { color: var(--brass); text-decoration: none; }
+  .p-links a::before { content: '▸ '; color: var(--brass-dim); }
+  .p-links a:hover { color: var(--bone); }
+  .portrait .swatch { display: inline-block; width: 9px; height: 9px; border-radius: 2px; vertical-align: 0; margin-right: 8px; }
+
+  .work-body { min-width: 0; }
+  .work-meta { display: flex; flex-wrap: wrap; gap: 8px 22px; font-size: 13.5px; color: var(--bone-dim); margin-bottom: 16px; }
+  .work-meta a { color: var(--brass); text-decoration: none; border-bottom: 1px solid var(--brass-dim); }
+  .work-meta a:hover { color: var(--bone); border-color: var(--brass); }
+  .work-meta svg { color: var(--brass-dim); }
+
+  .work-desc { line-height: 1.6; margin-bottom: 18px; }
+  .work-desc .dim { color: var(--bone-dim); }
+
+  .thanks { margin-bottom: 20px; }
+  .thanks h4 {
+    font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase;
+    font-weight: 400; margin-bottom: 12px; color: var(--brass);
+  }
+  .thanks ul { list-style: none; columns: 2; column-gap: 28px; }
+  .thanks li {
+    font-size: 14px; line-height: 1.5; color: var(--bone); padding-left: 16px; position: relative;
+    margin-bottom: 8px; break-inside: avoid;
+  }
+  .thanks li::before { content: ''; position: absolute; left: 0; top: 9px; width: 6px; height: 1px; background: var(--brass-dim); }
+
+  .score-strip { display: flex; flex-wrap: wrap; gap: 10px 26px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.06); }
+  .score-strip .sc { font-size: 13px; color: var(--bone-dim); letter-spacing: 0.04em; }
+  .score-strip .sc b { color: var(--bone); font-weight: 400; font-size: 16px; font-variant-numeric: tabular-nums; }
+  .score-strip .nom {
+    margin-left: auto; font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--brass); border: 1px solid var(--brass-dim); border-radius: 3px;
+    padding: 6px 12px; display: inline-flex; align-items: center; gap: 8px; white-space: nowrap;
+  }
+
+  /* ── номинации ── */
+  .nom-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .nom-card {
+    position: relative; padding: 24px 18px 20px; border-radius: 3px; text-align: center;
+    background:
+      radial-gradient(75% 55% at 50% 30%, var(--glow), transparent 75%),
+      linear-gradient(180deg, rgba(255,255,255,0.02), transparent 55%),
+      var(--ink-2);
+    border: 1px solid rgba(255,255,255,0.045);
+    transition: border-color 0.25s ease, transform 0.25s ease;
+  }
+  .nom-card:hover { border-color: rgba(201, 164, 92, 0.45); transform: translateY(-3px); }
+  .nom-card .n-icon { color: var(--brass); margin-bottom: 12px; }
+  .nom-card .n-icon svg { width: 30px; height: 30px; stroke-width: 1.5; }
+  .nom-card h3 { font-size: 15px; font-weight: 400; font-variant: small-caps; letter-spacing: 0.1em; margin-bottom: 6px; }
+  .nom-card .n-who { font-size: 13.5px; color: var(--brass); margin-bottom: 12px; }
+  .nom-card .n-img { height: 170px; display: flex; align-items: flex-end; justify-content: center; margin-bottom: 12px; }
+  .nom-card .n-img img { max-height: 100%; max-width: 88%; object-fit: contain; filter: drop-shadow(0 8px 10px rgba(0,0,0,0.45)); }
+  .nom-card p { font-size: 13px; line-height: 1.5; color: var(--bone-dim); }
+
+  /* ── выводы ── */
+  .conclusion-grid { display: grid; grid-template-columns: 1fr 260px; gap: 30px; align-items: start; }
+  .conclusion-list { list-style: none; }
+  .conclusion-list li { position: relative; padding-left: 30px; margin-bottom: 16px; line-height: 1.6; }
+  .conclusion-list li svg { position: absolute; left: 0; top: 3px; color: var(--brass-dim); }
+  .caveats { margin-top: 26px; padding-top: 18px; border-top: 1px solid rgba(255,255,255,0.06); font-size: 13px; color: var(--bone-dim); line-height: 1.6; }
+  .caveats b { color: var(--bone); font-weight: 400; }
+
+  .logo-die {
+    position: absolute; left: 50%; bottom: -45px; transform: translateX(-50%);
+    --face-top: #362f42; --face-left: #2b2536; --face-right: #221d2b; --accent: var(--brass);
+  }
+  .logo-die a { display: block; }
+  .logo-die svg { filter: drop-shadow(0 10px 18px rgba(0,0,0,0.55)); transition: transform 0.25s ease; }
+  .logo-die a:hover svg { transform: translateY(-4px) scale(1.06); }
+
+  footer {
+    margin-top: 80px; text-align: center; font-size: 11.5px;
+    letter-spacing: 0.3em; text-transform: uppercase; color: var(--brass-dim);
+  }
+
+  @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+
+  @media (max-width: 1020px) {
+    body { padding: 44px 20px 72px; }
+    .podium-grid { gap: 10px; }
+    .pod .p-img { height: 130px; }
+    .pod .p-name { font-size: 15px; }
+    .pod .step { font-size: 30px; }
+    .pod .awards li { font-size: 12px; }
+    .work-grid { grid-template-columns: 1fr; }
+    .portrait .frame { height: 240px; }
+    .intro-grid { grid-template-columns: 1fr; }
+    .mimic-frame { order: -1; }
+    .viz-grid { grid-template-columns: 1fr; }
+    .nom-grid { grid-template-columns: 1fr; }
+    .kpi-row { grid-template-columns: repeat(2, 1fr); }
+    .conclusion-grid { grid-template-columns: 1fr; }
+    .pro-con { grid-template-columns: 1fr; }
+    .score-strip .nom { margin-left: 0; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-head"><a href="https://rolebaza.ru" aria-label="РолеБаза"><svg viewBox="61.80 56.20 76.40 86.50" width="64" height="72" style="display:block;" aria-label="РолеБаза">
+      <defs>
+        <filter id="ftl-h"><feColorMatrix type="matrix" values="0.85 0 0 0 0.01 0 0.83 0 0 0 0 0 0.80 0 0 0 0 0 1 0"></feColorMatrix></filter>
+        <filter id="ftr-h"><feColorMatrix type="matrix" values="0.75 0 0 0 0.01 0 0.72 0 0 0 0 0 0.70 0 0 0 0 0 1 0"></feColorMatrix></filter>
+        <clipPath id="fcl-h"><polygon points="63.80,81.30 98.09,101.10 98.09,140.70 63.80,120.90"></polygon></clipPath>
+        <clipPath id="fcr-h"><polygon points="136.20,81.30 136.20,120.90 101.91,140.70 101.91,101.10"></polygon></clipPath>
+      </defs>
+      <path d="M 95.67,60.70 Q 100,58.20 104.33,60.70 L 129.96,75.50 Q 134.29,78 129.96,80.50 L 104.33,95.30 Q 100,97.80 95.67,95.30 L 70.04,80.50 Q 65.71,78 70.04,75.50 Z" fill="var(--face-top)"></path>
+      <path d="M 63.80,86.30 Q 63.80,81.30 68.13,83.80 L 93.76,98.60 Q 98.09,101.10 98.09,106.10 L 98.09,135.70 Q 98.09,140.70 93.76,138.20 L 68.13,123.40 Q 63.80,120.90 63.80,115.90 Z" fill="var(--face-left)"></path>
+      <path d="M 131.87,83.80 Q 136.20,81.30 136.20,86.30 L 136.20,115.90 Q 136.20,120.90 131.87,123.40 L 106.24,138.20 Q 101.91,140.70 101.91,135.70 L 101.91,106.10 Q 101.91,101.10 106.24,98.60 Z" fill="var(--face-right)"></path>
+      <path d="M200 0V1200L0 1300L400 1500L600 1400V200L800 100L400 -100ZM600 1400 1000 1600 1400 1400V800L800 500L600 600L1000 800V1200Z" fill="var(--accent)" transform="translate(100,78) scale(0.013672,-0.013672) translate(-700,-750)"></path>
+      <g filter="url(#ftl-h)"><g clip-path="url(#fcl-h)"><g transform="matrix(34.2936,19.8,0,39.6,63.8012,81.3)"><g transform="translate(0.14,0.14) scale(0.0075,0.0075)"><g transform="translate(0,96) scale(0.1,-0.1)" fill="var(--accent)" stroke="none">
+        <path d="M424 873 c-116 -95 -161 -106 -312 -79 -115 21 -114 23 -59 -180 57 -210 58 -214 103 -264 59 -65 105 -85 199 -85 90 0 136 19 192 77 86 90 92 173 29 405 -24 89 -47 167 -51 173 -12 19 -33 10 -101 -47z m76 -75 c6 -24 23 -85 37 -137 33 -123 29 -193 -13 -253 -58 -82 -178 -112 -264 -66 -69 37 -95 84 -139 248 -22 80 -38 146 -37 148 2 1 27 -2 56 -8 120 -23 193 -6 280 65 30 24 58 44 62 45 4 0 12 -19 18 -42z"></path>
+        <path d="M395 709 c-27 -13 -46 -44 -39 -64 8 -19 38 -19 54 0 7 8 25 14 43 12 24 -1 32 3 35 17 8 37 -47 57 -93 35z"></path>
+        <path d="M203 655 c-31 -13 -50 -46 -38 -65 9 -15 41 -12 55 5 8 9 22 12 41 8 54 -10 49 45 -6 60 -11 4 -34 0 -52 -8z"></path>
+        <path d="M426 485 c-9 -25 -70 -47 -100 -35 -34 13 -58 2 -54 -24 4 -30 68 -50 117 -36 44 12 94 60 89 87 -4 23 -43 30 -52 8z"></path>
+        <path d="M654 505 c-4 -9 0 -23 7 -31 17 -16 103 -34 166 -34 l44 0 -76 -149 c-90 -177 -116 -203 -219 -209 -65 -4 -106 10 -166 58 -31 25 -63 17 -58 -13 4 -27 77 -83 126 -97 104 -29 217 2 283 78 48 54 193 360 179 377 -6 8 -48 15 -113 18 -56 4 -117 9 -134 13 -25 5 -34 2 -39 -11z"></path>
+        <path d="M642 381 c-24 -15 -10 -46 23 -49 17 -2 38 -11 48 -20 13 -12 22 -13 34 -6 27 17 26 32 -1 59 -26 26 -77 34 -104 16z"></path>
+        <path d="M474 235 c-11 -28 4 -45 40 -45 35 0 43 -5 71 -45 11 -16 17 -18 32 -9 26 17 18 54 -17 87 -24 21 -40 27 -75 27 -31 0 -47 -5 -51 -15z"></path>
+      </g></g></g></g></g>
+      <g filter="url(#ftr-h)"><g clip-path="url(#fcr-h)"><g transform="matrix(34.2936,-19.8,0,39.6,101.9052,101.1)"><g transform="translate(0.14,0.14) scale(0.03,0.03) translate(24,0) scale(-1,1)">
+        <path d="M19 17V5a2 2 0 0 0-2-2H4" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke" style="stroke-width:1.8px"></path>
+        <path d="M8 21h12a2 2 0 0 0 2-2v-1a1 1 0 0 0-1-1H11a1 1 0 0 0-1 1v1a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v2a1 1 0 0 0 1 1h3" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke" style="stroke-width:1.8px"></path>
+      </g></g></g>
+        <line x1="119.05" y1="111" x2="120.08" y2="109.22" stroke="var(--accent)" stroke-linecap="round" vector-effect="non-scaling-stroke" style="stroke-width:1.8px"></line>
+        <line x1="119.05" y1="111" x2="120.08" y2="111.59" stroke="var(--accent)" stroke-linecap="round" vector-effect="non-scaling-stroke" style="stroke-width:1.8px"></line>
+        <line x1="119.05" y1="111" x2="118.02" y2="112.78" stroke="var(--accent)" stroke-linecap="round" vector-effect="non-scaling-stroke" style="stroke-width:1.8px"></line>
+        <line x1="119.05" y1="111" x2="118.02" y2="110.41" stroke="var(--accent)" stroke-linecap="round" vector-effect="non-scaling-stroke" style="stroke-width:1.8px"></line>
+      </g>
+    </svg></a></div>
+  <h1><svg class="h1-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m16.24 7.76-1.804 5.411a2 2 0 0 1-1.265 1.265L7.76 16.24l1.804-5.411a2 2 0 0 1 1.265-1.265z"/></svg>Гайды сообщества</h1>
+  <div class="sub-title">Первый конкурс</div>
+</header>
+
+<main>
+
+  <!-- ═══ Свиток конкурса ═══ -->
+  <section class="plate">
+    <div class="plate-head">
+      <h2><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M15 12h-5"/><path d="M15 8h-5"/><path d="M19 17V5a2 2 0 0 0-2-2H4"/><path d="M8 21h12a2 2 0 0 0 2-2v-1a1 1 0 0 0-1-1H11a1 1 0 0 0-1 1v1a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v2a1 1 0 0 0 1 1h3"/></svg>Свиток конкурса</h2>
+      <span class="thread"></span>
+    </div>
+    <div class="intro-grid">
+      <div class="intro-text">
+        <p>Мы создаём РолеБазу вместе с сообществом и для него, и рады поздравить и поблагодарить участников нашего первого конкурса. Задачей конкурса было: <a class="accent" href="https://t.me/rolebaza/280" target="_blank" rel="noopener" style="color:var(--brass); text-decoration:none;">создать понятный гайд для новичка</a> — чтобы человек, никогда не видевший наш стол прежде, смог разобраться и провести свою первую игру.</p>
+        <p>С 8 июня по 17 июля конкурс собрал шесть публикаций — от четырёхминутного дружелюбного онбординга до 48-страничного мастер-мануала и серии из четырёх статей, покрывшей обе роли за столом. И сегодня на этой странице представлены наши победители.</p>
+      </div>
+      <div class="mimic-frame">
+        <img src="characters/0_chest.png" alt="Хранитель призов">
+        <div class="cap-t">Хранитель призов</div>
+      </div>
+    </div>
+    <div class="kpi-row">
+      <div class="kpi"><div class="v">3</div><div class="l">победителя</div></div>
+      <div class="kpi"><div class="v">15 746</div><div class="l">слов суммарно</div></div>
+      <div class="kpi"><div class="v">252</div><div class="l">иллюстрации</div></div>
+      <div class="kpi"><div class="v">40</div><div class="l">дней конкурса</div></div>
+    </div>
+  </section>
+
+  <!-- ═══ Пьедестал ═══ -->
+  <section class="plate">
+    <div class="plate-head">
+      <h2><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M10 14.66v1.626a2 2 0 0 1-.976 1.696A5 5 0 0 0 7 21.978"/><path d="M14 14.66v1.626a2 2 0 0 0 .976 1.696A5 5 0 0 1 17 21.978"/><path d="M18 9h1.5a1 1 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M6 9a6 6 0 0 0 12 0V3a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1z"/><path d="M6 9H4.5a1 1 0 0 1 0-5H6"/></svg>Пьедестал почёта</h2>
+      <span class="thread"></span>
+    </div>
+    <div class="podium-grid">
+      <div class="pod silver">
+        <a class="p-jump" href="#pl-alex">
+        <div class="p-img"><img src="characters/4_detective.png" alt="Детектив"></div>
+        <div class="p-name">Александр</div>
+        </a>
+        <div class="step">II</div>
+        <ul class="awards">
+          <li>8 месяцев доступа к PRO-пакету*</li>
+          <li>Уникальное почётное звание и плашка <svg class="icon-s" style="color:var(--brass)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m16.24 7.76-1.804 5.411a2 2 0 0 1-1.265 1.265L7.76 16.24l1.804-5.411a2 2 0 0 1 1.265-1.265z"/></svg> «Проводник» на платформе РолеБаза</li>
+          <li>2d20 фирменных кубов РолеБазы</li>
+          <li>Публикация гайда на сайте и каналах РолеБазы</li>
+        </ul>
+      </div>
+      <div class="pod gold">
+        <a class="p-jump" href="#pl-ilya">
+        <div class="p-img"><img src="characters/2_machete.png" alt="Выживший"></div>
+        <div class="p-name">Илья Лемешев</div>
+        </a>
+        <div class="step">I</div>
+        <ul class="awards">
+          <li>Год доступа к PRO-пакету*</li>
+          <li>Уникальное почётное звание и плашка <svg class="icon-s" style="color:var(--brass)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m16.24 7.76-1.804 5.411a2 2 0 0 1-1.265 1.265L7.76 16.24l1.804-5.411a2 2 0 0 1 1.265-1.265z"/></svg> «Проводник» на платформе РолеБаза</li>
+          <li>Фирменный набор кубов РолеБазы</li>
+          <li>Публикация гайда на сайте и каналах РолеБазы</li>
+        </ul>
+      </div>
+      <div class="pod bronze">
+        <a class="p-jump" href="#pl-daria">
+        <div class="p-img"><img src="characters/3_cyber_woman.png" alt="Кибер"></div>
+        <div class="p-name">Daria Di</div>
+        </a>
+        <div class="step">III</div>
+        <ul class="awards">
+          <li>6 месяцев доступа к PRO-пакету*</li>
+          <li>Уникальное почётное звание и плашка <svg class="icon-s" style="color:var(--brass)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m16.24 7.76-1.804 5.411a2 2 0 0 1-1.265 1.265L7.76 16.24l1.804-5.411a2 2 0 0 1 1.265-1.265z"/></svg> «Проводник» на платформе РолеБаза</li>
+          <li>1d20 фирменный куб РолеБазы</li>
+          <li>Публикация гайда на сайте и каналах РолеБазы</li>
+        </ul>
+      </div>
+    </div>
+    <p class="podium-note">* — когда PRO-пакет появится. И, конечно, безумная благодарность от всего комьюнити — уже сейчас 💜</p>
+  </section>
+
+  <!-- ═══ Номинации ═══ -->
+  <section class="plate">
+    <div class="plate-head">
+      <h2><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526"/><circle cx="12" cy="8" r="6"/></svg>Номинации</h2>
+      <span class="thread"></span>
+    </div>
+    <div class="nom-grid">
+      <a class="nom-card" href="#pl-alex">
+        <div class="n-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg></div>
+        <h3>Гримуар Мастера</h3>
+        <div class="n-who">Александр</div>
+        <div class="n-img"><img src="characters/attack2/4_detective.png" alt="Детектив — атака"></div>
+        <p>Единственный сквозной путь от регистрации до боя в одном документе — 48 страниц, обе роли.</p>
+      </a>
+      <a class="nom-card" href="#pl-ilya">
+        <div class="n-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M15 12h-5"/><path d="M15 8h-5"/><path d="M19 17V5a2 2 0 0 0-2-2H4"/><path d="M8 21h12a2 2 0 0 0 2-2v-1a1 1 0 0 0-1-1H11a1 1 0 0 0-1 1v1a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v2a1 1 0 0 0 1 1h3"/></svg></div>
+        <h3>Летопись Первопроходца</h3>
+        <div class="n-who">Илья Лемешев</div>
+        <div class="n-img"><img src="characters/curious2/2_machete.png" alt="Выживший — интерес"></div>
+        <p>126 скриншотов в четырёх статьях, и каждой роли — свой гайд: от первого клика игрока до создания компендиумов.</p>
+      </a>
+      <a class="nom-card" href="#pl-daria">
+        <div class="n-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/><path d="M20 2v4"/><path d="M22 4h-4"/></svg></div>
+        <h3>Тайное знание</h3>
+        <div class="n-who">Daria Di</div>
+        <div class="n-img"><img src="characters/attack2/3_cyber_woman.png" alt="Кибер — атака"></div>
+        <p>Единственная закрыла недокументированную механику конструктора действий — когда нужна именно она, этот разбор полезнее любого тома.</p>
+      </a>
+    </div>
+  </section>
+
+  <!-- ═══ I место · Илья ═══ -->
+  <section class="plate" id="pl-ilya">
+    <div class="plate-head">
+      <span class="numeral gold">I</span>
+      <h2>Илья Лемешев</h2>
+      <span class="thread"></span>
+    </div>
+    <div class="work-grid">
+      <div class="portrait">
+        <div class="frame"><img src="characters/calm2/2_machete.png" alt="Выживший — покой"></div>
+        <div class="p-links">
+          <a href="works/ilya-players/">Гайд игрокам</a>
+          <a href="works/ilya-masters-1/">Гайд Мастерам, ч. 1</a>
+          <a href="works/ilya-masters-2/">Гайд Мастерам, ч. 2</a>
+          <a href="works/ilya-compendiums/">Гайд по компендиумам</a>
+        </div>
+      </div>
+      <div class="work-body">
+        <p class="work-desc">Самый широкий портфель конкурса: <b>каждой роли — свой гайд</b>. Лёгкий четырёхминутный онбординг для приглашённого игрока (кости, лист, чат, голос — и единственный в конкурсе лайфхак «первая ссылка в поиске — лендинг, играть на "Ролебаза Бета"»), а затем серия для Мастеров: системный обход всех «областей» стола — границы и сетка, токены и HUD, туман войны, декорации, порталы, бой, модерация, инструменты рисования — и отдельная статья о создании компендиумов.</p>
+        <div class="thanks">
+          <h4>За что благодарим</h4>
+          <ul>
+            <li>Отдельный гайд каждой аудитории: игрокам, Мастерам (в трёх частях) и создателям компендиумов</li>
+            <li>126 скриншотов — максимальная плотность кадров на конкурсе, почти каждая функция показана</li>
+            <li>Пошаговые инструкции с нумерацией: порталы, туман войны, музыкальные каналы, создание компендиума</li>
+            <li>Дошёл до нишевого, чего нет больше нигде: слои, столы-черновики, контейнеры, режим Трибуны</li>
+            <li>«Грабли» из реальных игр: калибровка сетки, повторный выбор для фикса размера токена, единственная стартовая граница</li>
+            <li>Сквозные персонажи-маскоты и дружелюбный тон — читать серию по-настоящему весело</li>
+          </ul>
+        </div>
+        <div class="score-strip">
+          <span class="sc"><b>5 909</b> слов</span>
+          <span class="sc"><b>126</b> иллюстраций</span>
+          <span class="nom"><svg class="icon-s" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M15 12h-5"/><path d="M15 8h-5"/><path d="M19 17V5a2 2 0 0 0-2-2H4"/><path d="M8 21h12a2 2 0 0 0 2-2v-1a1 1 0 0 0-1-1H11a1 1 0 0 0-1 1v1a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v2a1 1 0 0 0 1 1h3"/></svg> Летопись Первопроходца</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ II место · Александр ═══ -->
+  <section class="plate" id="pl-alex">
+    <div class="plate-head">
+      <span class="numeral silver">II</span>
+      <h2>Александр</h2>
+      <span class="thread"></span>
+    </div>
+    <div class="work-grid">
+      <div class="portrait">
+        <div class="frame"><img src="characters/calm2/4_detective.png" alt="Детектив — покой"></div>
+        <div class="p-links">
+          <a href="works/aleksandr-pdf/">«РолеБаза гайд» (48 стр.)</a>
+        </div>
+      </div>
+      <div class="work-body">
+        <p class="work-desc">Самая полная и системная работа конкурса: <b>сквозной путь мастера</b> от регистрации до проведения боя, построенный на сборке реального ваншота «Академия травников». Оглавление из 14 пунктов — и все раскрыты. <span class="dim">Фирменный приём: термины в тексте окрашены в цвет рамок на соседнем скриншоте — текст буквально «привязан» к картинке. Плюс справочные таблицы и честно описанные баги беты с обходными путями.</span></p>
+        <div class="thanks">
+          <h4>За что благодарим</h4>
+          <ul>
+            <li>Сквозной пример: настоящий ваншот «Академия травников» собирается на глазах, от регистрации до боя</li>
+            <li>Оглавление из 14 пунктов — и все раскрыты; скриншот почти на каждый клик</li>
+            <li>Фирменная дидактика: термины в тексте окрашены в цвет рамок на соседнем скриншоте</li>
+            <li>Справочные таблицы сокращений характеристик и типов урона — готовая шпаргалка за столом</li>
+            <li>Честно задокументировал баги беты и приложил обходные пути — это уже вклад в разработку</li>
+            <li>Творческие кейсы: тайные ходы через порталы и декорации, раскрытие карты «дымкой», ввод персонажей со скриншота</li>
+          </ul>
+        </div>
+        <div class="score-strip">
+          <span class="sc"><b>9 060</b> слов</span>
+          <span class="sc"><b>117</b> иллюстраций</span>
+          <span class="nom"><svg class="icon-s" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg> Гримуар Мастера</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ III место · Дарья ═══ -->
+  <section class="plate" id="pl-daria">
+    <div class="plate-head">
+      <span class="numeral bronze">III</span>
+      <h2>Daria Di</h2>
+      <span class="thread"></span>
+    </div>
+    <div class="work-grid">
+      <div class="portrait">
+        <div class="frame"><img src="characters/calm2/3_cyber_woman.png" alt="Кибер — покой"></div>
+        <div class="p-links">
+          <a href="works/daria-di-token-actions/">Добавление действий для токенов</a>
+        </div>
+      </div>
+      <div class="work-body">
+        <p class="work-desc">Единственная работа про одну конкретную — и <b>нигде не документированную</b> — механику: конструктор «Добавить действие».</p>
+        <div class="thanks">
+          <h4>За что благодарим</h4>
+          <ul>
+            <li>Первая документация конструктора действий вообще — до этой статьи механика была устной традицией</li>
+            <li>Разобрала весь конструктор по порядку — от первых полей до самых глубоких механик — и собрала находки, которые экономят часы настройки</li>
+            <li>Ободряющий живой тон в самой технически сложной теме конкурса</li>
+          </ul>
+        </div>
+        <div class="score-strip">
+          <span class="sc"><b>777</b> слов</span>
+          <span class="sc"><b>9</b> иллюстраций</span>
+          <span class="nom"><svg class="icon-s" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/><path d="M20 2v4"/><path d="M22 4h-4"/></svg> Тайное знание</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ Выводы ═══ -->
+  <section class="plate">
+    <div class="plate-head">
+      <h2><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>Выводы</h2>
+      <span class="thread"></span>
+    </div>
+    <div class="conclusion-grid">
+      <div>
+        <div class="intro-text">
+          <p>Конкурс получился. Ещё до подведения итогов гайды начали работать: ими уже подсказывали новичкам, как действовать за столом, — а это лучшая оценка, которую может получить гайд: им пользуются.</p>
+          <p>Мы опубликуем работы на сайте и каналах РолеБазы — и будем вдохновляться ими, когда возьмёмся за собственные гайды от команды. Вы вдохновляете нас делать РолеБазу лучше, удобнее и понятнее. Продолжение следует — обязательно.</p>
+        </div>
+      </div>
+      <div class="mimic-frame">
+        <img src="characters/1_elf.png" alt="Эльфийка с лютней">
+        <div class="cap-t">Истории продолжаются</div>
+      </div>
+    </div>
+    <div class="logo-die"><a href="https://beta.rolebaza.ru" aria-label="РолеБаза"><svg viewBox="61.80 56.20 76.40 86.50" width="80" height="90" style="display:block;" aria-label="РолеБаза">
+      <defs>
+        <filter id="ftl"><feColorMatrix type="matrix" values="0.85 0 0 0 0.01 0 0.83 0 0 0 0 0 0.80 0 0 0 0 0 1 0"></feColorMatrix></filter>
+        <filter id="ftr"><feColorMatrix type="matrix" values="0.75 0 0 0 0.01 0 0.72 0 0 0 0 0 0.70 0 0 0 0 0 1 0"></feColorMatrix></filter>
+        <clipPath id="fcl"><polygon points="63.80,81.30 98.09,101.10 98.09,140.70 63.80,120.90"></polygon></clipPath>
+        <clipPath id="fcr"><polygon points="136.20,81.30 136.20,120.90 101.91,140.70 101.91,101.10"></polygon></clipPath>
+      </defs>
+      <path d="M 95.67,60.70 Q 100,58.20 104.33,60.70 L 129.96,75.50 Q 134.29,78 129.96,80.50 L 104.33,95.30 Q 100,97.80 95.67,95.30 L 70.04,80.50 Q 65.71,78 70.04,75.50 Z" fill="var(--face-top)"></path>
+      <path d="M 63.80,86.30 Q 63.80,81.30 68.13,83.80 L 93.76,98.60 Q 98.09,101.10 98.09,106.10 L 98.09,135.70 Q 98.09,140.70 93.76,138.20 L 68.13,123.40 Q 63.80,120.90 63.80,115.90 Z" fill="var(--face-left)"></path>
+      <path d="M 131.87,83.80 Q 136.20,81.30 136.20,86.30 L 136.20,115.90 Q 136.20,120.90 131.87,123.40 L 106.24,138.20 Q 101.91,140.70 101.91,135.70 L 101.91,106.10 Q 101.91,101.10 106.24,98.60 Z" fill="var(--face-right)"></path>
+      <path d="M200 0V1200L0 1300L400 1500L600 1400V200L800 100L400 -100ZM600 1400 1000 1600 1400 1400V800L800 500L600 600L1000 800V1200Z" fill="var(--accent)" transform="translate(100,78) scale(0.013672,-0.013672) translate(-700,-750)"></path>
+      <g filter="url(#ftl)"><g clip-path="url(#fcl)"><g transform="matrix(34.2936,19.8,0,39.6,63.8012,81.3)"><g transform="translate(0.14,0.14) scale(0.0075,0.0075)"><g transform="translate(0,96) scale(0.1,-0.1)" fill="var(--accent)" stroke="none">
+        <path d="M424 873 c-116 -95 -161 -106 -312 -79 -115 21 -114 23 -59 -180 57 -210 58 -214 103 -264 59 -65 105 -85 199 -85 90 0 136 19 192 77 86 90 92 173 29 405 -24 89 -47 167 -51 173 -12 19 -33 10 -101 -47z m76 -75 c6 -24 23 -85 37 -137 33 -123 29 -193 -13 -253 -58 -82 -178 -112 -264 -66 -69 37 -95 84 -139 248 -22 80 -38 146 -37 148 2 1 27 -2 56 -8 120 -23 193 -6 280 65 30 24 58 44 62 45 4 0 12 -19 18 -42z"></path>
+        <path d="M395 709 c-27 -13 -46 -44 -39 -64 8 -19 38 -19 54 0 7 8 25 14 43 12 24 -1 32 3 35 17 8 37 -47 57 -93 35z"></path>
+        <path d="M203 655 c-31 -13 -50 -46 -38 -65 9 -15 41 -12 55 5 8 9 22 12 41 8 54 -10 49 45 -6 60 -11 4 -34 0 -52 -8z"></path>
+        <path d="M426 485 c-9 -25 -70 -47 -100 -35 -34 13 -58 2 -54 -24 4 -30 68 -50 117 -36 44 12 94 60 89 87 -4 23 -43 30 -52 8z"></path>
+        <path d="M654 505 c-4 -9 0 -23 7 -31 17 -16 103 -34 166 -34 l44 0 -76 -149 c-90 -177 -116 -203 -219 -209 -65 -4 -106 10 -166 58 -31 25 -63 17 -58 -13 4 -27 77 -83 126 -97 104 -29 217 2 283 78 48 54 193 360 179 377 -6 8 -48 15 -113 18 -56 4 -117 9 -134 13 -25 5 -34 2 -39 -11z"></path>
+        <path d="M642 381 c-24 -15 -10 -46 23 -49 17 -2 38 -11 48 -20 13 -12 22 -13 34 -6 27 17 26 32 -1 59 -26 26 -77 34 -104 16z"></path>
+        <path d="M474 235 c-11 -28 4 -45 40 -45 35 0 43 -5 71 -45 11 -16 17 -18 32 -9 26 17 18 54 -17 87 -24 21 -40 27 -75 27 -31 0 -47 -5 -51 -15z"></path>
+      </g></g></g></g></g>
+      <g filter="url(#ftr)"><g clip-path="url(#fcr)"><g transform="matrix(34.2936,-19.8,0,39.6,101.9052,101.1)"><g transform="translate(0.14,0.14) scale(0.03,0.03) translate(24,0) scale(-1,1)">
+        <path d="M19 17V5a2 2 0 0 0-2-2H4" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke" style="stroke-width:1.8px"></path>
+        <path d="M8 21h12a2 2 0 0 0 2-2v-1a1 1 0 0 0-1-1H11a1 1 0 0 0-1 1v1a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v2a1 1 0 0 0 1 1h3" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke" style="stroke-width:1.8px"></path>
+      </g></g></g>
+        <line x1="119.05" y1="111" x2="120.08" y2="109.22" stroke="var(--accent)" stroke-linecap="round" vector-effect="non-scaling-stroke" style="stroke-width:1.8px"></line>
+        <line x1="119.05" y1="111" x2="120.08" y2="111.59" stroke="var(--accent)" stroke-linecap="round" vector-effect="non-scaling-stroke" style="stroke-width:1.8px"></line>
+        <line x1="119.05" y1="111" x2="118.02" y2="112.78" stroke="var(--accent)" stroke-linecap="round" vector-effect="non-scaling-stroke" style="stroke-width:1.8px"></line>
+        <line x1="119.05" y1="111" x2="118.02" y2="110.41" stroke="var(--accent)" stroke-linecap="round" vector-effect="non-scaling-stroke" style="stroke-width:1.8px"></line>
+      </g>
+    </svg></a></div>
+  </section>
+
+</main>
+
+
+
+</body>
+</html>
