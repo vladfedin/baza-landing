@@ -10,6 +10,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # Сервер отдаёт 200 и главную на любой отсутствующий путь, поэтому
+      # страница, потерянная в источнике, не падает в 404, а тихо исчезает.
+      # Ломаем сборку здесь, до rsync.
+      - name: Check static links
+        run: node tools/check-static-links.mjs
+
       - name: Set deploy target
         run: |
           if [ "${{ github.ref_name }}" = "main" ]; then
