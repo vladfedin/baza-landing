@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>РолеБаза: гайд для перехода с реального стола на виртуальный — Александр · конкурс РолеБазы</title>
+<meta name="description" content="РолеБаза: гайд для перехода с реального стола на виртуальный. Конкурсная работа Александр — первый конкурс гайдов РолеБазы.">
+<meta property="og:type" content="article"><meta property="og:title" content="РолеБаза: гайд для перехода с реального стола на виртуальный">
+<meta property="og:description" content="Конкурсная работа Александр — гайды сообщества РолеБазы.">
+<link rel="icon" href="../../characters/favicon.ico">
+<style>
+  :root{
+    --ink:#131118;--ink-2:#1a1720;--plate:#201c28;--plate-edge:rgba(201,164,92,0.22);
+    --brass:#c9a45c;--brass-dim:#8a7448;--bone:#e9e2d2;--bone-dim:#a89f8c;--glow:rgba(255,190,96,0.10);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:radial-gradient(1100px 500px at 50% -10%,#26202e 0%,transparent 60%),var(--ink);
+    color:var(--bone);font-family:Georgia,'Iowan Old Style','Palatino Linotype',serif;min-height:100vh;padding:44px 24px 90px}
+  body::after{content:'';position:fixed;inset:0;pointer-events:none;opacity:0.05;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E")}
+  .wrap{max-width:1140px;margin:0 auto;display:grid;grid-template-columns:260px minmax(0,1fr);gap:44px;align-items:start}
+  .crumb{grid-column:1/-1;font-size:12px;letter-spacing:0.24em;text-transform:uppercase;margin-bottom:6px}
+  .crumb a{color:var(--brass);text-decoration:none}.crumb a:hover{color:var(--bone)}
+
+  /* левая колонка: оглавление + мета (sticky) */
+  .side{position:sticky;top:28px}
+  .toc{border-left:1px solid var(--plate-edge);padding-left:18px;margin-bottom:26px}
+  .toc-h{font-size:11px;letter-spacing:0.3em;text-transform:uppercase;color:var(--bone-dim);margin-bottom:12px}
+  .toc ol{list-style:none;counter-reset:t}
+  .toc li{counter-increment:t;margin-bottom:9px;line-height:1.4}
+  .toc a{color:var(--bone);text-decoration:none;font-size:14px;display:block;padding-left:24px;position:relative}
+  .toc a::before{content:counter(t,upper-roman);position:absolute;left:0;color:var(--brass-dim);font-size:12px}
+  .toc a:hover{color:var(--brass)}
+  .side .src{font-size:13px;color:var(--bone-dim);line-height:1.6}
+  .side .src a{color:var(--brass);text-decoration:none;border-bottom:1px solid var(--brass-dim)}
+  .side .src a:hover{color:var(--bone)}
+
+  /* статья */
+  .article{min-width:0}
+  .a-kind{display:inline-flex;align-items:center;gap:8px;font-size:11px;letter-spacing:0.28em;text-transform:uppercase;
+    color:var(--brass);border:1px solid var(--brass-dim);border-radius:3px;padding:5px 12px;margin-bottom:18px}
+  h1{font-size:clamp(28px,4vw,42px);font-weight:400;font-variant:small-caps;letter-spacing:0.04em;line-height:1.15;margin-bottom:16px}
+  .byline{display:flex;flex-wrap:wrap;gap:8px 20px;font-size:14px;color:var(--bone-dim);padding-bottom:22px;margin-bottom:34px;border-bottom:1px solid var(--plate-edge)}
+  .byline .who{color:var(--bone)}.byline .who b{color:var(--brass);font-weight:400}
+  .byline svg{width:15px;height:15px;vertical-align:-2.5px;color:var(--brass-dim)}
+
+  .body{font-size:17px;line-height:1.72}
+  .body h2{font-size:26px;font-weight:400;font-variant:small-caps;letter-spacing:0.03em;color:var(--bone);
+    margin:40px 0 16px;padding-top:12px;scroll-margin-top:24px}
+  .body h3{font-size:20px;font-weight:400;color:var(--brass);margin:30px 0 12px;scroll-margin-top:24px}
+  .body p{margin-bottom:18px}
+  .body b,.body strong{color:var(--bone);font-weight:400;background:linear-gradient(transparent 62%,rgba(201,164,92,0.16) 0)}
+  .body a{color:var(--brass);text-decoration:none;border-bottom:1px solid var(--brass-dim)}
+  .body a:hover{color:var(--bone)}
+  .body ul,.body ol{margin:0 0 18px 24px}.body li{margin-bottom:8px}
+  .body blockquote{border-left:2px solid var(--brass-dim);padding-left:18px;color:var(--bone-dim);font-style:italic;margin:0 0 18px}
+  .body figure{margin:26px 0}
+  .body figure img,.body p img,.body img.inline{display:block;width:100%;border-radius:6px;border:1px solid var(--plate-edge);
+    box-shadow:0 14px 34px rgba(0,0,0,0.45)}
+  .body figcaption{margin-top:9px;font-size:13.5px;color:var(--bone-dim);font-style:italic;text-align:center}
+
+  /* режим PDF-страниц */
+  .pages{display:flex;flex-direction:column;gap:22px}
+  .pages .pg{scroll-margin-top:24px}
+  .pages img{display:block;width:100%;border-radius:6px;border:1px solid var(--plate-edge);box-shadow:0 14px 34px rgba(0,0,0,0.4)}
+  .pages .pgn{font-size:12px;letter-spacing:0.2em;text-transform:uppercase;color:var(--bone-dim);margin:2px 0 8px}
+
+  .foot{grid-column:1/-1;margin-top:56px;padding-top:22px;border-top:1px solid var(--plate-edge);
+    display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;font-size:13px;color:var(--bone-dim)}
+  .foot a{color:var(--brass);text-decoration:none}
+  .nom{display:inline-flex;align-items:center;gap:8px;color:var(--brass);border:1px solid var(--brass-dim);border-radius:3px;padding:5px 12px;font-size:12px;letter-spacing:0.14em}
+
+  @media(max-width:900px){
+    .wrap{grid-template-columns:1fr;gap:24px}
+    .side{position:static}
+    .toc{border-left:none;border-top:1px solid var(--plate-edge);border-bottom:1px solid var(--plate-edge);padding:16px 0}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="crumb"><a href="../../">← Итоги конкурса</a></div>
+
+  <aside class="side">
+    <nav class="toc"><div class="toc-h">Оглавление</div><ol><li><a href="#p2">1. Создание игровой сессии</a></li><li><a href="#p3">2. Ознакомление с интерфейсом комнаты</a></li><li><a href="#p4">3. Добавление системы правил</a></li><li><a href="#p5">4. Создание сцен</a></li><li><a href="#p7">5. Настройка камер для сцен</a></li><li><a href="#p9">6. Создание порталов</a></li><li><a href="#p11">7. Декорации</a></li><li><a href="#p14">8. Создание персонажей и существ</a></li><li><a href="#p20">9. Действия</a></li><li><a href="#p23">10. Боевые сцены</a></li><li><a href="#p24">11. Компендиум</a></li><li><a href="#p25">12. Туман</a></li><li><a href="#p28">13. Углублённая работа с компендиумом</a></li><li><a href="#p32">14. Музыка</a></li></ol></nav>
+    <div class="src">
+      Источник: <a href="rolebaza-guide.pdf" target="_blank" rel="noopener">Скачать оригинал PDF</a><br>
+      Сохранено 16.07.2026
+    </div>
+  </aside>
+
+  <article class="article">
+    <div class="a-kind">PDF · 48 страниц</div>
+    <h1>РолеБаза: гайд для перехода с реального стола на виртуальный</h1>
+    <div class="byline">
+      <span class="who">Автор: <b>Александр</b> (@Alex_coffeincor)</span>
+      <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 53 мин чтения</span>
+      <span>9 060 слов · 48 страниц · ~117 иллюстраций</span>
+    </div>
+    <div class="body">
+<div class="pages">
+  <div class="pg" id="p1"><div class="pgn">Страница 1 / 48</div><img src="pages/page-01.png" alt="Страница 1" loading="lazy"></div>
+  <div class="pg" id="p2"><div class="pgn">Страница 2 / 48</div><img src="pages/page-02.png" alt="Страница 2" loading="lazy"></div>
+  <div class="pg" id="p3"><div class="pgn">Страница 3 / 48</div><img src="pages/page-03.png" alt="Страница 3" loading="lazy"></div>
+  <div class="pg" id="p4"><div class="pgn">Страница 4 / 48</div><img src="pages/page-04.png" alt="Страница 4" loading="lazy"></div>
+  <div class="pg" id="p5"><div class="pgn">Страница 5 / 48</div><img src="pages/page-05.png" alt="Страница 5" loading="lazy"></div>
+  <div class="pg" id="p6"><div class="pgn">Страница 6 / 48</div><img src="pages/page-06.png" alt="Страница 6" loading="lazy"></div>
+  <div class="pg" id="p7"><div class="pgn">Страница 7 / 48</div><img src="pages/page-07.png" alt="Страница 7" loading="lazy"></div>
+  <div class="pg" id="p8"><div class="pgn">Страница 8 / 48</div><img src="pages/page-08.png" alt="Страница 8" loading="lazy"></div>
+  <div class="pg" id="p9"><div class="pgn">Страница 9 / 48</div><img src="pages/page-09.png" alt="Страница 9" loading="lazy"></div>
+  <div class="pg" id="p10"><div class="pgn">Страница 10 / 48</div><img src="pages/page-10.png" alt="Страница 10" loading="lazy"></div>
+  <div class="pg" id="p11"><div class="pgn">Страница 11 / 48</div><img src="pages/page-11.png" alt="Страница 11" loading="lazy"></div>
+  <div class="pg" id="p12"><div class="pgn">Страница 12 / 48</div><img src="pages/page-12.png" alt="Страница 12" loading="lazy"></div>
+  <div class="pg" id="p13"><div class="pgn">Страница 13 / 48</div><img src="pages/page-13.png" alt="Страница 13" loading="lazy"></div>
+  <div class="pg" id="p14"><div class="pgn">Страница 14 / 48</div><img src="pages/page-14.png" alt="Страница 14" loading="lazy"></div>
+  <div class="pg" id="p15"><div class="pgn">Страница 15 / 48</div><img src="pages/page-15.png" alt="Страница 15" loading="lazy"></div>
+  <div class="pg" id="p16"><div class="pgn">Страница 16 / 48</div><img src="pages/page-16.png" alt="Страница 16" loading="lazy"></div>
+  <div class="pg" id="p17"><div class="pgn">Страница 17 / 48</div><img src="pages/page-17.png" alt="Страница 17" loading="lazy"></div>
+  <div class="pg" id="p18"><div class="pgn">Страница 18 / 48</div><img src="pages/page-18.png" alt="Страница 18" loading="lazy"></div>
+  <div class="pg" id="p19"><div class="pgn">Страница 19 / 48</div><img src="pages/page-19.png" alt="Страница 19" loading="lazy"></div>
+  <div class="pg" id="p20"><div class="pgn">Страница 20 / 48</div><img src="pages/page-20.png" alt="Страница 20" loading="lazy"></div>
+  <div class="pg" id="p21"><div class="pgn">Страница 21 / 48</div><img src="pages/page-21.png" alt="Страница 21" loading="lazy"></div>
+  <div class="pg" id="p22"><div class="pgn">Страница 22 / 48</div><img src="pages/page-22.png" alt="Страница 22" loading="lazy"></div>
+  <div class="pg" id="p23"><div class="pgn">Страница 23 / 48</div><img src="pages/page-23.png" alt="Страница 23" loading="lazy"></div>
+  <div class="pg" id="p24"><div class="pgn">Страница 24 / 48</div><img src="pages/page-24.png" alt="Страница 24" loading="lazy"></div>
+  <div class="pg" id="p25"><div class="pgn">Страница 25 / 48</div><img src="pages/page-25.png" alt="Страница 25" loading="lazy"></div>
+  <div class="pg" id="p26"><div class="pgn">Страница 26 / 48</div><img src="pages/page-26.png" alt="Страница 26" loading="lazy"></div>
+  <div class="pg" id="p27"><div class="pgn">Страница 27 / 48</div><img src="pages/page-27.png" alt="Страница 27" loading="lazy"></div>
+  <div class="pg" id="p28"><div class="pgn">Страница 28 / 48</div><img src="pages/page-28.png" alt="Страница 28" loading="lazy"></div>
+  <div class="pg" id="p29"><div class="pgn">Страница 29 / 48</div><img src="pages/page-29.png" alt="Страница 29" loading="lazy"></div>
+  <div class="pg" id="p30"><div class="pgn">Страница 30 / 48</div><img src="pages/page-30.png" alt="Страница 30" loading="lazy"></div>
+  <div class="pg" id="p31"><div class="pgn">Страница 31 / 48</div><img src="pages/page-31.png" alt="Страница 31" loading="lazy"></div>
+  <div class="pg" id="p32"><div class="pgn">Страница 32 / 48</div><img src="pages/page-32.png" alt="Страница 32" loading="lazy"></div>
+  <div class="pg" id="p33"><div class="pgn">Страница 33 / 48</div><img src="pages/page-33.png" alt="Страница 33" loading="lazy"></div>
+  <div class="pg" id="p34"><div class="pgn">Страница 34 / 48</div><img src="pages/page-34.png" alt="Страница 34" loading="lazy"></div>
+  <div class="pg" id="p35"><div class="pgn">Страница 35 / 48</div><img src="pages/page-35.png" alt="Страница 35" loading="lazy"></div>
+  <div class="pg" id="p36"><div class="pgn">Страница 36 / 48</div><img src="pages/page-36.png" alt="Страница 36" loading="lazy"></div>
+  <div class="pg" id="p37"><div class="pgn">Страница 37 / 48</div><img src="pages/page-37.png" alt="Страница 37" loading="lazy"></div>
+  <div class="pg" id="p38"><div class="pgn">Страница 38 / 48</div><img src="pages/page-38.png" alt="Страница 38" loading="lazy"></div>
+  <div class="pg" id="p39"><div class="pgn">Страница 39 / 48</div><img src="pages/page-39.png" alt="Страница 39" loading="lazy"></div>
+  <div class="pg" id="p40"><div class="pgn">Страница 40 / 48</div><img src="pages/page-40.png" alt="Страница 40" loading="lazy"></div>
+  <div class="pg" id="p41"><div class="pgn">Страница 41 / 48</div><img src="pages/page-41.png" alt="Страница 41" loading="lazy"></div>
+  <div class="pg" id="p42"><div class="pgn">Страница 42 / 48</div><img src="pages/page-42.png" alt="Страница 42" loading="lazy"></div>
+  <div class="pg" id="p43"><div class="pgn">Страница 43 / 48</div><img src="pages/page-43.png" alt="Страница 43" loading="lazy"></div>
+  <div class="pg" id="p44"><div class="pgn">Страница 44 / 48</div><img src="pages/page-44.png" alt="Страница 44" loading="lazy"></div>
+  <div class="pg" id="p45"><div class="pgn">Страница 45 / 48</div><img src="pages/page-45.png" alt="Страница 45" loading="lazy"></div>
+  <div class="pg" id="p46"><div class="pgn">Страница 46 / 48</div><img src="pages/page-46.png" alt="Страница 46" loading="lazy"></div>
+  <div class="pg" id="p47"><div class="pgn">Страница 47 / 48</div><img src="pages/page-47.png" alt="Страница 47" loading="lazy"></div>
+  <div class="pg" id="p48"><div class="pgn">Страница 48 / 48</div><img src="pages/page-48.png" alt="Страница 48" loading="lazy"></div>
+</div>
+    </div>
+  </article>
+
+  <div class="foot">
+    <span>Первый конкурс гайдов РолеБазы · июль 2026</span>
+    <span class="nom">❦ Гримуар Мастера</span>
+  </div>
+</div>
+</body>
+</html>

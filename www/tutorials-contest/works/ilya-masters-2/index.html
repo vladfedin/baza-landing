@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>РолеБаза для чайников или гайд для Мастеров (часть 2) — Илья Лемешев · конкурс РолеБазы</title>
+<meta name="description" content="РолеБаза для чайников или гайд для Мастеров (часть 2). Конкурсная работа Илья Лемешев — первый конкурс гайдов РолеБазы.">
+<meta property="og:type" content="article"><meta property="og:title" content="РолеБаза для чайников или гайд для Мастеров (часть 2)">
+<meta property="og:description" content="Конкурсная работа Илья Лемешев — гайды сообщества РолеБазы.">
+<link rel="icon" href="../../characters/favicon.ico">
+<style>
+  :root{
+    --ink:#131118;--ink-2:#1a1720;--plate:#201c28;--plate-edge:rgba(201,164,92,0.22);
+    --brass:#c9a45c;--brass-dim:#8a7448;--bone:#e9e2d2;--bone-dim:#a89f8c;--glow:rgba(255,190,96,0.10);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:radial-gradient(1100px 500px at 50% -10%,#26202e 0%,transparent 60%),var(--ink);
+    color:var(--bone);font-family:Georgia,'Iowan Old Style','Palatino Linotype',serif;min-height:100vh;padding:44px 24px 90px}
+  body::after{content:'';position:fixed;inset:0;pointer-events:none;opacity:0.05;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E")}
+  .wrap{max-width:1140px;margin:0 auto;display:grid;grid-template-columns:260px minmax(0,1fr);gap:44px;align-items:start}
+  .crumb{grid-column:1/-1;font-size:12px;letter-spacing:0.24em;text-transform:uppercase;margin-bottom:6px}
+  .crumb a{color:var(--brass);text-decoration:none}.crumb a:hover{color:var(--bone)}
+
+  /* левая колонка: оглавление + мета (sticky) */
+  .side{position:sticky;top:28px}
+  .toc{border-left:1px solid var(--plate-edge);padding-left:18px;margin-bottom:26px}
+  .toc-h{font-size:11px;letter-spacing:0.3em;text-transform:uppercase;color:var(--bone-dim);margin-bottom:12px}
+  .toc ol{list-style:none;counter-reset:t}
+  .toc li{counter-increment:t;margin-bottom:9px;line-height:1.4}
+  .toc a{color:var(--bone);text-decoration:none;font-size:14px;display:block;padding-left:24px;position:relative}
+  .toc a::before{content:counter(t,upper-roman);position:absolute;left:0;color:var(--brass-dim);font-size:12px}
+  .toc a:hover{color:var(--brass)}
+  .side .src{font-size:13px;color:var(--bone-dim);line-height:1.6}
+  .side .src a{color:var(--brass);text-decoration:none;border-bottom:1px solid var(--brass-dim)}
+  .side .src a:hover{color:var(--bone)}
+
+  /* статья */
+  .article{min-width:0}
+  .a-kind{display:inline-flex;align-items:center;gap:8px;font-size:11px;letter-spacing:0.28em;text-transform:uppercase;
+    color:var(--brass);border:1px solid var(--brass-dim);border-radius:3px;padding:5px 12px;margin-bottom:18px}
+  h1{font-size:clamp(28px,4vw,42px);font-weight:400;font-variant:small-caps;letter-spacing:0.04em;line-height:1.15;margin-bottom:16px}
+  .byline{display:flex;flex-wrap:wrap;gap:8px 20px;font-size:14px;color:var(--bone-dim);padding-bottom:22px;margin-bottom:34px;border-bottom:1px solid var(--plate-edge)}
+  .byline .who{color:var(--bone)}.byline .who b{color:var(--brass);font-weight:400}
+  .byline svg{width:15px;height:15px;vertical-align:-2.5px;color:var(--brass-dim)}
+
+  .body{font-size:17px;line-height:1.72}
+  .body h2{font-size:26px;font-weight:400;font-variant:small-caps;letter-spacing:0.03em;color:var(--bone);
+    margin:40px 0 16px;padding-top:12px;scroll-margin-top:24px}
+  .body h3{font-size:20px;font-weight:400;color:var(--brass);margin:30px 0 12px;scroll-margin-top:24px}
+  .body p{margin-bottom:18px}
+  .body b,.body strong{color:var(--bone);font-weight:400;background:linear-gradient(transparent 62%,rgba(201,164,92,0.16) 0)}
+  .body a{color:var(--brass);text-decoration:none;border-bottom:1px solid var(--brass-dim)}
+  .body a:hover{color:var(--bone)}
+  .body ul,.body ol{margin:0 0 18px 24px}.body li{margin-bottom:8px}
+  .body blockquote{border-left:2px solid var(--brass-dim);padding-left:18px;color:var(--bone-dim);font-style:italic;margin:0 0 18px}
+  .body figure{margin:26px 0}
+  .body figure img,.body p img,.body img.inline{display:block;width:100%;border-radius:6px;border:1px solid var(--plate-edge);
+    box-shadow:0 14px 34px rgba(0,0,0,0.45)}
+  .body figcaption{margin-top:9px;font-size:13.5px;color:var(--bone-dim);font-style:italic;text-align:center}
+
+  /* режим PDF-страниц */
+  .pages{display:flex;flex-direction:column;gap:22px}
+  .pages .pg{scroll-margin-top:24px}
+  .pages img{display:block;width:100%;border-radius:6px;border:1px solid var(--plate-edge);box-shadow:0 14px 34px rgba(0,0,0,0.4)}
+  .pages .pgn{font-size:12px;letter-spacing:0.2em;text-transform:uppercase;color:var(--bone-dim);margin:2px 0 8px}
+
+  .foot{grid-column:1/-1;margin-top:56px;padding-top:22px;border-top:1px solid var(--plate-edge);
+    display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;font-size:13px;color:var(--bone-dim)}
+  .foot a{color:var(--brass);text-decoration:none}
+  .nom{display:inline-flex;align-items:center;gap:8px;color:var(--brass);border:1px solid var(--brass-dim);border-radius:3px;padding:5px 12px;font-size:12px;letter-spacing:0.14em}
+
+  @media(max-width:900px){
+    .wrap{grid-template-columns:1fr;gap:24px}
+    .side{position:static}
+    .toc{border-left:none;border-top:1px solid var(--plate-edge);border-bottom:1px solid var(--plate-edge);padding:16px 0}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="crumb"><a href="../../">← Итоги конкурса</a></div>
+
+  <aside class="side">
+    <nav class="toc"><div class="toc-h">Оглавление</div><ol><li><a href="#s1">3. Коммуникатор</a></li><li><a href="#s2">4. Настройки и всякое</a></li><li><a href="#s3">Связь.</a></li><li><a href="#s4">Ползунок меняющий громкость музыки.</a></li><li><a href="#s5">Рекламка ТГ канала. Подпишитесь!</a></li><li><a href="#s6">Пауза.</a></li><li><a href="#s7">Режим презентации.</a></li><li><a href="#s8">Вид игрока.</a></li><li><a href="#s9">Инструменты.</a></li><li><a href="#s10">Настройки.</a></li><li><a href="#s11">5. Сложнааа Правила, чат и компендиумы</a></li><li><a href="#s12">Чат.</a></li><li><a href="#s13">Система правил.</a></li><li><a href="#s14">Компендиумы.</a></li><li><a href="#s15">6. Стол</a></li><li><a href="#s16">Основные взаимодействия</a></li><li><a href="#s17">Кнопки</a></li><li><a href="#s18">Дополнительные окна</a></li><li><a href="#s19">Слои.</a></li><li><a href="#s20">Столы.</a></li><li><a href="#s21">Контейнеры</a></li><li><a href="#s22">Музыка</a></li></ol></nav>
+    <div class="src">
+      Источник: <a href="https://dzen.ru/a/ajE0Yg6RPnTs4ZBN" target="_blank" rel="noopener">Дзен</a><br>
+      Сохранено 16.07.2026
+    </div>
+  </aside>
+
+  <article class="article">
+    <div class="a-kind">◇ Дзен</div>
+    <h1>РолеБаза для чайников или гайд для Мастеров (часть 2)</h1>
+    <div class="byline">
+      <span class="who">Автор: <b>Илья Лемешев</b></span>
+      <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 8 мин чтения</span>
+      <span>1 305 слов · 30 иллюстраций</span>
+    </div>
+    <div class="body">
+<div class="series"><span class="series-h">Серия «Гайды Ильи»:</span><a href="../ilya-players/">Игрокам</a><a href="../ilya-masters-1/">Мастерам · ч.1</a><span class="cur">Мастерам · ч.2</span><a href="../ilya-compendiums/">Компендиумы</a></div>
+<style>.series{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;margin-bottom:30px;padding:14px 16px;border:1px solid var(--plate-edge);border-radius:4px;background:var(--ink-2);font-size:13.5px}
+.series-h{color:var(--bone-dim);letter-spacing:0.04em}.series a{color:var(--brass);text-decoration:none;border-bottom:1px solid var(--brass-dim)}.series a:hover{color:var(--bone)}.series .cur{color:var(--bone);border-bottom:1px solid var(--brass)}</style><p>Недавно ещё один автор выпустил  свой гайд на <a href="https://vk.com/wall-235981513_390">этот конкурс</a> (я его ещё упомяну). Прочитав её, я понял, какое название лучше всего подходит для моих гайдов ;)</p>
+<p>Итак, напомню по какой схеме я рассказываю про стол:</p>
+<figure><img src="images/img-01.png" alt="" loading="lazy"><figcaption>Кста, если кому интересно, все экзамены я здал)</figcaption></figure>
+<p>В прошлом гайде я рассказал про 1 и 2 области, продолжим.</p>
+<h2 id="s1">3. Коммуникатор</h2>
+<p>В этой области находится только 1 окно - <i>Игроки.</i></p>
+<p>Большинство функций здесь работают так же как и игрока, об этом можете почитать в моём <a href="https://dzen.ru/a/aikgYpdJdle1R6Gb">первом гайде</a>. Но, кроме этого вы можете:</p>
+<ul><li><b>Задавать лимит игроков.</b> Нажмите на карандаш, чтобы назначить и на замочек, чтобы игроков больше этого числа не пропускало.</li></ul>
+<ul><li><b>Приглушать камеры игроков.</b> Игроки их и так не видят, а вот вам они могут мешать. Кнопка в виде камеры делает поля зрения серыми и не даёт вам с ними взаимодействовать. Хотя я бы так не делал, всегда лучше знать куда эти приколисты смотрят)</li></ul>
+<figure><img src="images/img-02.png" alt="" loading="lazy"><figcaption>Активная камера</figcaption></figure>
+<figure><img src="images/img-03.png" alt="" loading="lazy"><figcaption>Приглушённая камера</figcaption></figure>
+<ul><li><b>Взаимодействия с игроками.</b> По сути вы - администратор и модератор, поэтому не удивительно, что вам доступны всякие <i>баны</i> различной степени тяжести. Нажмите на три точки и посмотрите на свою власть.</li></ul>
+<figure><img src="images/img-04.png" alt="" loading="lazy"><figcaption>Я, кстати не знаю, что делает кнопка запрета рисования, игроки вроде и так этого не могут 😜</figcaption></figure>
+<p>Вы могли заметить кнопку "<i>Повысить до помощника</i>". Насколько я понял, это даёт игроку абсолютно такие же права и интерфейс как и у вас, делая по сути вторым Мастером.</p>
+<p>Нажав на наушники, вы можете уменьшить громкость определённого игрока, а нажав на них у себя отключить всех нафиг.</p>
+<p>Зажав ЛКМ на кнопке микрофона или нажав по ней ПКМ, вы можете включить режим <i>Трибуны</i>, когда все слышат только этого игрока.</p>
+<figure><img src="images/img-05.png" alt="" loading="lazy"><figcaption>Вещай, старче</figcaption></figure>
+<p>Камера мне не доступна, поэтому пока всё :/</p>
+<h2 id="s2">4. Настройки и всякое</h2>
+<p>Вот так выглядит эта панелька:</p>
+<figure><img src="images/img-06.png" alt="" loading="lazy"><figcaption>Надеюсь вам хоть что-нибудь видно)</figcaption></figure>
+<p>Разберём каждую кнопку (ура?):</p>
+<h2 id="s3">Связь.</h2>
+<p>Даёт напрямую связаться с разработчиками, как я уже говорил в первом гайде, не стесняйтесь им писать, они обязательно вам ответят и помогут!</p>
+<h2 id="s4">Ползунок меняющий громкость музыки.</h2>
+<p>Как не удивительно, это ползунок меняющий громкость всей музыки. Левее кнопка, которая ставит её на паузу. На громкость игроков никак не влияет. Как вообще добавлять музыку поговорим позже.</p>
+<h2 id="s5">Рекламка ТГ канала. Подпишитесь!</h2>
+<h2 id="s6">Пауза.</h2>
+<p>Ставит игру на паузу. Игроки в это время не могу взаимодействовать ВООБЩЕ ни с чем (даже с кнопками типа микрофона) и видят это:</p>
+<figure><img src="images/img-07.png" alt="" loading="lazy"><figcaption>А кто-то говорил, что онлайн игру нельзя поставтиь на паузу.</figcaption></figure>
+<h2 id="s7">Режим презентации.</h2>
+<p>Заставляет игроков смотреть на то, на что смотрите вы. У вас открывается такая менюшка:</p>
+<figure><img src="images/img-08.png" alt="" loading="lazy"><figcaption>Слушаю We are numder one, пока пишу это 🎶</figcaption></figure>
+<p>Скрыть детали - очень странная кнопка, которая превращает игру в муть (только игрокам, конечно):</p>
+<figure><img src="images/img-09.png" alt="" loading="lazy"><figcaption>Нет, это не у вас с инетом пробемы, это скрин такой.</figcaption></figure>
+<p>Кстати, игрок всё ещё может в таком состоянии передвигать токены, если нащупает их, конечно.</p>
+<p><b>Кнопка камеры</b>. Закрепляет камеру презентации, она больше не привязана к вам.</p>
+<figure><img src="images/img-10.png" alt="" loading="lazy"><figcaption>Летний котик ₍^˵- ⩊ -˵^₎⟆</figcaption></figure>
+<h2 id="s8">Вид игрока.</h2>
+<p>Сверхполезная кнопка, создает окно, в котором открыт интерфейс игрока, и добавляет соответственно камеру для этого окна. Очень помогает при подготовке, когда нужно проверить как игроки будут видеть весь твой труд. Именно с этим окном связываются токены, которые принадлежат вам (в пункте владельца вы).</p>
+<figure><img src="images/img-11.png" alt="" loading="lazy"><figcaption>Мастхэв для социопадов</figcaption></figure>
+<h2 id="s9">Инструменты.</h2>
+<p>Число рядом с этой кнопкой показывает, сколько окон у вас скрыто. В базовой раскладке их 4.</p>
+<p>Что делает кнопка "<i>Закрепить всё</i>" я хз, я думал она не даёт перетаскивать окна, но это не так, поэтому я в замешательстве...</p>
+<p><i>Бросок костей</i> - открывает окно броска костей, не очень полезно, ведь есть кнопка на главном экране.</p>
+<p>Сохранить расклад - позволяет сохранить раскладку окон.</p>
+<figure><img src="images/img-12.png" alt="" loading="lazy"><figcaption>Думали я опять что-то смешнявое напишу?</figcaption></figure>
+<p>Можно сделать несколько сохранений</p>
+<p><i>Сбросить расклад</i> - сбрасывает раскладку к ролебазовой (не удержался)</p>
+<p>Про доп. окна я расскажу в конце.</p>
+<h2 id="s10">Настройки.</h2>
+<p>Кроме сохранения и загрузки комнаты настройки такие же, как и у игроков.</p>
+<p>Ещё есть кнопка "<i>Подключить агента</i>", но...</p>
+<figure><img src="images/img-13.png" alt="" loading="lazy"><figcaption>... оставлю это коллегам)))</figcaption></figure>
+<h2 id="s11">5. Сложнааа Правила, чат и компендиумы</h2>
+<p>Эта область состоит из 3 окон: <i>Компендиум</i>, <i>Чат</i> и <i>Система правил</i>.</p>
+<h2 id="s12">Чат.</h2>
+<p>Такой же как и у игрока, но вы можете отменять передвижения токенов и другие действия. Я даже фотку вставлять не буду.</p>
+<h2 id="s13">Система правил.</h2>
+<p>Здесь вы выбираете, по каким правилам вы будете играть. Где это нужно я рассказывал в 1 части.</p>
+<p>После этого появляются шаблоны действий и возможность создать своё действие (на "+")</p>
+<p>Как создавать действия довольно подробно объяснил мой коллега Daria Di в <a href="https://telegra.ph/Dobavlenie-dejstvij-dlya-tokenov-06-13">своём гайде</a>, советую к прочтению.</p>
+<p>Так же в этом окне есть справочные материалы с формулами, которые <b>не </b>зависят от выбранной системы.</p>
+<h2 id="s14">Компендиумы.</h2>
+<p>Пожалуй самое интересное, но я бы хотел посвятить этому отдельный гайд, поэтому крайне коротко.</p>
+<p>На "+" вы можете добавлять на стол компендиумы: свои или публичные.</p>
+<p>Потом просто открываете компендиум и достаёте на стол что вам нужно.</p>
+<h2 id="s15">6. Стол</h2>
+<p>Возможно, надо было с этого начать, но я дуб.</p>
+<h2 id="s16">Основные взаимодействия</h2>
+<ul><li>ЛКМ - использовать выбранную кисть.</li><li>ПКМ (зажать) - перемещение по столу.</li><li>Колёсико мыши - масштабирование.</li><li>V - базовая "кисть" позволяет выбирать элементы на столе, открывать их инфо и т.д.</li><li>Z (зажать и нажать) - увеличивает масштаб, если рисовать прямоугольник масштабирует по нему (легче попробовать, чем пытаться понять)</li><li>H -  перемещение на ЛКМ. Ладно.</li><li>delete и backspace - удаляет выбранный(ые) элемент(ы).</li><li>cntrl + Z - классический "шаг назад", но будьте осторожны, работает не везде!</li><li>cntrl + shift + Z - отмена "шага назад".</li><li>ПКМ по пустому месту - меню создания:</li></ul>
+<figure><img src="images/img-14.png" alt="" loading="lazy"><figcaption>Хвастаюсь новиночками)))</figcaption></figure>
+<ul><li>Если закинете картинку на стол, то РБ спросит:</li></ul>
+<figure><img src="images/img-15.png" alt="" loading="lazy"><figcaption>"Ты думаешь я знаю что это?"</figcaption></figure>
+<ul><li>Камеры игроков вы можете двигать как вздумается, а если игрок продолжает убегать, просто <i>пристолбите</i> его к месту нажав на замочек рядом с именем.</li></ul>
+<figure><img src="images/img-16.png" alt="" loading="lazy"><figcaption>Лод - это не имя, я просто слово "Лол" с опечаткой написал.</figcaption></figure>
+<ul><li>Нажав на само имя откроется такое же меню как на "<i>3 точки</i>":</li></ul>
+<figure><img src="images/img-17.png" alt="" loading="lazy"><figcaption>"Не дёргайся!"</figcaption></figure>
+<p>Всё что я вспомнил и нашёл, если знаете ещё клавиши (которые не упомянуты выше и ниже) пишите мне в комменты. (ну или где меня найдёте)</p>
+<h2 id="s17">Кнопки</h2>
+<ul><li><i>Кости</i> и <i>Линейка</i> - It just works the <a href="https://dzen.ru/a/aikgYpdJdle1R6Gb">s</a><a href="https://dzen.ru/a/aikgYpdJdle1R6Gb">ame way as a player</a>, lol.</li><li><i>Рисование</i> - позволяет рисовать всякое на столе:</li></ul>
+<p>1. Перо (D):</p>
+<p>2. Маркер (Shift + D):</p>
+<figure><img src="images/img-18.png" alt="" loading="lazy"><figcaption>~Лето~</figcaption></figure>
+<p>3. Линия (L) - идеально ровные линии, которые можно изменять после нарисования (как-то не правильно звучит):</p>
+<p>4. СтРеЛоЧкИ (A) - Коннектится с другими фигурами, т.е. соединяется с линией, идёт вдоль радиуса эллипса и т.д. А ещё почему-то в их настройках есть выбор шрифта.</p>
+<figure><img src="images/img-19.png" alt="" loading="lazy"><figcaption>ЭТО НЕ МАЙНКРАФТ!!!</figcaption></figure>
+<p>5. Ластик (E):</p>
+<p>6. Прямоугольник (R) - на Shift рисует квадраты:</p>
+<p>7. Эллипс (O) - на Shift рисует круги.</p>
+<figure><img src="images/img-20.png" alt="" loading="lazy"><figcaption>"Вы когда-нибудь мечтали стать лучшей версией себя?"</figcaption></figure>
+<p>8. Текст (T) - есть 4 шрифта</p>
+<p>9. Заметка (N) - прикольная штука. Если её выбрать, то по сторонам появятся голубые точки, нажатие по ним создаст рядом ещё одну заметку.</p>
+<figure><img src="images/img-21.png" alt="" loading="lazy"><figcaption>А может и не могла</figcaption></figure>
+<p>10. Рамка (F) - всегда белый прямоугольник, я не знаю зачем это может быть нужно, но я на нём рисовал.</p>
+<figure><img src="images/img-22.png" alt="" loading="lazy"><figcaption>Его даже перекрасить нельзя</figcaption></figure>
+<p>Рамку, эллипс и прямоугольник можно не рисовать, а просто нажать и они создадутся идеальные. У эллипса и прямоугольника можно менять степень закрашивания. Если перейти в режим создания через горячую клавишу, режим выключится после создания первого элемента.</p>
+<h2 id="s18">Дополнительные окна</h2>
+<p>Напомню, что эти окна можно включить через кнопку "<i>Инструменты</i>":</p>
+<figure><img src="images/img-23.png" alt="" loading="lazy"><figcaption>я хз почему кот отвернулся</figcaption></figure>
+<h2 id="s19">Слои.</h2>
+<figure><img src="images/img-24.png" alt="" loading="lazy"><figcaption>кажется я понял, для чего нужна рамка...</figcaption></figure>
+<p>Позволяют отключить видимость некоторых элементов игры. На фото я отключил вообще всё, видимыми остались только <i>Рамка</i> и <i>Границы</i>.</p>
+<h2 id="s20">Столы.</h2>
+<p>Это не то, что вы подумали. Тоже список, кста.</p>
+<p>Позволяет создать черновики основного стола. Т.е.:</p>
+<p>1. Рисуем каракулю:</p>
+<figure><img src="images/img-25.png" alt="" loading="lazy"><figcaption>каракуля</figcaption></figure>
+<p>2. Создаём новый стол (на значок молнии его можно заранее прогрузить, кста):</p>
+<p>3. Там та же каракуля:</p>
+<figure><img src="images/img-26.png" alt="" loading="lazy"><figcaption>Да, это та же фотка, а какая вам разница?</figcaption></figure>
+<p>4. Удаляем каракулю в новом столе.</p>
+<figure><img src="images/img-27.png" alt="" loading="lazy"><figcaption>минус каракля :(</figcaption></figure>
+<p>5. Возвращаемся в основной стол, и что мы видем?</p>
+<figure><img src="images/img-28.png" alt="" loading="lazy"><figcaption>каракуля вернулась :) (и да, это та же фотка)</figcaption></figure>
+<p>Причём, даже если мы вернёмся в новый стол, то каракуля вернётся!</p>
+<figure><img src="images/img-29.png" alt="" loading="lazy"><figcaption>ну вы поняли, 4 раза одна картинка. Зато честно</figcaption></figure>
+<p>6. Чтобы удалить каракулю нам нужно удалить её на основном столе, и только тогда она исчезнет и на новом.</p>
+<p>Ну, в общем, надеюсь вы поняли (и надеюсь я правильно понял эту функцию)</p>
+<p>А, а ещё если стовов больше 1, сверху появляется список:</p>
+<figure><img src="images/img-30.png" alt="" loading="lazy"></figure>
+<h2 id="s21">Контейнеры</h2>
+<p>Пожалуйста, напишите мне, если знаете как это работает. Я понасоздавал токенов и декораций с инвенарями, а это окно всё равно пустое 😭</p>
+<h2 id="s22">Музыка</h2>
+<p>Моё любимое, по хорошему об этом надо рассказать в гайде по компендиумам, но не буду растягивать.</p>
+<p>1. Для начала через область 5 добавьте компендиум с музыкой (например, мой Undertale Саундтрек):</p>
+<p>2. Далее в <i>Музыке</i> добавьте <i>Канал. </i>На данный момент есть только 1 режим воспроизведения, но скоро появятся новые.</p>
+<p>3. Выбирайте музыку :</p>
+<p>Можно добавить несколько каналов, если вам нужно чтобы одновременно играла музыка и эмбиент, или просто хотите заготовить несколько песен для быстрого переключения.</p>
+<p>На этом пожалуй всё. Более или менее я разобрал все функции в РолеБазе, надеюсь этот стол ждёт отличное будущее и он сможет соперничать с такими игроками (хех), как Roll20 и Foundry.</p>
+<p>Если хотите что-то дополнить или поправить - напишите мне.</p>
+<p>Спасибо за прочтение!</p>
+
+    </div>
+  </article>
+
+  <div class="foot">
+    <span>Первый конкурс гайдов РолеБазы · июль 2026</span>
+
+  </div>
+</div>
+</body>
+</html>

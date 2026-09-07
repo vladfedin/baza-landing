@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Гайд по созданию компендиумов на РолеБазе — Илья Лемешев · конкурс РолеБазы</title>
+<meta name="description" content="Гайд по созданию компендиумов на РолеБазе. Конкурсная работа Илья Лемешев — первый конкурс гайдов РолеБазы.">
+<meta property="og:type" content="article"><meta property="og:title" content="Гайд по созданию компендиумов на РолеБазе">
+<meta property="og:description" content="Конкурсная работа Илья Лемешев — гайды сообщества РолеБазы.">
+<link rel="icon" href="../../characters/favicon.ico">
+<style>
+  :root{
+    --ink:#131118;--ink-2:#1a1720;--plate:#201c28;--plate-edge:rgba(201,164,92,0.22);
+    --brass:#c9a45c;--brass-dim:#8a7448;--bone:#e9e2d2;--bone-dim:#a89f8c;--glow:rgba(255,190,96,0.10);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:radial-gradient(1100px 500px at 50% -10%,#26202e 0%,transparent 60%),var(--ink);
+    color:var(--bone);font-family:Georgia,'Iowan Old Style','Palatino Linotype',serif;min-height:100vh;padding:44px 24px 90px}
+  body::after{content:'';position:fixed;inset:0;pointer-events:none;opacity:0.05;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E")}
+  .wrap{max-width:1140px;margin:0 auto;display:grid;grid-template-columns:260px minmax(0,1fr);gap:44px;align-items:start}
+  .crumb{grid-column:1/-1;font-size:12px;letter-spacing:0.24em;text-transform:uppercase;margin-bottom:6px}
+  .crumb a{color:var(--brass);text-decoration:none}.crumb a:hover{color:var(--bone)}
+
+  /* левая колонка: оглавление + мета (sticky) */
+  .side{position:sticky;top:28px}
+  .toc{border-left:1px solid var(--plate-edge);padding-left:18px;margin-bottom:26px}
+  .toc-h{font-size:11px;letter-spacing:0.3em;text-transform:uppercase;color:var(--bone-dim);margin-bottom:12px}
+  .toc ol{list-style:none;counter-reset:t}
+  .toc li{counter-increment:t;margin-bottom:9px;line-height:1.4}
+  .toc a{color:var(--bone);text-decoration:none;font-size:14px;display:block;padding-left:24px;position:relative}
+  .toc a::before{content:counter(t,upper-roman);position:absolute;left:0;color:var(--brass-dim);font-size:12px}
+  .toc a:hover{color:var(--brass)}
+  .side .src{font-size:13px;color:var(--bone-dim);line-height:1.6}
+  .side .src a{color:var(--brass);text-decoration:none;border-bottom:1px solid var(--brass-dim)}
+  .side .src a:hover{color:var(--bone)}
+
+  /* статья */
+  .article{min-width:0}
+  .a-kind{display:inline-flex;align-items:center;gap:8px;font-size:11px;letter-spacing:0.28em;text-transform:uppercase;
+    color:var(--brass);border:1px solid var(--brass-dim);border-radius:3px;padding:5px 12px;margin-bottom:18px}
+  h1{font-size:clamp(28px,4vw,42px);font-weight:400;font-variant:small-caps;letter-spacing:0.04em;line-height:1.15;margin-bottom:16px}
+  .byline{display:flex;flex-wrap:wrap;gap:8px 20px;font-size:14px;color:var(--bone-dim);padding-bottom:22px;margin-bottom:34px;border-bottom:1px solid var(--plate-edge)}
+  .byline .who{color:var(--bone)}.byline .who b{color:var(--brass);font-weight:400}
+  .byline svg{width:15px;height:15px;vertical-align:-2.5px;color:var(--brass-dim)}
+
+  .body{font-size:17px;line-height:1.72}
+  .body h2{font-size:26px;font-weight:400;font-variant:small-caps;letter-spacing:0.03em;color:var(--bone);
+    margin:40px 0 16px;padding-top:12px;scroll-margin-top:24px}
+  .body h3{font-size:20px;font-weight:400;color:var(--brass);margin:30px 0 12px;scroll-margin-top:24px}
+  .body p{margin-bottom:18px}
+  .body b,.body strong{color:var(--bone);font-weight:400;background:linear-gradient(transparent 62%,rgba(201,164,92,0.16) 0)}
+  .body a{color:var(--brass);text-decoration:none;border-bottom:1px solid var(--brass-dim)}
+  .body a:hover{color:var(--bone)}
+  .body ul,.body ol{margin:0 0 18px 24px}.body li{margin-bottom:8px}
+  .body blockquote{border-left:2px solid var(--brass-dim);padding-left:18px;color:var(--bone-dim);font-style:italic;margin:0 0 18px}
+  .body figure{margin:26px 0}
+  .body figure img,.body p img,.body img.inline{display:block;width:100%;border-radius:6px;border:1px solid var(--plate-edge);
+    box-shadow:0 14px 34px rgba(0,0,0,0.45)}
+  .body figcaption{margin-top:9px;font-size:13.5px;color:var(--bone-dim);font-style:italic;text-align:center}
+
+  /* режим PDF-страниц */
+  .pages{display:flex;flex-direction:column;gap:22px}
+  .pages .pg{scroll-margin-top:24px}
+  .pages img{display:block;width:100%;border-radius:6px;border:1px solid var(--plate-edge);box-shadow:0 14px 34px rgba(0,0,0,0.4)}
+  .pages .pgn{font-size:12px;letter-spacing:0.2em;text-transform:uppercase;color:var(--bone-dim);margin:2px 0 8px}
+
+  .foot{grid-column:1/-1;margin-top:56px;padding-top:22px;border-top:1px solid var(--plate-edge);
+    display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;font-size:13px;color:var(--bone-dim)}
+  .foot a{color:var(--brass);text-decoration:none}
+  .nom{display:inline-flex;align-items:center;gap:8px;color:var(--brass);border:1px solid var(--brass-dim);border-radius:3px;padding:5px 12px;font-size:12px;letter-spacing:0.14em}
+
+  @media(max-width:900px){
+    .wrap{grid-template-columns:1fr;gap:24px}
+    .side{position:static}
+    .toc{border-left:none;border-top:1px solid var(--plate-edge);border-bottom:1px solid var(--plate-edge);padding:16px 0}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="crumb"><a href="../../">← Итоги конкурса</a></div>
+
+  <aside class="side">
+    <nav class="toc"><div class="toc-h">Оглавление</div><ol><li><a href="#s1">Что такое компендиумы?</a></li><li><a href="#s2">Как пользоваться компендиумами?</a></li><li><a href="#s3">Как создавать свои компендиумы</a></li><li><a href="#s4">Где?</a></li><li><a href="#s5">Интерфейс</a></li><li><a href="#s6">Создание элемента</a></li><li><a href="#s7">Редактирование в игре</a></li><li><a href="#s8">Окно "Участники"</a></li><li><a href="#s9">Окно "Настройки"</a></li></ol></nav>
+    <div class="src">
+      Источник: <a href="https://dzen.ru/a/aj0EBct7GCf4REu6" target="_blank" rel="noopener">Дзен</a><br>
+      Сохранено 16.07.2026
+    </div>
+  </aside>
+
+  <article class="article">
+    <div class="a-kind">◇ Дзен</div>
+    <h1>Гайд по созданию компендиумов на РолеБазе</h1>
+    <div class="byline">
+      <span class="who">Автор: <b>Илья Лемешев</b></span>
+      <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 4 мин чтения</span>
+      <span>619 слов · 18 иллюстраций</span>
+    </div>
+    <div class="body">
+<div class="series"><span class="series-h">Серия «Гайды Ильи»:</span><a href="../ilya-players/">Игрокам</a><a href="../ilya-masters-1/">Мастерам · ч.1</a><a href="../ilya-masters-2/">Мастерам · ч.2</a><span class="cur">Компендиумы</span></div>
+<style>.series{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;margin-bottom:30px;padding:14px 16px;border:1px solid var(--plate-edge);border-radius:4px;background:var(--ink-2);font-size:13.5px}
+.series-h{color:var(--bone-dim);letter-spacing:0.04em}.series a{color:var(--brass);text-decoration:none;border-bottom:1px solid var(--brass-dim)}.series a:hover{color:var(--bone)}.series .cur{color:var(--bone);border-bottom:1px solid var(--brass)}</style><p>И снова привет! После небольшого перерыва я всё же взялся за написание четвёртого (и, наверное, самого полезного) гайда по РолеБазе.</p>
+<h2 id="s1">Что такое компендиумы?</h2>
+<p><i>Компендиум</i> - это коллекция данных, хранящая готовые элементы (персонажей, предметы, заклинания, сцены и т.д.), которые можно импортировать на текущий стол по мере необходимости.</p>
+<p>В РБ компендиумы могут быть:</p>
+<p>Личными - то есть созданными вами и видимыми только вами.</p>
+<p>Групповыми - т.е. те, которые вы делаете вместе с другим пользователем.</p>
+<p>От Сообщества - т.е. созданные и опубликованные другими пользователями.</p>
+<p>Встроенные - несколько компендиумов, созданных разработчиками.</p>
+<h2 id="s2">Как пользоваться компендиумами?</h2>
+<p>Для тех, кто не собирается создавать свои.</p>
+<p>1. Заходим в игру.</p>
+<figure><img src="images/img-01.png" alt="" loading="lazy"><figcaption>и снова здравствуй</figcaption></figure>
+<p>2. Тыкаем на иконку манускрипта в левом верхнем углу.</p>
+<p>3. Через "+" левее "<i>Поиска статей</i>" добавляем нужный компенд.</p>
+<p>Здесь отображаются все доступные вам компендиумы.</p>
+<p>Через кнопку "<i>папка с плюсиком</i>" можно начать создавать новый компендиум прямо в игре. А по кнопке правее можно отфильтровать нужный тип элемента.</p>
+<p>Ну ещё есть поиск среди статей</p>
+<p>Чтобы использовать например токен, просто переместите его на стол и он появится со всем набором характеристик. Всё остальное работает примерно  так же (наверное 😏).</p>
+<p>Как пользоваться музыкой (не самое очевидное) я рассказал в <a href="https://dzen.ru/a/ajE0Yg6RPnTs4ZBN#myzka">конце прошлого  гайда</a>.</p>
+<h2 id="s3">Как создавать свои компендиумы</h2>
+<p>Но количество опубликованных компендиумов сейчас довольно мало, поэтому вам точно захочется создать свой.</p>
+<h2 id="s4">Где?</h2>
+<p>Повторю ещё раз для тех, кто не читал прошлые мои гайды.</p>
+<figure><img src="images/img-02.png" alt="" loading="lazy"><figcaption>Сюда жмай</figcaption></figure>
+<figure><img src="images/img-03.png" alt="" loading="lazy"><figcaption>Да, я всё же додумался сменить ник</figcaption></figure>
+<figure><img src="images/img-04.png" alt="" loading="lazy"><figcaption>И вот мы здесь</figcaption></figure>
+<h2 id="s5">Интерфейс</h2>
+<figure><img src="images/img-05.png" alt="" loading="lazy"><figcaption>Да, это та же фотка (у меня дежавю)</figcaption></figure>
+<p>Слева можно увидеть все доступные вам компендиумы, а выше такие кнопки:</p>
+<p>Первая кнопка сворачивает меню:</p>
+<figure><img src="images/img-06.png" alt="" loading="lazy"><figcaption>Нахрена я это показываю?</figcaption></figure>
+<p>Вторая, как неудивительно, поиск.</p>
+<p>Третья - создать новый компендиум. Давайте нажмём на неё!</p>
+<h2 id="s6">Создание элемента</h2>
+<figure><img src="images/img-07.png" alt="" loading="lazy"><figcaption>Слушаем мудрую надпись</figcaption></figure>
+<p>Ещё раз нажимаем на другой плюсик и создаём первую запись.</p>
+<figure><img src="images/img-08.png" alt="" loading="lazy"><figcaption>ЦиляЦиляЦлияЦиляЦлияЦиляЦиля</figcaption></figure>
+<p>1. Выбираем нужный тип элемента. Для примера я создам персонажа.</p>
+<p>2. Вводим имя. Из него "<i>Слаг</i>" сгенерируется сам.</p>
+<blockquote><p>По сути, слаг - это истинное имя элемента, которое помогает программе определить что вы используете. Название у двух элементов может быть одинаковое, а слаг - нет.</p></blockquote>
+<p>3. <b>Не </b>меняйте статус при создании, всё равно после первого сохранения он сбросится до черновика (draft).</p>
+<p>4. Добавьте нужные файлы. У персонажа это 2 картинки - токен и портрет. Но можно добавить ещё, при чём файл может быть любой.</p>
+<figure><img src="images/img-09.png" alt="" loading="lazy"><figcaption>У Цили это одно и то же)))))</figcaption></figure>
+<p>5. Добавьте описание и теги, по вкусу.</p>
+<p>6. Ниже есть поле для статьи, если вы хотите написать научную диссертацию внутри токена. Если всё же решили это заполнить, можете посмотреть примеры из встроенных компендиумов.</p>
+<p>7. Нажмите "Сохранить"</p>
+<p>Токен готов! Можете нажать "Изменить" и поменять статус, но это не так важно.</p>
+<p>Но вы меня спросите: "а где статы?", Читайте дальше.</p>
+<h2 id="s7">Редактирование в игре</h2>
+<p>Довольно большая часть настроек любого элемента компендиума редактируется непосредственно на столе. Вот как это происходит: (текст ниже соответствующей картинки)</p>
+<p>1. подключить компендиум,</p>
+<figure><img src="images/img-10.png" alt="" loading="lazy"></figure>
+<p>2. вытянуть подопытного на стол,</p>
+<figure><img src="images/img-11.png" alt="" loading="lazy"><figcaption>Может я слегка переоценил обоятельность шляпы с глазами?.</figcaption></figure>
+<p>3. на операционном столе поменять статы и характеристики,</p>
+<figure><img src="images/img-12.png" alt="" loading="lazy"><figcaption>не обращайте внимание на мусор слева</figcaption></figure>
+<p>4. перекинуть его обратно,</p>
+<figure><img src="images/img-13.png" alt="" loading="lazy"><figcaption>«Один из вас мой напарник, а второй — лживый говнюк»</figcaption></figure>
+<p>5. и аннигилировать прошлую, несовершенную версию!</p>
+<p>Вот и всё, теперь можно перейти обратно в "лабораторию" и поменять слаг клона.</p>
+<figure><img src="images/img-14.png" alt="" loading="lazy"><figcaption>Портрет, кстати тоже сбросился.</figcaption></figure>
+<p>Да, как вы поняли, все действия с компендиумом можно делать прямо на столе (ну, разве что кроме музыки).</p>
+<h2 id="s8">Окно "Участники"</h2>
+<figure><img src="images/img-15.png" alt="" loading="lazy"><figcaption>Вспомнил мем с Обамами))</figcaption></figure>
+<p>Я единоличник, поэтому никогда этим не пользовался. Но вещь прикольная, здесь можно по почте пригласить другого пользователя в качестве редактора или чтеца (в теории, так можно сделать приватные платные компендиумы на продажу 💹)</p>
+<h2 id="s9">Окно "Настройки"</h2>
+<figure><img src="images/img-16.png" alt="" loading="lazy"></figure>
+<p>Здесь можно поменять название и описание компендиума,</p>
+<blockquote><p>Совет: не делайте описание длинным, т.к. его тупо никто не сможет прочесть. Если вам жизненно не обходимо длинное описание - создайте предмет-пустышку, и уже в него засовывайте текст любой длинны.</p></blockquote>
+<p>Так же здесь можно настроить видимость компендиума (если решили сделать его публичным - вам сюда).</p>
+<p>Можно подключить игровую систему, тогда у Персонажей появится кнопка с листом персонажа.</p>
+<figure><img src="images/img-17.png" alt="" loading="lazy"></figure>
+<p>Причём, если добавить несколько систем, то у одного персонажа будет несколько листов))</p>
+<figure><img src="images/img-18.png" alt="" loading="lazy"><figcaption>Многогранная личность...</figcaption></figure>
+<p>Ещё в настройках можно выбрать "Медиа-слоты по умолчанию", но я опять же не понял, на что это влияет, чтобы я не ставил медиа-слоты в новых и существующих элементах не изменялись :/</p>
+<p>Всё, пожалуй. Я рассказал о компендиумах всё, что мог и хотел рассказать. Если нужна помощь, не стесняйтесь - пишите мне (это может помочь мне дополнить гайды), в чаты РолеБазы или им в поддержку. Так же не стесняйтесь создавать и опубликовывать свои компендиумы, это сделает библиотеку богаче, и поможет начинающим игрокам.</p>
+<p><i>Хорошей Игры!</i></p>
+
+    </div>
+  </article>
+
+  <div class="foot">
+    <span>Первый конкурс гайдов РолеБазы · июль 2026</span>
+
+  </div>
+</div>
+</body>
+</html>

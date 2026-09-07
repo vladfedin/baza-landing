@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Добавление действий для токенов — Daria Di · конкурс РолеБазы</title>
+<meta name="description" content="Добавление действий для токенов. Конкурсная работа Daria Di — первый конкурс гайдов РолеБазы.">
+<meta property="og:type" content="article"><meta property="og:title" content="Добавление действий для токенов">
+<meta property="og:description" content="Конкурсная работа Daria Di — гайды сообщества РолеБазы.">
+<link rel="icon" href="../../characters/favicon.ico">
+<style>
+  :root{
+    --ink:#131118;--ink-2:#1a1720;--plate:#201c28;--plate-edge:rgba(201,164,92,0.22);
+    --brass:#c9a45c;--brass-dim:#8a7448;--bone:#e9e2d2;--bone-dim:#a89f8c;--glow:rgba(255,190,96,0.10);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:radial-gradient(1100px 500px at 50% -10%,#26202e 0%,transparent 60%),var(--ink);
+    color:var(--bone);font-family:Georgia,'Iowan Old Style','Palatino Linotype',serif;min-height:100vh;padding:44px 24px 90px}
+  body::after{content:'';position:fixed;inset:0;pointer-events:none;opacity:0.05;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E")}
+  .wrap{max-width:1140px;margin:0 auto;display:grid;grid-template-columns:260px minmax(0,1fr);gap:44px;align-items:start}
+  .crumb{grid-column:1/-1;font-size:12px;letter-spacing:0.24em;text-transform:uppercase;margin-bottom:6px}
+  .crumb a{color:var(--brass);text-decoration:none}.crumb a:hover{color:var(--bone)}
+
+  /* левая колонка: оглавление + мета (sticky) */
+  .side{position:sticky;top:28px}
+  .toc{border-left:1px solid var(--plate-edge);padding-left:18px;margin-bottom:26px}
+  .toc-h{font-size:11px;letter-spacing:0.3em;text-transform:uppercase;color:var(--bone-dim);margin-bottom:12px}
+  .toc ol{list-style:none;counter-reset:t}
+  .toc li{counter-increment:t;margin-bottom:9px;line-height:1.4}
+  .toc a{color:var(--bone);text-decoration:none;font-size:14px;display:block;padding-left:24px;position:relative}
+  .toc a::before{content:counter(t,upper-roman);position:absolute;left:0;color:var(--brass-dim);font-size:12px}
+  .toc a:hover{color:var(--brass)}
+  .side .src{font-size:13px;color:var(--bone-dim);line-height:1.6}
+  .side .src a{color:var(--brass);text-decoration:none;border-bottom:1px solid var(--brass-dim)}
+  .side .src a:hover{color:var(--bone)}
+
+  /* статья */
+  .article{min-width:0}
+  .a-kind{display:inline-flex;align-items:center;gap:8px;font-size:11px;letter-spacing:0.28em;text-transform:uppercase;
+    color:var(--brass);border:1px solid var(--brass-dim);border-radius:3px;padding:5px 12px;margin-bottom:18px}
+  h1{font-size:clamp(28px,4vw,42px);font-weight:400;font-variant:small-caps;letter-spacing:0.04em;line-height:1.15;margin-bottom:16px}
+  .byline{display:flex;flex-wrap:wrap;gap:8px 20px;font-size:14px;color:var(--bone-dim);padding-bottom:22px;margin-bottom:34px;border-bottom:1px solid var(--plate-edge)}
+  .byline .who{color:var(--bone)}.byline .who b{color:var(--brass);font-weight:400}
+  .byline svg{width:15px;height:15px;vertical-align:-2.5px;color:var(--brass-dim)}
+
+  .body{font-size:17px;line-height:1.72}
+  .body h2{font-size:26px;font-weight:400;font-variant:small-caps;letter-spacing:0.03em;color:var(--bone);
+    margin:40px 0 16px;padding-top:12px;scroll-margin-top:24px}
+  .body h3{font-size:20px;font-weight:400;color:var(--brass);margin:30px 0 12px;scroll-margin-top:24px}
+  .body p{margin-bottom:18px}
+  .body b,.body strong{color:var(--bone);font-weight:400;background:linear-gradient(transparent 62%,rgba(201,164,92,0.16) 0)}
+  .body a{color:var(--brass);text-decoration:none;border-bottom:1px solid var(--brass-dim)}
+  .body a:hover{color:var(--bone)}
+  .body ul,.body ol{margin:0 0 18px 24px}.body li{margin-bottom:8px}
+  .body blockquote{border-left:2px solid var(--brass-dim);padding-left:18px;color:var(--bone-dim);font-style:italic;margin:0 0 18px}
+  .body figure{margin:26px 0}
+  .body figure img,.body p img,.body img.inline{display:block;width:100%;border-radius:6px;border:1px solid var(--plate-edge);
+    box-shadow:0 14px 34px rgba(0,0,0,0.45)}
+  .body figcaption{margin-top:9px;font-size:13.5px;color:var(--bone-dim);font-style:italic;text-align:center}
+
+  /* режим PDF-страниц */
+  .pages{display:flex;flex-direction:column;gap:22px}
+  .pages .pg{scroll-margin-top:24px}
+  .pages img{display:block;width:100%;border-radius:6px;border:1px solid var(--plate-edge);box-shadow:0 14px 34px rgba(0,0,0,0.4)}
+  .pages .pgn{font-size:12px;letter-spacing:0.2em;text-transform:uppercase;color:var(--bone-dim);margin:2px 0 8px}
+
+  .foot{grid-column:1/-1;margin-top:56px;padding-top:22px;border-top:1px solid var(--plate-edge);
+    display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;font-size:13px;color:var(--bone-dim)}
+  .foot a{color:var(--brass);text-decoration:none}
+  .nom{display:inline-flex;align-items:center;gap:8px;color:var(--brass);border:1px solid var(--brass-dim);border-radius:3px;padding:5px 12px;font-size:12px;letter-spacing:0.14em}
+
+  @media(max-width:900px){
+    .wrap{grid-template-columns:1fr;gap:24px}
+    .side{position:static}
+    .toc{border-left:none;border-top:1px solid var(--plate-edge);border-bottom:1px solid var(--plate-edge);padding:16px 0}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="crumb"><a href="../../">← Итоги конкурса</a></div>
+
+  <aside class="side">
+    <nav class="toc"><div class="toc-h">Оглавление</div><ol><li><a href="#s1">Дальше идет самый веселый блок — Анимация</a></li><li><a href="#s2">Примечания</a></li></ol></nav>
+    <div class="src">
+      Источник: <a href="https://telegra.ph/Dobavlenie-dejstvij-dlya-tokenov-06-13" target="_blank" rel="noopener">telegra.ph</a><br>
+      Сохранено 16.07.2026
+    </div>
+  </aside>
+
+  <article class="article">
+    <div class="a-kind">◇ telegra.ph</div>
+    <h1>Добавление действий для токенов</h1>
+    <div class="byline">
+      <span class="who">Автор: <b>Daria Di</b> (@inconsolelog)</span>
+      <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 5 мин чтения</span>
+      <span>780 слов · 9 иллюстраций</span>
+    </div>
+    <div class="body">
+<p>Чтобы добавить действие для токена на <a href="https://rolebaza.ru/" target="_blank" rel="noopener">Ролебазе</a> необходимо выбрать свой токен и нажать Правый Клик Мыши (ПКМ).</p><figure><img src="images/img-01.png" alt="" loading="lazy"><figcaption>Добавить действие</figcaption></figure><p>При помощи кнопки "+ Добавить действие" можно внести разные фичи.</p><p>Дальше поговорю о полях и вариантах их заполнения.</p><figure><img src="images/img-02.png" alt="" loading="lazy"><figcaption>Действие</figcaption></figure><p>Поле <b>Label </b>это то, как ваше действие будет называться у токена. Например: "Удар длинным мечом", заклинание "Ложная жизнь" и пр. Название может быть каким угодно.</p><p>Поле <b>Kind </b>определяет то, за что совершается действие: основное, бонусное, реакция, ... По умолчанию там основное (active) действие.</p><p>К сожалению, мне не удалось найти полного списка возможных иконок для <b>Icon</b>, поэтому я пропущу этот пункт. То же самое касается пункта <b>Cost</b>, у меня он не работает.
+Могу только сказать, что большинство актуальных иконок можно выцепить в Ролевых Системах.
+</p><figure><img src="images/img-03.png" alt="" loading="lazy"><figcaption>Иконки</figcaption></figure><p>Поле <b>Shape </b>определяет траекторию урона: <b>single</b>(одна цель), <b>cone</b>(конус), <b>circle</b>(окружность), <b>line</b>(линия), <b>square</b>(квадрат).</p><p>После выбора формы урона появляются дополнительные опциональные поля:</p><figure><img src="images/img-04.png" alt="" loading="lazy"><figcaption>Детализация таргетинга</figcaption></figure><p><b>Range </b>— Дистанция в клетках (или метрах в зависимости от distanceMethod[по умолчанию в метрах]); к сожалению, нельзя указывать несколько, на данный момент для дальнобойного оружия надо будет заводить два действия либо адаптироваться самим.<b>
+Size </b>— Радиус/длина/сторона для cone/circle/line/square.<b>
+Angle </b>— Угол конуса (для shape: cone), в градусах. <b>Width </b>— ширина.<b>
+Max targets</b> — Сколько целей затрагивается. 1 для single, N для area.</p><figure><img src="images/img-05.png" alt="" loading="lazy"><figcaption>Анимация</figcaption></figure><p>При смене формы и пр., что может менять анимацию, — она проигрывается повторно. Анимацию действия можно повторять кнопкой справа сверху.</p><figure><img src="images/img-06.png" alt="" loading="lazy"><figcaption>Шаги</figcaption></figure><p>Секция <b>Steps</b>(Шаги) отвечает за последовательность событий, которые происходят от конкретного действия.</p><p>Вот список всех возможных шагов:</p><p><b>Roll </b>— Бросок, результат можно поймать в captureAs.<b>
+Save </b>— Спасбросок цели против DC. Capture'ит boolean успеха — проще говоря, факт того был пройден спасбросок ли провален.<b>
+Damage </b>— Урон с типом (damageType). Возможные damageType определяются Ролевой Системой во вкладке действия.</p><figure><img src="images/img-07.png" alt="" loading="lazy"><figcaption>Ролевые Системы</figcaption></figure><p><b>Modify field </b>с Изменить поле цели (set/add/mul/clamp/min/max). У этого поля есть подполе с выбором цели, где можно указать себя или всех.
+<b>Consume </b>— Потратить ресурс (слот заклинания, charges, hit dice). Прерывает действие при недостатке. Слоты следует указывать в формате spell_slot_1 для ячейки первого уровня и т.п.<b>
+Restore </b>— Восстановить ресурс. Поддерживает restoreAllOf: 'long-rest' для групп. Учитывая, что для изменения полей есть <b>Modify field</b>, а для отдыха отдельные кнопки — это специфичная графа для заклинаний, работающих как отдых со своими особенностями: один раз, каждый боевой раунд и т.п.
+<b>Effect </b>— Наложить состояние. Все возможные варианты можно увидеть у себя в Ролевые Системы во вкладке Справочники.  Там должны быть перечислены все доступные blinded, charmed, ...
+<b>Chat </b>— Отправить нарративный текст в чат.
+<b>Branch </b>— условный оператор, где первый true побеждает. То самое место, куда вставляется captureAs из Roll, Save, ... и прописываются события для успеха. Как только в перечне появляется первый успех эта графа считается отработанной. Т.е., если у вас несколько значений не взаимоисключающих — стоит заводить несколько branch.
+<b>Prompt </b>— Запросить выбор у игрока (slot level, advantage). Pre-flight — собирается до выполнения шагов. К сожалению, я не нашла достаточной документации, чтобы гибко настраивать заклы под юзание разных ячеек и т.п. Но просто знайте, что как минимум в теории это возможно.<b>
+Сapability </b>— Вызвать зарегистрированную capability (combat-tracker, async UI). Только для случаев, не выразимых declarative. Еще более непонятная для меня вещь, в которой у меня не работают args, поэтому не смогла с ней как следует познакомиться.</p><figure><img src="images/img-08.png" alt="" loading="lazy"><figcaption>Удар мечом</figcaption></figure><p>Вот так ↑ будет выглядеть обычная атака мечом, которым персонаж владеет, где у мастера будет запрошен КЗ противника, по которому игрок проводит атаку.</p><h2 id="s1">Дальше идет самый веселый блок — Анимация</h2><figure><img src="images/img-09.png" alt="" loading="lazy"><figcaption>Анимация</figcaption></figure><p>Для каждого действия можно настроить анимации для разных событий. Варианты доступных <b>событий</b>: прицел/выбор, атака, промах, крит, провал спасброска, накладывание состояния.</p><p>Поле <b>Архетип </b>определяет форму анимаций, имейте в виду, что внешний вид анимации определяет в т.ч. и цель. То есть если выбрать архетип aoe-circle, то анимация окружности будет, только если в поле Где выбрана area, иначе никакой анимации не будет. Некоторые анимации с неподходящей областью отобразятся, но не верно, например, tether, если его направить на target, будет как пулевая очередь, но если выбрать area и пр., то он точка с пульсацией.</p><p><b>Где </b>определяет место, куда должна быть направлена анимация.</p><p><b>Цвет </b>это цвет анимации, по умолчанию он берется из выбранного ранее типа урона, но можно выбрать самостоятельно по цветовой палетке.</p><p><b>Вариант </b>позволяет добавить свечение или наоборот уменьшить анимацию.</p><h2 id="s2">Примечания</h2><p>Обращайте внимание, что хоть я и разделила на блоки, но сами по себе они взаимосвязаны, то есть если в самом начале не выбрать тип конус (например), а потом в конце настроить анимацию конуса, то анимация будет идти от врага, так как по умолчанию считается, что цель это выбранная точка/противник.</p><p>Но, к счастью, анимация хорошо показывает возможные косяки, так что главное следите за модификаторами в формулах, чтобы можно было максимально наслаждаться игрой и кастовать и в сладость и в гадость ♥</p>
+    </div>
+  </article>
+
+  <div class="foot">
+    <span>Первый конкурс гайдов РолеБазы · июль 2026</span>
+    <span class="nom">✧ Тайное знание</span>
+  </div>
+</div>
+</body>
+</html>

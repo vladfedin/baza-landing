@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Гайдик по самому простому столу для НРИ (Ролебаза) для игроков — Илья Лемешев · конкурс РолеБазы</title>
+<meta name="description" content="Гайдик по самому простому столу для НРИ (Ролебаза) для игроков. Конкурсная работа Илья Лемешев — первый конкурс гайдов РолеБазы.">
+<meta property="og:type" content="article"><meta property="og:title" content="Гайдик по самому простому столу для НРИ (Ролебаза) для игроков">
+<meta property="og:description" content="Конкурсная работа Илья Лемешев — гайды сообщества РолеБазы.">
+<link rel="icon" href="../../characters/favicon.ico">
+<style>
+  :root{
+    --ink:#131118;--ink-2:#1a1720;--plate:#201c28;--plate-edge:rgba(201,164,92,0.22);
+    --brass:#c9a45c;--brass-dim:#8a7448;--bone:#e9e2d2;--bone-dim:#a89f8c;--glow:rgba(255,190,96,0.10);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:radial-gradient(1100px 500px at 50% -10%,#26202e 0%,transparent 60%),var(--ink);
+    color:var(--bone);font-family:Georgia,'Iowan Old Style','Palatino Linotype',serif;min-height:100vh;padding:44px 24px 90px}
+  body::after{content:'';position:fixed;inset:0;pointer-events:none;opacity:0.05;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E")}
+  .wrap{max-width:1140px;margin:0 auto;display:grid;grid-template-columns:260px minmax(0,1fr);gap:44px;align-items:start}
+  .crumb{grid-column:1/-1;font-size:12px;letter-spacing:0.24em;text-transform:uppercase;margin-bottom:6px}
+  .crumb a{color:var(--brass);text-decoration:none}.crumb a:hover{color:var(--bone)}
+
+  /* левая колонка: оглавление + мета (sticky) */
+  .side{position:sticky;top:28px}
+  .toc{border-left:1px solid var(--plate-edge);padding-left:18px;margin-bottom:26px}
+  .toc-h{font-size:11px;letter-spacing:0.3em;text-transform:uppercase;color:var(--bone-dim);margin-bottom:12px}
+  .toc ol{list-style:none;counter-reset:t}
+  .toc li{counter-increment:t;margin-bottom:9px;line-height:1.4}
+  .toc a{color:var(--bone);text-decoration:none;font-size:14px;display:block;padding-left:24px;position:relative}
+  .toc a::before{content:counter(t,upper-roman);position:absolute;left:0;color:var(--brass-dim);font-size:12px}
+  .toc a:hover{color:var(--brass)}
+  .side .src{font-size:13px;color:var(--bone-dim);line-height:1.6}
+  .side .src a{color:var(--brass);text-decoration:none;border-bottom:1px solid var(--brass-dim)}
+  .side .src a:hover{color:var(--bone)}
+
+  /* статья */
+  .article{min-width:0}
+  .a-kind{display:inline-flex;align-items:center;gap:8px;font-size:11px;letter-spacing:0.28em;text-transform:uppercase;
+    color:var(--brass);border:1px solid var(--brass-dim);border-radius:3px;padding:5px 12px;margin-bottom:18px}
+  h1{font-size:clamp(28px,4vw,42px);font-weight:400;font-variant:small-caps;letter-spacing:0.04em;line-height:1.15;margin-bottom:16px}
+  .byline{display:flex;flex-wrap:wrap;gap:8px 20px;font-size:14px;color:var(--bone-dim);padding-bottom:22px;margin-bottom:34px;border-bottom:1px solid var(--plate-edge)}
+  .byline .who{color:var(--bone)}.byline .who b{color:var(--brass);font-weight:400}
+  .byline svg{width:15px;height:15px;vertical-align:-2.5px;color:var(--brass-dim)}
+
+  .body{font-size:17px;line-height:1.72}
+  .body h2{font-size:26px;font-weight:400;font-variant:small-caps;letter-spacing:0.03em;color:var(--bone);
+    margin:40px 0 16px;padding-top:12px;scroll-margin-top:24px}
+  .body h3{font-size:20px;font-weight:400;color:var(--brass);margin:30px 0 12px;scroll-margin-top:24px}
+  .body p{margin-bottom:18px}
+  .body b,.body strong{color:var(--bone);font-weight:400;background:linear-gradient(transparent 62%,rgba(201,164,92,0.16) 0)}
+  .body a{color:var(--brass);text-decoration:none;border-bottom:1px solid var(--brass-dim)}
+  .body a:hover{color:var(--bone)}
+  .body ul,.body ol{margin:0 0 18px 24px}.body li{margin-bottom:8px}
+  .body blockquote{border-left:2px solid var(--brass-dim);padding-left:18px;color:var(--bone-dim);font-style:italic;margin:0 0 18px}
+  .body figure{margin:26px 0}
+  .body figure img,.body p img,.body img.inline{display:block;width:100%;border-radius:6px;border:1px solid var(--plate-edge);
+    box-shadow:0 14px 34px rgba(0,0,0,0.45)}
+  .body figcaption{margin-top:9px;font-size:13.5px;color:var(--bone-dim);font-style:italic;text-align:center}
+
+  /* режим PDF-страниц */
+  .pages{display:flex;flex-direction:column;gap:22px}
+  .pages .pg{scroll-margin-top:24px}
+  .pages img{display:block;width:100%;border-radius:6px;border:1px solid var(--plate-edge);box-shadow:0 14px 34px rgba(0,0,0,0.4)}
+  .pages .pgn{font-size:12px;letter-spacing:0.2em;text-transform:uppercase;color:var(--bone-dim);margin:2px 0 8px}
+
+  .foot{grid-column:1/-1;margin-top:56px;padding-top:22px;border-top:1px solid var(--plate-edge);
+    display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;font-size:13px;color:var(--bone-dim)}
+  .foot a{color:var(--brass);text-decoration:none}
+  .nom{display:inline-flex;align-items:center;gap:8px;color:var(--brass);border:1px solid var(--brass-dim);border-radius:3px;padding:5px 12px;font-size:12px;letter-spacing:0.14em}
+
+  @media(max-width:900px){
+    .wrap{grid-template-columns:1fr;gap:24px}
+    .side{position:static}
+    .toc{border-left:none;border-top:1px solid var(--plate-edge);border-bottom:1px solid var(--plate-edge);padding:16px 0}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="crumb"><a href="../../">← Итоги конкурса</a></div>
+
+  <aside class="side">
+    <nav class="toc"><div class="toc-h">Оглавление</div><ol><li><a href="#s1">Для игроков со своим мастером (База)</a></li><li><a href="#s2">Для продвинутых игроков и игроков без мастера.</a></li></ol></nav>
+    <div class="src">
+      Источник: <a href="https://dzen.ru/a/aikgYpdJdle1R6Gb" target="_blank" rel="noopener">Дзен</a><br>
+      Сохранено 16.07.2026
+    </div>
+  </aside>
+
+  <article class="article">
+    <div class="a-kind">◇ Дзен</div>
+    <h1>Гайдик по самому простому столу для НРИ (Ролебаза) для игроков</h1>
+    <div class="byline">
+      <span class="who">Автор: <b>Илья Лемешев</b></span>
+      <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 5 мин чтения</span>
+      <span>776 слов · 9 иллюстраций</span>
+    </div>
+    <div class="body">
+<div class="series"><span class="series-h">Серия «Гайды Ильи»:</span><span class="cur">Игрокам</span><a href="../ilya-masters-1/">Мастерам · ч.1</a><a href="../ilya-masters-2/">Мастерам · ч.2</a><a href="../ilya-compendiums/">Компендиумы</a></div>
+<style>.series{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;margin-bottom:30px;padding:14px 16px;border:1px solid var(--plate-edge);border-radius:4px;background:var(--ink-2);font-size:13.5px}
+.series-h{color:var(--bone-dim);letter-spacing:0.04em}.series a{color:var(--brass);text-decoration:none;border-bottom:1px solid var(--brass-dim)}.series a:hover{color:var(--bone)}.series .cur{color:var(--bone);border-bottom:1px solid var(--brass)}</style><p>Приветствую всех, кто перешёл на эту страницу и читает этот текст, сегодня я собираюсь рассказать вам о самом удобном (конечно же, по моему мнению) виртуальном столе для настольно-ролевых игр - <a href="https://beta.rolebaza.ru/"><b>Ролебазе</b></a><b> </b>(РБ).</p>
+<p>Плюсы этого стола:</p>
+<ul><li><b>Русский интерфейс</b> - я не такой человек, для которого русские разработчики - уже плюс, но работать на родном языке всегда удобно.</li><li><b>Бесплатный</b> - разрабы обещают платную подписку, но пока её нет всё бесплатно (да и вряд ли они сделают уже существующие функции платными).</li><li><b>Активное развитие</b> - обновления выходят неприлично часто, в каждом добавляется очень много всего, а если вам чего-то не хватает - смотрите следующий пункт.</li><li><b>Отзывчивая поддержка</b> - если вы заметили баг, отсутствие какой-нибудь функции или у вас есть вопрос - не стесняйтесь нажать на кнопку «<i>Связь</i>». У меня лично было такое, что я написал в поддержку по поводу невозможности обрезать картинку для токена, на следующий день эту функцию добавили!</li></ul>
+<p>Минусы пока тяжело назвать, так как в следующем же обновлении половина списка уже может быть не актуальна. Поэтому перейдём к основной части!</p>
+<h2 id="s1">Для игроков со своим мастером (База)</h2>
+<p>Данный раздел для тех кого Мастер просто пригласил за этот стол и они не собираются пользоваться им больше, чем в игре.</p>
+<ul><li><b>Вход:</b></li></ul>
+<p>Просто перейдите по ссылке, которую вам скинул Мастер, введите никнейм, и войдите как гость. Если хотите - войдите в аккаунт через ТГ, ВК, Яндекс, или с паролем.</p>
+<figure><img src="images/img-01.png" alt="" loading="lazy"><figcaption>Будем играть за Чучку!</figcaption></figure>
+<p>Важное примечание! Проверьте, чтобы на устройстве был разрешён микрофон для браузера, а в браузере - для РБ, особенно актуально для телефонов.</p>
+<ul><li><b>Интерфейс:</b></li></ul>
+<p>После входа нас встречает вот такой интерфейс:</p>
+<figure><img src="images/img-02.png" alt="" loading="lazy"><figcaption>Для Чучки нет персонажа :(</figcaption></figure>
+<p>Всё интуитивно понятно, но это гайд, поэтому рассмотрим каждую кнопку.</p>
+<ul><li><b>Бросок костей.</b> Основа основ! Кнопка слева внизу, правее от «Токенов». Открывается вот такое меню, которое на ПК даже можно двигать и растягивать.</li></ul>
+<p>Нажав на обозначения костей слева, проиграется красивая анимация и выдаст результат. Если нажать на цифры правее то кости бросятся несколько раз и результат суммируется. На кнопки ниже можно выбрать, кто будет видеть результат: все, вы и мастер, или только вы. Также здесь можно сделать броски с преимуществом и помехой. Крайняя кнопка «<i>Взрыв</i>» бросает кость ещё раз если выпадает максимальное значение, как на картинке (может у меня мало опыта, но я раньше не видел такую механику).</p>
+<figure><img src="images/img-03.png" alt="" loading="lazy"><figcaption>Я неудачник, поэтому макс знасение могу выбить только на к4</figcaption></figure>
+<p>Ползунок ниже позволяет добавить положительный или отрицательный модификатор.</p>
+<ul><li><b>Токены. </b></li></ul>
+<p>Нажав на кнопку левее костей вы сможете посмотреть все токены, которые вы можете видеть на карте. Нажав на токен, вы можете (если мастер позволил) посмотреть инфо о нём. Подробнее об этой инфе я буду рассказывать в гайде для мастеров, но в общем, там обычный лист персонажа.</p>
+<figure><img src="images/img-04.png" alt="" loading="lazy"><figcaption>Для Чучки всё же нашёлся персонаж :)</figcaption></figure>
+<ul><li><b>Чат. </b>Кнопка в центре снизу. Как не удивительно, это чат. Я должен объяснять что это такое? Ладно, через левую кнопку можно открыть меню «<i>Бросок костей</i>», правее (кнопка i) показывает множество команд для специфических бросков, я редко этим пользуюсь, но там инфы для отдельного гайда, поэтому,</li></ul>
+<blockquote><p>обещаю, если я займу 1-5 место в этом конкурсе, я сделаю гайд с полным обзором всех базовых команд!</p></blockquote>
+<figure><img src="images/img-05.png" alt="" loading="lazy"><figcaption>Поделом тебе, Чучка</figcaption></figure>
+<ul><li><b>Режим измерения расстояния. </b>Кнопка правее чата переводит вас в режим измерения расстояния, нажатиями вы строите ломаную, рядом с каждым звеном которой выводится его длина. Выйти из режима можно, нажав на Esc или на ту же кнопку.</li><li><b>Игроки. </b>В этом окне всё, что связано со встроенным коммуникатором (это слово мне Алиса подсказала, не смотрите так). Здесь можно подключить микрофон, изменить громкость игроков, поднять руку.</li></ul>
+<ul><li><b>Настройки. </b>Я не буду объяснять каждую кнопку, скажу только, что ползунок изменяет громкость глобально всего сайта, а кнопка «<i>Установить приложение</i>» устанавливает обычное веб-приложение, чтобы не запускать весь браузер.</li></ul>
+<ul><li><b>Не-Кнопки. </b>Свайпами вы можете передвигаться по полю, ограниченным мастером. Колёсиком или двумя пальцами увеличивается/уменьшается масштаб. Нажав на токен вы можете посмотреть такое же инфо о нём, как через меню «<i>Токены</i>». Если мастер присвоил токен(ы) вам вы сможете передвигать его(их) по карте.</li></ul>
+<h2 id="s2">Для продвинутых игроков и игроков без мастера.</h2>
+<p>Данный раздел для тех кому интересно найти на Ролебазе компанию для игры или они просто хотят лучше разбираться в этом сайте.</p>
+<ul><li><b>Вход.</b> "<i>А где здесь играть-то?</i>" - Спрашивают новые игроки (и я среди них первый), которые вбили в поиск "Ролебаза", перешли по первой ссылке и увидели это:</li></ul>
+<figure><img src="images/img-06.png" alt="" loading="lazy"><figcaption>Я не понимаю, почему здесь нет ссылки на рабочий сайт, лол</figcaption></figure>
+<p>Прикол в том, что это - <a href="https://rolebaza.ru/">страница-презентация проекта</a>, где можно зарегистрироваться как первопроходец и почитать инфу. Но не играть!</p>
+<p>Чтобы зайти на саму Ролебазу вбивайте "Ролебаза Бета" или просто перейдите по <a href="https://beta.rolebaza.ru/">этой ссылке</a>. Вот как выглядит нужная нам страница:</p>
+<figure><img src="images/img-07.png" alt="" loading="lazy"><figcaption>Подписи к разделам меняются при перезаходе!</figcaption></figure>
+<p>Нажимаем «<i>Войти</i>» и регистрируемся, я советую через ВК или Яндекс, но  создам новый акк с почтой:</p>
+<figure><img src="images/img-08.png" alt="" loading="lazy"><figcaption>Я не дам вам свою почту )</figcaption></figure>
+<p>К слову, если вы зарегистрируйтесь до выхода РБ в релиз вы получите титул "Первопроходец"!</p>
+<p>На главном экране вы сможете найти</p>
+<ul><li><i>Игры</i>, на которые можно записаться:</li></ul>
+<figure><img src="images/img-09.png" alt="" loading="lazy"></figure>
+<ul><li><i>Информацию об обновлениях.</i></li><li><i>Сокровища</i> - наборы для игры (которые  тут называются <i>Компендиумы</i>), среди которых и мой "<i>Саундтрек Undertale</i>"😉, кастомные <i>системы</i> и готовые <i>столы</i>.</li><li><i>Других пользователей</i></li></ul>
+<p>Через выпадающее меню вы можете изменить профиль на свой вкус, создать свои компендиумы и столы, но об этом я уже расскажу в <i>гайде для мастеров. </i></p>
+
+    </div>
+  </article>
+
+  <div class="foot">
+    <span>Первый конкурс гайдов РолеБазы · июль 2026</span>
+    <span class="nom">❖ Летопись Первопроходца</span>
+  </div>
+</div>
+</body>
+</html>
