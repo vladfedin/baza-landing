@@ -22,6 +22,10 @@ const ROOT = resolve(process.argv[2] ?? 'www');
 /** Схемы и якоря, за которые сайт не отвечает. */
 const EXTERNAL = /^(?:[a-z][a-z0-9+.-]*:|\/\/|#|$)/i;
 
+/** Шаблон, который страница собирает в скрипте (`src="${f}"`): адреса ещё нет,
+ *  проверять статически нечего — за такие файлы отвечает сборка страницы. */
+const TEMPLATE = /\$\{/;
+
 function htmlFiles(dir) {
   const out = [];
   for (const entry of readdirSync(dir, { withFileTypes: true })) {
@@ -70,7 +74,7 @@ let checked = 0;
 for (const page of pages) {
   const html = readFileSync(page, 'utf8');
   for (const link of linksOf(html)) {
-    if (EXTERNAL.test(link)) continue;
+    if (EXTERNAL.test(link) || TEMPLATE.test(link)) continue;
     const target = targetPath(link, page);
     if (!target) continue;
     checked++;
