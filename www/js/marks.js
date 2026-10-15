@@ -15,6 +15,9 @@
   Usage: <figure class="user-plaque" data-user="master-zloboust"> with a static
   fallback inside; the profile is fetched from GET /api/users/:ref/public and
   the plaque is refilled. If the app does not answer, the fallback stays.
+  Avatars load only from the app's own storage; a VK / Telegram avatar would
+  send the visitor's address to a third party, so such a person's avatar is a
+  copy kept in the markup (img/reviews/avatar-*.webp) and stays as it is.
 */
 (function () {
   'use strict';
