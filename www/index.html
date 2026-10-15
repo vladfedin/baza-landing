@@ -65,6 +65,9 @@
     <!-- the visitor's die throw answered with a roll card, as in the table's chat -->
     <script defer src="js/roll-card.js"></script>
 
+    <!-- the hero's «Что такое…?» answers -->
+    <script defer src="js/asks.js"></script>
+
     <!-- dialogs opened by [data-dialog-open] (the team) -->
     <script defer src="js/dialogs.js"></script>
 
@@ -142,6 +145,19 @@
                 </div>
                 <div class="hero-headtext">
                     <h1>Виртуальный стол для<br><span class="l-red">Н</span>астольных <span class="l-red">Р</span>олевых <span class="l-red">И</span>гр</h1>
+                    <!-- for those new to the hobby: two questions, each opens a short answer (js/asks.js) -->
+                    <div class="asks">
+                        <button class="ask" type="button" aria-expanded="false" aria-controls="ask-nri"><svg aria-hidden="true"><use href="img/icons.svg#lu-circle-question-mark"/></svg>Что такое НРИ?</button>
+                        <button class="ask" type="button" aria-expanded="false" aria-controls="ask-vtt"><svg aria-hidden="true"><use href="img/icons.svg#lu-circle-question-mark"/></svg>Что такое виртуальный стол?</button>
+                        <div class="ask-answer" id="ask-nri" role="region" aria-label="Что такое НРИ" hidden>
+                            <p>Настольная ролевая игра — история, которую рассказывают вместе. Мастер описывает мир и говорит за всех, кого встречают герои. Каждый игрок ведёт своего персонажа и решает, что тот делает.</p>
+                            <p>Чем кончится рискованный поступок, решают кубики и правила — например, D&amp;D. Нужны воображение и пара вечерних часов с друзьями.</p>
+                        </div>
+                        <div class="ask-answer" id="ask-vtt" role="region" aria-label="Что такое виртуальный стол" hidden>
+                            <p>Это стол для такой игры, только в браузере: карта, фигурки героев и чудовищ, листы персонажей, кубики и голосовая связь — в одном окне.</p>
+                            <p>Мастер готовит сцены и открывает их по ходу истории, игроки заходят по ссылке. Играть можно, даже если все в разных городах.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
             <!-- <div class="hero-note">Бесплатно · Без установки · Игроки заходят по ссылке без регистрации</div> -->

@@ -1310,3 +1310,40 @@ html { scroll-padding-top: 84px; }
 .team-dialog__close:hover { color: var(--accent-bright); border-color: var(--accent); }
 .team-dialog__close svg { width: 18px; height: 18px; }
 @media (prefers-reduced-motion: reduce) { .team-dialog { transition: none; transform: none; } }
+
+/* ============ «Что такое…?» under the headline (js/asks.js) ============
+   The same translucent pills as the allies (a level mark over a cover), in
+   the page's gold; the answer opens as a dark card under them. */
+.asks { position: relative; display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+.ask {
+  --ally: #d9b36a;
+  display: inline-flex; align-items: center; gap: 6px; height: 30px; padding: 0 12px;
+  font: inherit; font-size: 13px; font-weight: 700; cursor: pointer; border: 0; border-radius: 999px;
+  background: color-mix(in srgb, var(--ally) 22%, rgba(12, 10, 18, 0.5));
+  color: color-mix(in srgb, var(--ally) 60%, #f2f2f5);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ally) 55%, transparent),
+              0 0 8px -1px color-mix(in srgb, var(--ally) 45%, transparent), 0 2px 8px rgba(0, 0, 0, 0.35);
+  text-shadow: none;
+  transition: background-color .16s ease, color .16s ease;
+}
+.ask:hover, .ask[aria-expanded="true"] { color: #fff; background: color-mix(in srgb, var(--ally) 38%, rgba(12, 10, 18, 0.5)); }
+.ask:focus-visible { outline: 2px solid var(--accent-bright); outline-offset: 2px; }
+.ask svg { width: 15px; height: 15px; }
+.ask-answer {
+  position: absolute; z-index: 20; top: calc(100% + 10px); left: 0;
+  width: min(440px, calc(100vw - 40px)); padding: 14px 16px;
+  background: rgba(20, 15, 10, 0.985); color: #e8e0d2; text-align: left; text-shadow: none;
+  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+  border: 1px solid rgba(217, 179, 106, 0.4); border-radius: 12px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+  opacity: 0; transform: translateY(-4px); transition: opacity .16s ease, transform .16s ease;
+}
+.ask-answer.is-open { opacity: 1; transform: none; }
+.ask-answer p { margin: 0; font-size: 15px; line-height: 1.55; }
+.ask-answer p + p { margin-top: 8px; }
+@media (max-width: 640px) {
+  .asks { justify-content: center; }
+  .ask-answer { left: 50%; transform: translate(-50%, -4px); }
+  .ask-answer.is-open { transform: translate(-50%, 0); }
+}
+@media (prefers-reduced-motion: reduce) { .ask-answer, .ask-answer.is-open { transition: none; } }
