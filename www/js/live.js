@@ -1,6 +1,6 @@
 /*
-  Live Rolebaza on the landing: upcoming games and community blog posts,
-  straight from the app's public API.
+  Live Rolebaza on the landing: upcoming games, community blog posts and the
+  app's tutorials, straight from its public API.
   ---------------------------------------------------------------------------
   Same data the app's home page shows, drawn the way the app draws it: a game
   is a portrait card (ScheduledGameCard.tsx) — cover, type and system on top,
@@ -209,7 +209,60 @@
     }).catch(function () {});
   }
 
-  function start() { loadGames(); loadPosts(); }
+  // Tutorials of the app (/api/tutorials): cover, title, summary; on a pointer
+  // that hovers, the tutorial's preview clip plays over the cover.
+  var MAX_TUTORIALS = 6;
+  var canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches &&
+    !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function tutorialCard(t) {
+    var a = el('a', 'tut-card');
+    a.href = appUrl('/tutorials/' + encodeURIComponent(t.slug));
+    a.setAttribute('data-goal', 'tutorial_open');
+    var media = el('div', 'tut-card__media');
+    var cover = ownImage(t.coverImageUrl);
+    if (cover) {
+      var img = el('img'); img.src = cover; img.alt = ''; img.loading = 'lazy';
+      media.appendChild(img);
+    }
+    var clip = ownImage(t.previewVideoUrl);
+    if (clip && canHover) {
+      media.appendChild(el('span', 'tut-card__play'));
+      var video = null;
+      a.addEventListener('mouseenter', function () {
+        if (!video) {
+          video = el('video', 'tut-card__video');
+          video.muted = true; video.loop = true; video.playsInline = true; video.preload = 'none';
+          video.src = clip;
+          media.appendChild(video);
+        }
+        var p = video.play(); if (p && p.catch) p.catch(function () {});
+        media.classList.add('is-playing');
+      });
+      a.addEventListener('mouseleave', function () {
+        if (video) video.pause();
+        media.classList.remove('is-playing');
+      });
+    }
+    a.appendChild(media);
+    var body = el('div', 'tut-card__body');
+    body.appendChild(el('h3', 'tut-card__title', t.title));
+    if (t.summary) body.appendChild(el('p', 'tut-card__text', t.summary));
+    a.appendChild(body);
+    return a;
+  }
+
+  function loadTutorials() {
+    var row = document.getElementById('live-tutorials');
+    if (!row) return;
+    getJson('/api/tutorials?locale=ru').then(function (res) {
+      var list = (res.data || []).filter(function (t) { return t && t.slug && t.title; }).slice(0, MAX_TUTORIALS);
+      if (!list.length) return;
+      list.forEach(function (t) { row.appendChild(tutorialCard(t)); });
+      document.getElementById('tutorials').hidden = false;
+    }).catch(function () {});
+  }
+
+  function start() { loadGames(); loadPosts(); loadTutorials(); }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
   else start();
 })();
