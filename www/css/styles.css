@@ -179,9 +179,9 @@ h1, h2, h3 { margin: 0; color: var(--ink-strong); font-weight: 800; }
   display: flex; align-items: center; justify-content: center;
   color: var(--accent); font-weight: 800; font-size: 16px;
 }
-/* the brand mark is the app's own logo die (img/logo-die.svg — LogoDie.tsx,
-   near-black faces, a glint along the edges): no box, its own proportions;
-   the black cube reads on both themes */
+/* the brand mark is the app's logo v2 (img/logo-v2.svg, from /logo-v2):
+   gold corner chamfers, near-black faces, a glint along the edges every 7 s;
+   no box, its own proportions; the black cube reads on both themes */
 .brand-mark--logo { width: auto; height: auto; border: none; border-radius: 0; }
 .brand-logo { display: block; width: 40px; height: auto; }
 .brand-word { font-weight: 700; font-size: 20px; color: var(--ink-title); }   /* as the app writes its name */
