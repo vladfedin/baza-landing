@@ -1282,3 +1282,31 @@ html { scroll-padding-top: 84px; }
 @keyframes mark-shine { from { background-position: 130% 0; } to { background-position: -30% 0; } }
 @keyframes mark-glint { 0%, 72% { background-position: 130% 0; } 92%, 100% { background-position: -30% 0; } }
 @media (prefers-reduced-motion: reduce) { .mark::after { animation: none !important; } }
+
+/* ============ team dialog (js/dialogs.js) ============ */
+.footer-link-btn {
+  font: inherit; color: var(--accent); background: none; border: 0; padding: 0; cursor: pointer;
+}
+.footer-link-btn:hover { color: var(--accent-bright); }
+.team-dialog {
+  width: min(1040px, calc(100vw - 32px)); max-height: calc(100vh - 48px);
+  padding: clamp(24px, 4vw, 48px) clamp(16px, 3vw, 40px);
+  border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent); border-radius: 18px;
+  background: var(--bg); color: var(--ink); box-shadow: 0 24px 70px rgba(0,0,0,0.55);
+  opacity: 0; transform: translateY(10px) scale(0.99);
+  transition: opacity .16s ease, transform .16s ease;
+}
+.team-dialog[open] { opacity: 1; transform: none; }
+@starting-style { .team-dialog[open] { opacity: 0; transform: translateY(10px) scale(0.99); } }
+.team-dialog.is-closing { opacity: 0; transform: translateY(10px) scale(0.99); }
+.team-dialog::backdrop { background: rgba(10, 8, 6, 0.62); }
+.team-dialog .section-head { margin-bottom: 32px; }
+.team-dialog__close {
+  position: absolute; top: 14px; right: 14px; width: 36px; height: 36px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; cursor: pointer;
+  background: transparent; border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent); color: var(--ink-soft);
+  transition: color .16s ease, border-color .16s ease;
+}
+.team-dialog__close:hover { color: var(--accent-bright); border-color: var(--accent); }
+.team-dialog__close svg { width: 18px; height: 18px; }
+@media (prefers-reduced-motion: reduce) { .team-dialog { transition: none; transform: none; } }

@@ -65,6 +65,9 @@
     <!-- the visitor's die throw answered with a roll card, as in the table's chat -->
     <script defer src="js/roll-card.js"></script>
 
+    <!-- dialogs opened by [data-dialog-open] (the team) -->
+    <script defer src="js/dialogs.js"></script>
+
     <!-- cookies consent; Yandex.Metrika only after "Принять"; data-goal clicks -->
     <script defer src="js/consent.js"></script>
 </head>
@@ -411,53 +414,6 @@
         </div>
     </section>
 
-    <!-- ============ TEAM ============ -->
-    <section class="section" id="team">
-        <div class="section-head">
-            <div class="kicker">Команда</div>
-            <h2>Основатели</h2>
-            <div class="serif section-sub">По ту сторону Ролебазы</div>
-        </div>
-        <div class="team-row">
-            <figure class="founder">
-                <div class="founder__photo">
-                    <img src="img/founders/tiho.jpg" alt="Жорж Феанор Тихо́" loading="lazy" width="600" height="800">
-                    <img class="founder__fire" src="img/founders/tiho-fire.jpg" alt="" loading="lazy" width="600" height="800">
-                </div>
-                <figcaption>
-                    <div class="founder__role">Душа проекта</div>
-                    <div class="founder__name">Жорж Феанор Тихо́</div>
-                    <div class="founder__about">Мастер и игрок, автор канала <a href="https://vk.ru/dndpotustoronu" target="_blank" rel="noopener">«По Ту Сторону Страниц»</a> и фэнтези-трилогии</div>
-                    <blockquote class="founder__quote">Если я и сяду разбираться, как работает VTT, то только если решу сделать его сам</blockquote>
-                </figcaption>
-            </figure>
-            <figure class="founder">
-                <div class="founder__photo">
-                    <img src="img/founders/egor.jpg" alt="Егор Грищенко" loading="lazy" width="600" height="800">
-                    <img class="founder__fire" src="img/founders/egor-fire.jpg" alt="" loading="lazy" width="600" height="800">
-                </div>
-                <figcaption>
-                    <div class="founder__role">Иерофант</div>
-                    <div class="founder__name">Егор Грищенко</div>
-                    <div class="founder__about">Мастер НРИ 25 лет, со-основатель студии Game Garden, доцент Школы дизайна ВШЭ</div>
-                    <blockquote class="founder__quote">Не ты выбираешь проект, а проект выбирает тебя. Как понять, что он тебя выбрал? Он захочет тебя убить</blockquote>
-                </figcaption>
-            </figure>
-            <figure class="founder">
-                <div class="founder__photo">
-                    <img src="img/founders/fedin.jpg" alt="Владимир Федин" loading="lazy" width="600" height="800">
-                    <img class="founder__fire" src="img/founders/fedin-fire.jpg" alt="" loading="lazy" width="600" height="800">
-                </div>
-                <figcaption>
-                    <div class="founder__role">Демиург</div>
-                    <div class="founder__name">Владимир Федин</div>
-                    <div class="founder__about">Играет в НРИ с прошлого тысячелетия, ведёт <a href="https://t.me/rolebaza_dev" target="_blank" rel="noopener">канал разработки</a></div>
-                    <blockquote class="founder__quote">Надо было прожить пол жизни, чтоб наконец моя страсть и все мои навыки встретились в одном проекте</blockquote>
-                </figcaption>
-            </figure>
-        </div>
-    </section>
-
     <!-- ============ FAQ ============ -->
     <section class="section" id="faq">
         <div class="section-head">
@@ -538,6 +494,58 @@
 
 </main>
 
+<!-- ============ TEAM: a dialog, opened from the footer (js/dialogs.js) ============ -->
+<dialog class="team-dialog" id="team-dialog" aria-labelledby="team-dialog-title">
+    <button class="team-dialog__close" type="button" data-dialog-close aria-label="Закрыть">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><use href="img/icons.svg#close"/></svg>
+    </button>
+        <div class="section-head">
+            <div class="kicker">Команда</div>
+            <h2 id="team-dialog-title">Основатели</h2>
+            <div class="serif section-sub">По ту сторону Ролебазы</div>
+        </div>
+        <div class="team-row">
+            <figure class="founder">
+                <div class="founder__photo">
+                    <img src="img/founders/tiho.jpg" alt="Жорж Феанор Тихо́" loading="lazy" width="600" height="800">
+                    <img class="founder__fire" src="img/founders/tiho-fire.jpg" alt="" loading="lazy" width="600" height="800">
+                </div>
+                <figcaption>
+                    <div class="founder__role">Душа проекта</div>
+                    <div class="founder__name">Жорж Феанор Тихо́</div>
+                    <div class="founder__about">Мастер и игрок, автор канала <a href="https://vk.ru/dndpotustoronu" target="_blank" rel="noopener">«По Ту Сторону Страниц»</a> и фэнтези-трилогии</div>
+                    <blockquote class="founder__quote">Если я и сяду разбираться, как работает VTT, то только если решу сделать его сам</blockquote>
+                </figcaption>
+            </figure>
+            <figure class="founder">
+                <div class="founder__photo">
+                    <img src="img/founders/egor.jpg" alt="Егор Грищенко" loading="lazy" width="600" height="800">
+                    <img class="founder__fire" src="img/founders/egor-fire.jpg" alt="" loading="lazy" width="600" height="800">
+                </div>
+                <figcaption>
+                    <div class="founder__role">Иерофант</div>
+                    <div class="founder__name">Егор Грищенко</div>
+                    <div class="founder__about">Мастер НРИ 25 лет, со-основатель студии Game Garden, доцент Школы дизайна ВШЭ</div>
+                    <blockquote class="founder__quote">Не ты выбираешь проект, а проект выбирает тебя. Как понять, что он тебя выбрал? Он захочет тебя убить</blockquote>
+                </figcaption>
+            </figure>
+            <figure class="founder">
+                <div class="founder__photo">
+                    <img src="img/founders/fedin.jpg" alt="Владимир Федин" loading="lazy" width="600" height="800">
+                    <img class="founder__fire" src="img/founders/fedin-fire.jpg" alt="" loading="lazy" width="600" height="800">
+                </div>
+                <figcaption>
+                    <div class="founder__role">Демиург</div>
+                    <div class="founder__name">Владимир Федин</div>
+                    <div class="founder__about">Играет в НРИ с прошлого тысячелетия, ведёт <a href="https://t.me/rolebaza_dev" target="_blank" rel="noopener">канал разработки</a></div>
+                    <blockquote class="founder__quote">Надо было прожить пол жизни, чтоб наконец моя страсть и все мои навыки встретились в одном проекте</blockquote>
+                </figcaption>
+            </figure>
+        </div>
+</dialog>
+
+
+
 <!-- ============ FOOTER ============ -->
 <footer class="footer">
     <div class="footer-top">
@@ -551,6 +559,7 @@
             <a href="https://t.me/rolebaza">Telegram</a>
             <a href="https://vk.com/rolebaza">ВКонтакте</a>
             <a href="https://t.me/rolebaza_dev">Разработка</a>
+            <button class="footer-link-btn" type="button" data-dialog-open="team-dialog">Команда</button>
         </div>
     </div>
     <div class="legal">
