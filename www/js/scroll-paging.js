@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
   /* sections the cue steps through; some (live data) appear later, so the
      visible set is resolved on every use rather than once */
-  var PAGE_IDS = ['hero', 'arsenal', 'live', 'team', 'faq', 'finale'];
+  var PAGE_IDS = ['hero', 'free', 'arsenal', 'live', 'team', 'faq', 'finale'];
   function visiblePages() {
     return PAGE_IDS
       .map(function (id) { return document.getElementById(id); })

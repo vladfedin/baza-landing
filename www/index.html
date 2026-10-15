@@ -59,6 +59,9 @@
     <!-- action-bar theme switch (Blackout ⇄ parchment) -->
     <script defer src="js/theme-toggle.js"></script>
 
+    <!-- a person drawn as the table draws them: avatar, name, marks -->
+    <script defer src="js/marks.js"></script>
+
     <!-- upcoming games and community blog posts from the app's public API -->
     <script defer src="js/live.js"></script>
 
@@ -205,8 +208,8 @@
 	            <div class="stat-label"><b>хранилища для карт и музыки</b><br>бесплатно</div>
             </div>
             <div class="stat">
-                <div class="stat-value">5</div>
-	            <div class="stat-label"><b>сохранённых игр</b><br>бесплатно</div>
+                <div class="stat-value">∞</div>
+	            <div class="stat-label"><b>комнат и сеансов</b><br>без ограничений</div>
             </div>
             <!-- "0 ₽ / за весь базовый функционал" commented out per request:
             <div class="stat">
@@ -232,6 +235,40 @@
         </div>
         </div><!-- .hero-inner -->
     </header>
+
+    <!-- ============ FREE: a whole campaign at no cost ============ -->
+    <section class="section" id="free">
+        <div class="section-head">
+            <div class="kicker">Бесплатно</div>
+            <h2>Целую кампанию можно провести бесплатно</h2>
+        </div>
+        <div class="free-grid">
+            <ul class="free-list">
+                <li><svg aria-hidden="true"><use href="img/icons.svg#lu-hard-drive"/></svg><span><b>500 МБ</b> для карт, токенов и музыки</span></li>
+                <li><svg aria-hidden="true"><use href="img/icons.svg#lu-infinity"/></svg><span><b>Комнаты и сеансы</b> — без ограничений</span></li>
+                <li><svg aria-hidden="true"><use href="img/icons.svg#lu-mic"/></svg><span><b>Голосовая связь</b> прямо за столом</span></li>
+                <li><svg aria-hidden="true"><use href="img/icons.svg#lu-music"/></svg><span><b>Музыка и звуки</b> — свои и из библиотек сообщества</span></li>
+                <li><svg aria-hidden="true"><use href="img/icons.svg#lu-swords"/></svg><span><b>Бой</b>: инициатива, атаки, урон и спасброски считаются сами</span></li>
+                <li><svg aria-hidden="true"><use href="img/icons.svg#lu-book-open"/></svg><span><b>Материалы сообщества</b>: компендиумы и готовые столы Сокровищницы</span></li>
+            </ul>
+            <!-- a master's own words, drawn as the table draws a person
+                 (js/marks.js refills it from the app's public profile) -->
+            <figure class="user-plaque" data-user="master-zloboust">
+                <a class="user-plaque__who" href="https://beta.rolebaza.ru/user/master-zloboust?utm_source=rolebaza.ru&amp;utm_medium=landing&amp;utm_content=testimonial" data-goal="testimonial_profile">
+                    <span class="user-plaque__avatar" aria-hidden="true">М</span>
+                    <span class="user-plaque__id">
+                        <span class="user-plaque__name">Мастер Злобоуст</span>
+                        <span class="user-plaque__alias">@master-zloboust</span>
+                    </span>
+                </a>
+                <div class="user-plaque__marks" hidden></div>
+                <blockquote class="user-plaque__said">
+                    <p>Я смог провести компейн бесплатно</p>
+                    <time>22:05:55</time>
+                </blockquote>
+            </figure>
+        </div>
+    </section>
 
     <!-- ============ ARSENAL ============ -->
     <section class="section" id="arsenal">

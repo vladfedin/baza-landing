@@ -1256,3 +1256,95 @@ html { scroll-padding-top: 84px; }
 .faq-answer { padding: 0 20px 18px; font-size: 15px; line-height: 1.6; color: var(--ink-body); }
 .faq-answer a { text-decoration: underline; text-underline-offset: 2px; }
 @media (prefers-reduced-motion: reduce) { .faq-item summary::after { transition: none; } }
+
+/* ============ free: a whole campaign at no cost ============ */
+.free-grid {
+  display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  gap: clamp(20px, 4vw, 56px); align-items: center; max-width: 980px; margin: 0 auto;
+}
+.free-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 14px; }
+.free-list li { display: flex; align-items: flex-start; gap: 14px; font-size: 17px; line-height: 1.45; color: var(--ink-body); }
+.free-list b { color: var(--ink-title); font-weight: 800; }
+.free-list svg { flex: 0 0 auto; width: 22px; height: 22px; margin-top: 1px; color: var(--accent); }
+@media (max-width: 820px) { .free-grid { grid-template-columns: 1fr; } }
+
+/* ============ a person, drawn as the table draws them (js/marks.js) ============
+   Compact profile of the app (UserPopover.tsx): avatar, name, @alias, one row
+   of marks; below — the person's own words as a chat message. */
+:root { --mark-hue-ink: 52%; --mark-hue-fill: 20%; --mark-ink: #fbf1dc; --mark-relief: 0 0 7px rgba(234,208,144,0.16); }
+:root[data-theme="parchment"] { --mark-hue-ink: 80%; --mark-hue-fill: 14%; --mark-ink: #20150b; --mark-relief: 0 1px 3px rgba(0,0,0,0.20); }
+.user-plaque {
+  margin: 0; padding: 18px 20px 20px; border-radius: 16px;
+  background: var(--card-bg);
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+  box-shadow: 0 14px 36px rgba(0,0,0,0.3);
+}
+.user-plaque__who { display: flex; align-items: center; gap: 12px; color: var(--ink-title); }
+.user-plaque__who:hover { color: var(--ink-title); }
+.user-plaque__who:hover .user-plaque__name { text-decoration: underline; text-underline-offset: 3px; }
+.user-plaque__avatar {
+  position: relative; flex: 0 0 auto; width: 52px; height: 52px; border-radius: 50%; overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+  background: #111; color: #fff; font-weight: 700; font-size: 20px;
+}
+.user-plaque__avatar img { position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; }
+.user-plaque__id { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.user-plaque__name { font-size: 17px; font-weight: 800; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.user-plaque__alias { font-size: 13px; color: var(--ink-faint); }
+.user-plaque__marks { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+.user-plaque__marks[hidden] { display: none; }
+.user-plaque__said {
+  margin: 16px 0 0; padding: 10px 14px; border-radius: 4px 14px 14px 14px;
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  display: flex; align-items: flex-end; gap: 12px;
+}
+.user-plaque__said p { margin: 0; font-size: 17px; line-height: 1.4; color: var(--ink-title); }
+.user-plaque__said time { flex: 0 0 auto; font-size: 11px; color: var(--ink-faint); font-variant-numeric: tabular-nums; }
+
+/* marks — shared/types/mark-look.ts, size «md» */
+.mark {
+  position: relative; display: inline-flex; align-items: center; gap: 5px; flex-shrink: 0;
+  height: 22px; padding: 0 9px; box-sizing: border-box;
+  font-size: 12px; line-height: 1; white-space: nowrap;
+}
+.mark svg { width: 12px; height: 12px; flex: 0 0 auto; }
+.mark--pill { border-radius: 999px; }
+.mark--rounded { border-radius: 6px; }
+.mark--notched { clip-path: polygon(5px 0, calc(100% - 5px) 0, 100% 5px, 100% calc(100% - 5px), calc(100% - 5px) 100%, 5px 100%, 0 calc(100% - 5px), 0 5px); }
+.mark--torn { clip-path: polygon(0 0%, 3px 20%, 0 40%, 3px 60%, 0 80%, 3px 100%, calc(100% - 3px) 100%, 100% 80%, calc(100% - 3px) 60%, 100% 40%, calc(100% - 3px) 20%, 100% 0%); }
+.mark--participation {
+  font-weight: 700;
+  background: color-mix(in srgb, var(--hue) var(--mark-hue-fill), transparent);
+  color: color-mix(in srgb, var(--hue) var(--mark-hue-ink), var(--mark-ink));
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--hue) 55%, transparent),
+              0 0 8px -1px color-mix(in srgb, var(--hue) 50%, transparent), var(--mark-relief);
+}
+.mark--achievement {
+  font-weight: 600; color: #fffaf0; text-shadow: 0 1px 0 rgba(0,0,0,0.35);
+  background: linear-gradient(180deg, var(--hue-hi), var(--hue-lo));
+  box-shadow: inset 0 0 0 1px var(--hue-rim);
+}
+.mark--cohort {
+  font-weight: 500;
+  background: color-mix(in srgb, var(--hue) 7%, transparent);
+  color: color-mix(in srgb, var(--hue) 45%, var(--ink-body));
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--hue) 22%, transparent);
+}
+.mark--self {
+  font-weight: 500; background: transparent;
+  color: color-mix(in srgb, var(--hue) var(--mark-hue-ink), var(--mark-ink));
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--hue) 55%, transparent);
+}
+/* the glint of a level (every 7 s) and the shine of an award (on hover) */
+.mark--participation::after, .mark--achievement::after {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  background-size: 280% 100%; background-position: 130% 0;
+}
+.mark--participation::after {
+  background-image: linear-gradient(115deg, transparent 30%, rgb(255 255 255 / 10%) 42%, rgb(255 255 255 / 38%) 49%, rgb(255 255 255 / 10%) 56%, transparent 68%);
+  animation: mark-glint 7s ease-in-out infinite;
+}
+.mark--achievement::after { background-image: linear-gradient(110deg, transparent 30%, rgb(255 255 255 / 55%) 47%, rgb(255 255 255 / 0) 60%); }
+.mark--achievement:hover::after { animation: ally-shine .9s ease-out; }
+@keyframes mark-glint { 0%, 72% { background-position: 130% 0; } 92%, 100% { background-position: -30% 0; } }
+@media (prefers-reduced-motion: reduce) { .mark::after { animation: none !important; } }
