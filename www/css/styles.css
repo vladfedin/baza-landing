@@ -93,7 +93,13 @@ h1, h2, h3 { margin: 0; color: var(--ink-strong); font-weight: 800; }
   position: absolute; inset: 0;
   /* near-zero dim over the video; the bottom stop is kept opaque so the
      hero still fades seamlessly into the page background */
-  background: linear-gradient(180deg, var(--shade-1) 0%, var(--shade-2) 55%, var(--bg) 100%);
+  background:
+    /* the text column is toned, the clip plays on behind it and at the sides
+       (its frames are real games, not a showreel — they stay a backdrop) */
+    linear-gradient(90deg,
+      transparent calc(50% - 720px), rgba(16, 12, 9, 0.66) calc(50% - 600px),
+      rgba(16, 12, 9, 0.66) calc(50% + 600px), transparent calc(50% + 720px)),
+    linear-gradient(180deg, var(--shade-1) 0%, var(--shade-2) 55%, var(--bg) 100%);
 }
 
 .topbar-shell {
