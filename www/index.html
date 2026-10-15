@@ -64,11 +64,8 @@
     <!-- the hero's «Что такое…?» answers -->
     <script defer src="js/asks.js"></script>
 
-    <!-- a review shows its brightest lines; hover or a click opens the whole text -->
-    <script defer src="js/review-gist.js"></script>
-
-    <!-- horizontal rows with arrows ([data-ribbon]: the reviews) -->
-    <script defer src="js/ribbon.js"></script>
+    <!-- the masters' reviews: a deck of cards, a click turns one over -->
+    <script defer src="js/review-deck.js"></script>
 
     <!-- dialogs opened by [data-dialog-open] (the team) -->
     <script defer src="js/dialogs.js"></script>
@@ -456,92 +453,126 @@
             <div class="kicker">Гильдия Первопроходцев</div>
             <h2>Что говорят мастера</h2>
         </div>
-        <!-- a swipeable row; the arrows (js/ribbon.js) are for a mouse -->
-        <div class="ribbon" data-ribbon>
-            <button class="ribbon__nav ribbon__nav--prev" type="button" data-ribbon-prev aria-label="Предыдущие отзывы" hidden>
-                <svg viewBox="0 0 24 24" aria-hidden="true"><use href="img/icons.svg#lu-chevron-left"/></svg>
-            </button>
-            <div class="reviews-row" data-ribbon-track>
-                <figure class="user-plaque" data-user="4amka">
-                    <a class="user-plaque__who" href="https://beta.rolebaza.ru/user/4amka?utm_source=rolebaza.ru&amp;utm_medium=landing&amp;utm_content=reviews" data-goal="review_profile">
-                        <span class="user-plaque__avatar" aria-hidden="true"><img src="img/reviews/avatar-4amka.webp" alt="" width="52" height="52"></span>
-                        <span class="user-plaque__id">
-                            <span class="user-plaque__name">Мастер Чамка</span>
-                            <span class="user-plaque__alias">@4amka</span>
-                        </span>
-                    </a>
-                    <div class="user-plaque__marks" hidden></div>
-                    <blockquote class="user-plaque__said" id="said-4amka">
-                        <div class="user-plaque__gist" aria-hidden="true"><div><p>Пользуюсь Ролебазой давно, проект развивается очень быстро, обновления прилетают почти каждый день. … Однозначно рекомендую, но боюсь, что когда вы зарегаетесь, всё станет ещё лучше.</p></div></div>
-                        <div class="user-plaque__full"><div class="user-plaque__text"><p>Пользуюсь Ролебазой давно, проект развивается очень быстро, обновления прилетают почти каждый день. Очень хороши функциональность, минимализм стола и удобные панели инструментов - удобная площадка для мастера и создателей контента для D&amp;D. Однозначно рекомендую, но боюсь, что когда вы зарегаетесь, всё станет ещё лучше. Как я сказал, тут очень быстрая разработка, а также разработчик сильно прислушивается к пользователям. Хороших вам игр!</p></div></div>
-                        <button class="user-plaque__more" type="button" aria-expanded="false" aria-controls="said-4amka">Полностью</button>
-                    </blockquote>
-                </figure>
-                <figure class="user-plaque" data-user="gokhale">
-                    <a class="user-plaque__who" href="https://beta.rolebaza.ru/user/gokhale?utm_source=rolebaza.ru&amp;utm_medium=landing&amp;utm_content=reviews" data-goal="review_profile">
-                        <span class="user-plaque__avatar" aria-hidden="true">П</span>
-                        <span class="user-plaque__id">
-                            <span class="user-plaque__name">Падрэ Гокхале</span>
-                            <span class="user-plaque__alias">@gokhale</span>
-                        </span>
-                    </a>
-                    <div class="user-plaque__marks" hidden></div>
-                    <blockquote class="user-plaque__said" id="said-gokhale">
-                        <div class="user-plaque__gist" aria-hidden="true"><div><p>Платформа развивается буквально семимильными шагами и это несказанно радует. … В свое время пользовался многими игровыми столами и в последствии всей партией играем на Ролебазе.</p></div></div>
-                        <div class="user-plaque__full"><div class="user-plaque__text"><p>Знаком с платформой с марта 2026 г. и за это время очень многое претерпело существенные изменения. Улучшился интерфейс, функционал стал сильно шире, разработчиком учитываются все конструктивные предложения и пожелания. Платформа развивается буквально семимильными шагами и это несказанно радует. Присутствует голосовая и видеосвязь внутри платформы. Очень нравится внутренний функционал по добавлению своего контента, можно без особых проблем как добавить свои хоумбрю, так и перенести целую систему. В свое время пользовался многими игровыми столами и в последствии всей партией играем на Ролебазе. Имеется библиотека "компендиумов", которая ежедневно пополняется энтузиастами.</p><p>Присоединяйтесь к сообществу и давайте строить Ролебазу вместе!</p><p>Хороших игр и счастливых кубов!</p></div></div>
-                        <button class="user-plaque__more" type="button" aria-expanded="false" aria-controls="said-gokhale">Полностью</button>
-                    </blockquote>
-                </figure>
-                <figure class="user-plaque" data-user="yuji">
-                    <a class="user-plaque__who" href="https://beta.rolebaza.ru/user/yuji?utm_source=rolebaza.ru&amp;utm_medium=landing&amp;utm_content=reviews" data-goal="review_profile">
-                        <span class="user-plaque__avatar" aria-hidden="true">Y</span>
-                        <span class="user-plaque__id">
-                            <span class="user-plaque__name">Yuji</span>
-                            <span class="user-plaque__alias">@yuji</span>
-                        </span>
-                    </a>
-                    <div class="user-plaque__marks" hidden></div>
-                    <blockquote class="user-plaque__said" id="said-yuji">
-                        <div class="user-plaque__gist" aria-hidden="true"><div><p>Вожу на ролебазе уже пол года и точно тут навсегда :D … невероятно отзывчивый разработчик, который прислушивается к желаниям пользователей, и просто огненное комьюнити мастеров-единомышленников! О чем вообще мечтать еще 🥹</p></div></div>
-                        <div class="user-plaque__full"><div class="user-plaque__text"><p>Вожу на ролебазе уже пол года и точно тут навсегда :D Куча инструментов, чтоб сделать игру максимально увлекательной и захватывающей для игроков в онлайне (а мы знаем, как легко отвлечься, когда играешь онлайн), невероятно отзывчивый разработчик, который прислушивается к желаниям пользователей, и просто огненное комьюнити мастеров-единомышленников! О чем вообще мечтать еще 🥹</p></div></div>
-                        <button class="user-plaque__more" type="button" aria-expanded="false" aria-controls="said-yuji">Полностью</button>
-                    </blockquote>
-                    <div class="user-plaque__shots"><img src="img/reviews/yuji-map.webp" alt="Карта и записки из игры Юджи" loading="lazy" width="960" height="475"><img src="img/reviews/yuji-scene.webp" alt="Сцена из игры Юджи" loading="lazy" width="960" height="475"></div>
-                </figure>
-                <figure class="user-plaque" data-user="67246cb0-e824-48d4-b353-92f63cb7ccc2">
-                    <a class="user-plaque__who" href="https://beta.rolebaza.ru/user/67246cb0-e824-48d4-b353-92f63cb7ccc2?utm_source=rolebaza.ru&amp;utm_medium=landing&amp;utm_content=reviews" data-goal="review_profile">
-                        <span class="user-plaque__avatar" aria-hidden="true"><img src="img/reviews/avatar-nesterov.webp" alt="" width="52" height="52"></span>
-                        <span class="user-plaque__id">
-                            <span class="user-plaque__name">Alexander Nesterov</span>
-                            <span class="user-plaque__alias"></span>
-                        </span>
-                    </a>
-                    <div class="user-plaque__marks" hidden></div>
-                    <blockquote class="user-plaque__said" id="said-67246cb0">
-                        <div class="user-plaque__gist" aria-hidden="true"><div><p>Ролебаза стала для меня не только платформой для ведения настольных ролевых игр... Можно сказать даже стала базой для хобби! … Открыл Ролебазу и остался в этом уютном теплом мире уголке НРИ надолго.</p></div></div>
-                        <div class="user-plaque__full"><div class="user-plaque__text"><p>Ролебаза стала для меня не только платформой для ведения настольных ролевых игр... Можно сказать даже стала базой для хобби! Каждый раз знакомиться с новыми людьми, получать опыт по введению новых элементов для своего стола, узнавать уникальную информацию, находить крепкое вдохновения - это Ролебаза. И все это на платформе которая развивается в верном направлении и смелыми километровыми шагами. Напоследок отмечу отдельно сообщество "Основателей" и "Первопроходцев" - они вносят так же огромный вклад в развитие! Открыл Ролебазу и остался в этом уютном теплом мире уголке НРИ надолго.</p></div></div>
-                        <button class="user-plaque__more" type="button" aria-expanded="false" aria-controls="said-67246cb0">Полностью</button>
-                    </blockquote>
-                </figure>
-                <figure class="user-plaque" data-user="queel">
-                    <a class="user-plaque__who" href="https://beta.rolebaza.ru/user/queel?utm_source=rolebaza.ru&amp;utm_medium=landing&amp;utm_content=reviews" data-goal="review_profile">
-                        <span class="user-plaque__avatar" aria-hidden="true">М</span>
-                        <span class="user-plaque__id">
-                            <span class="user-plaque__name">Мастер Queel</span>
-                            <span class="user-plaque__alias">@queel</span>
-                        </span>
-                    </a>
-                    <div class="user-plaque__marks" hidden></div>
-                    <blockquote class="user-plaque__said" id="said-queel">
-                        <div class="user-plaque__gist" aria-hidden="true"><div><p>…искал платформу для проведения игр, но нашел не медь, ЗОЛОТО!! Ведь РолеБаза не просто VTT, это целое сообщество, которое помогает, обучает и всегда приходят на помощь.</p></div></div>
-                        <div class="user-plaque__full"><div class="user-plaque__text"><p>Заинтересовался НРИ, с друзьями в оффлайне поиграл, но онлайн друзья были обделены, искал платформу для проведения игр, но нашел не медь, ЗОЛОТО!! Ведь РолеБаза не просто VTT, это целое сообщество, которое помогает, обучает и всегда приходят на помощь. Поэтому если и выбирать площадку для создания своих миров, то только Ролебаза!</p></div></div>
-                        <button class="user-plaque__more" type="button" aria-expanded="false" aria-controls="said-queel">Полностью</button>
-                    </blockquote>
-                </figure>
+        <!-- a deck of cards (js/review-deck.js): a page of them at a time, the
+             arrows turn the page; a click on a card turns it over to its whole text -->
+        <div class="review-deck" data-deck>
+            <div class="review-deck__row" data-deck-row aria-live="polite">
+                <article class="review-card user-plaque" data-user="4amka">
+                    <div class="review-card__inner">
+                        <div class="review-card__face review-card__front">
+                            <img class="review-card__cover user-plaque__cover" alt="" hidden>
+                            <div class="user-plaque__marks review-card__marks" hidden></div>
+                            <blockquote class="review-card__gist" aria-hidden="true"><p>Пользуюсь Ролебазой давно, проект развивается очень быстро, обновления прилетают почти каждый день. … Однозначно рекомендую, но боюсь, что когда вы зарегаетесь, всё станет ещё лучше.</p></blockquote>
+                            <a class="user-plaque__who" href="https://beta.rolebaza.ru/user/4amka?utm_source=rolebaza.ru&amp;utm_medium=landing&amp;utm_content=reviews" data-goal="review_profile">
+                                <span class="user-plaque__avatar" aria-hidden="true"><img src="img/reviews/avatar-4amka.webp" alt="" width="52" height="52"></span>
+                                <span class="user-plaque__id">
+                                    <span class="user-plaque__name">Мастер Чамка</span>
+                                    <span class="user-plaque__alias">@4amka</span>
+                                </span>
+                            </a>
+                            <button class="review-card__turn" type="button" aria-expanded="false" aria-controls="review-4amka">Читать полностью</button>
+                        </div>
+                        <div class="review-card__face review-card__back" id="review-4amka">
+                            <div class="review-card__text"><p>Пользуюсь Ролебазой давно, проект развивается очень быстро, обновления прилетают почти каждый день. Очень хороши функциональность, минимализм стола и удобные панели инструментов - удобная площадка для мастера и создателей контента для D&amp;D. Однозначно рекомендую, но боюсь, что когда вы зарегаетесь, всё станет ещё лучше. Как я сказал, тут очень быстрая разработка, а также разработчик сильно прислушивается к пользователям. Хороших вам игр!</p></div>
+                            <button class="review-card__turn" type="button">Свернуть</button>
+                        </div>
+                    </div>
+                </article>
+                <article class="review-card user-plaque" data-user="gokhale">
+                    <div class="review-card__inner">
+                        <div class="review-card__face review-card__front">
+                            <img class="review-card__cover user-plaque__cover" alt="" hidden>
+                            <div class="user-plaque__marks review-card__marks" hidden></div>
+                            <blockquote class="review-card__gist" aria-hidden="true"><p>Платформа развивается буквально семимильными шагами и это несказанно радует. … В свое время пользовался многими игровыми столами и в последствии всей партией играем на Ролебазе.</p></blockquote>
+                            <a class="user-plaque__who" href="https://beta.rolebaza.ru/user/gokhale?utm_source=rolebaza.ru&amp;utm_medium=landing&amp;utm_content=reviews" data-goal="review_profile">
+                                <span class="user-plaque__avatar" aria-hidden="true">П</span>
+                                <span class="user-plaque__id">
+                                    <span class="user-plaque__name">Падрэ Гокхале</span>
+                                    <span class="user-plaque__alias">@gokhale</span>
+                                </span>
+                            </a>
+                            <button class="review-card__turn" type="button" aria-expanded="false" aria-controls="review-gokhale">Читать полностью</button>
+                        </div>
+                        <div class="review-card__face review-card__back" id="review-gokhale">
+                            <div class="review-card__text"><p>Знаком с платформой с марта 2026 г. и за это время очень многое претерпело существенные изменения. Улучшился интерфейс, функционал стал сильно шире, разработчиком учитываются все конструктивные предложения и пожелания. Платформа развивается буквально семимильными шагами и это несказанно радует. Присутствует голосовая и видеосвязь внутри платформы. Очень нравится внутренний функционал по добавлению своего контента, можно без особых проблем как добавить свои хоумбрю, так и перенести целую систему. В свое время пользовался многими игровыми столами и в последствии всей партией играем на Ролебазе. Имеется библиотека "компендиумов", которая ежедневно пополняется энтузиастами.</p><p>Присоединяйтесь к сообществу и давайте строить Ролебазу вместе!</p><p>Хороших игр и счастливых кубов!</p></div>
+                            <button class="review-card__turn" type="button">Свернуть</button>
+                        </div>
+                    </div>
+                </article>
+                <article class="review-card user-plaque" data-user="yuji">
+                    <div class="review-card__inner">
+                        <div class="review-card__face review-card__front">
+                            <img class="review-card__cover user-plaque__cover" alt="" hidden>
+                            <div class="user-plaque__marks review-card__marks" hidden></div>
+                            <blockquote class="review-card__gist" aria-hidden="true"><p>Вожу на ролебазе уже пол года и точно тут навсегда :D … невероятно отзывчивый разработчик, который прислушивается к желаниям пользователей, и просто огненное комьюнити мастеров-единомышленников! О чем вообще мечтать еще 🥹</p></blockquote>
+                            <a class="user-plaque__who" href="https://beta.rolebaza.ru/user/yuji?utm_source=rolebaza.ru&amp;utm_medium=landing&amp;utm_content=reviews" data-goal="review_profile">
+                                <span class="user-plaque__avatar" aria-hidden="true">Y</span>
+                                <span class="user-plaque__id">
+                                    <span class="user-plaque__name">Yuji</span>
+                                    <span class="user-plaque__alias">@yuji</span>
+                                </span>
+                            </a>
+                            <button class="review-card__turn" type="button" aria-expanded="false" aria-controls="review-yuji">Читать полностью</button>
+                        </div>
+                        <div class="review-card__face review-card__back" id="review-yuji">
+                            <div class="review-card__text"><p>Вожу на ролебазе уже пол года и точно тут навсегда :D Куча инструментов, чтоб сделать игру максимально увлекательной и захватывающей для игроков в онлайне (а мы знаем, как легко отвлечься, когда играешь онлайн), невероятно отзывчивый разработчик, который прислушивается к желаниям пользователей, и просто огненное комьюнити мастеров-единомышленников! О чем вообще мечтать еще 🥹</p></div>
+                            <div class="user-plaque__shots"><img src="img/reviews/yuji-map.webp" alt="Карта и записки из игры Юджи" loading="lazy" width="960" height="475"><img src="img/reviews/yuji-scene.webp" alt="Сцена из игры Юджи" loading="lazy" width="960" height="475"></div>
+                            <button class="review-card__turn" type="button">Свернуть</button>
+                        </div>
+                    </div>
+                </article>
+                <article class="review-card user-plaque" data-user="67246cb0-e824-48d4-b353-92f63cb7ccc2">
+                    <div class="review-card__inner">
+                        <div class="review-card__face review-card__front">
+                            <img class="review-card__cover user-plaque__cover" alt="" hidden>
+                            <div class="user-plaque__marks review-card__marks" hidden></div>
+                            <blockquote class="review-card__gist" aria-hidden="true"><p>Ролебаза стала для меня не только платформой для ведения настольных ролевых игр... Можно сказать даже стала базой для хобби! … Открыл Ролебазу и остался в этом уютном теплом мире уголке НРИ надолго.</p></blockquote>
+                            <a class="user-plaque__who" href="https://beta.rolebaza.ru/user/67246cb0-e824-48d4-b353-92f63cb7ccc2?utm_source=rolebaza.ru&amp;utm_medium=landing&amp;utm_content=reviews" data-goal="review_profile">
+                                <span class="user-plaque__avatar" aria-hidden="true"><img src="img/reviews/avatar-nesterov.webp" alt="" width="52" height="52"></span>
+                                <span class="user-plaque__id">
+                                    <span class="user-plaque__name">Alexander Nesterov</span>
+                                    <span class="user-plaque__alias"></span>
+                                </span>
+                            </a>
+                            <button class="review-card__turn" type="button" aria-expanded="false" aria-controls="review-67246cb0">Читать полностью</button>
+                        </div>
+                        <div class="review-card__face review-card__back" id="review-67246cb0">
+                            <div class="review-card__text"><p>Ролебаза стала для меня не только платформой для ведения настольных ролевых игр... Можно сказать даже стала базой для хобби! Каждый раз знакомиться с новыми людьми, получать опыт по введению новых элементов для своего стола, узнавать уникальную информацию, находить крепкое вдохновения - это Ролебаза. И все это на платформе которая развивается в верном направлении и смелыми километровыми шагами. Напоследок отмечу отдельно сообщество "Основателей" и "Первопроходцев" - они вносят так же огромный вклад в развитие! Открыл Ролебазу и остался в этом уютном теплом мире уголке НРИ надолго.</p></div>
+                            <button class="review-card__turn" type="button">Свернуть</button>
+                        </div>
+                    </div>
+                </article>
+                <article class="review-card user-plaque" data-user="queel">
+                    <div class="review-card__inner">
+                        <div class="review-card__face review-card__front">
+                            <img class="review-card__cover user-plaque__cover" alt="" hidden>
+                            <div class="user-plaque__marks review-card__marks" hidden></div>
+                            <blockquote class="review-card__gist" aria-hidden="true"><p>…искал платформу для проведения игр, но нашел не медь, ЗОЛОТО!! Ведь РолеБаза не просто VTT, это целое сообщество, которое помогает, обучает и всегда приходят на помощь.</p></blockquote>
+                            <a class="user-plaque__who" href="https://beta.rolebaza.ru/user/queel?utm_source=rolebaza.ru&amp;utm_medium=landing&amp;utm_content=reviews" data-goal="review_profile">
+                                <span class="user-plaque__avatar" aria-hidden="true">М</span>
+                                <span class="user-plaque__id">
+                                    <span class="user-plaque__name">Мастер Queel</span>
+                                    <span class="user-plaque__alias">@queel</span>
+                                </span>
+                            </a>
+                            <button class="review-card__turn" type="button" aria-expanded="false" aria-controls="review-queel">Читать полностью</button>
+                        </div>
+                        <div class="review-card__face review-card__back" id="review-queel">
+                            <div class="review-card__text"><p>Заинтересовался НРИ, с друзьями в оффлайне поиграл, но онлайн друзья были обделены, искал платформу для проведения игр, но нашел не медь, ЗОЛОТО!! Ведь РолеБаза не просто VTT, это целое сообщество, которое помогает, обучает и всегда приходят на помощь. Поэтому если и выбирать площадку для создания своих миров, то только Ролебаза!</p></div>
+                            <button class="review-card__turn" type="button">Свернуть</button>
+                        </div>
+                    </div>
+                </article>
             </div>
-            <button class="ribbon__nav ribbon__nav--next" type="button" data-ribbon-next aria-label="Следующие отзывы" hidden>
-                <svg viewBox="0 0 24 24" aria-hidden="true"><use href="img/icons.svg#lu-chevron-right"/></svg>
-            </button>
+            <div class="review-deck__bar">
+                <button class="deck-nav" type="button" data-deck-prev aria-label="Предыдущие отзывы">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><use href="img/icons.svg#lu-chevron-left"/></svg>
+                </button>
+                <div class="deck-dots" data-deck-dots aria-hidden="true"></div>
+                <button class="deck-nav" type="button" data-deck-next aria-label="Следующие отзывы">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><use href="img/icons.svg#lu-chevron-right"/></svg>
+                </button>
+            </div>
         </div>
         <p class="reviews-join">Задать вопросы всем, чьи отзывы вы здесь видите, можно <a href="https://t.me/+8J84J8CtFzYxOGY0" target="_blank" rel="noopener" data-goal="guild_join">тут</a>.</p>
     </section>

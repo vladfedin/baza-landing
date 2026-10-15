@@ -160,6 +160,17 @@
       }
       img.addEventListener('load', function () { avatar.textContent = ''; avatar.appendChild(img); });
     }
+    // the profile's cover (a review card's background): the app's crop centre
+    var cover = plaque.querySelector('.user-plaque__cover');
+    var coverSrc = ownImage(p.backgroundImageUrl);
+    if (cover && coverSrc) {
+      var bc = p.backgroundCrop;
+      if (bc && typeof bc.x === 'number' && typeof bc.y === 'number') {
+        cover.style.objectPosition = (bc.x * 100).toFixed(1) + '% ' + (bc.y * 100).toFixed(1) + '%';
+      }
+      cover.addEventListener('load', function () { cover.hidden = false; });
+      cover.src = coverSrc;
+    }
     var name = plaque.querySelector('.user-plaque__name');
     if (name && p.displayName) name.textContent = p.displayName;
     var alias = plaque.querySelector('.user-plaque__alias');
