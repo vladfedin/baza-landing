@@ -383,26 +383,6 @@ h1, h2, h3 { margin: 0; color: var(--ink-strong); font-weight: 800; }
 @media (max-width: 1000px) { .adv-grid { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 560px)  { .adv-grid { grid-template-columns: 1fr; } }
 
-/* stats strip */
-.stats-head { margin-top: clamp(22px, 4vh, 40px); text-align: center; }
-.stats-head h3 { margin-bottom: 18px; font-size: clamp(22px, 2.6vw, 30px); }
-.stats-strip {
-  background: none; border: none; border-radius: 0; padding: 0;
-  /* two stat groups sit side by side (the 3rd — "0 ₽" — is commented out in
-     index.html); auto-fit collapsed to one column inside the centred hero */
-  display: grid; grid-template-columns: repeat(2, 1fr);
-  gap: clamp(12px, 2vw, 22px); text-align: center;
-}
-@media (max-width: 520px) { .stats-strip { grid-template-columns: 1fr; } }
-.stat {
-  /* horizontal chip: big value beside its label so each stat is ~1 line tall
-     (was a taller stacked card) — reclaims vertical space on the first screen */
-  display: flex; flex-direction: row; align-items: center; justify-content: center;
-  gap: 12px; text-align: left;
-  padding: clamp(8px, 1.4vh, 12px) 20px;
-  background: var(--wash-bg); border-radius: 12px;
-}
-
 /* ===== allies ("Союзники") — every ally visible at once, drawn as the app
    draws a participation level (shared/types/mark-look.ts, kind
    «participation»): a translucent pill tinted in the ally's own colour, a rim
@@ -483,8 +463,6 @@ h1, h2, h3 { margin: 0; color: var(--ink-strong); font-weight: 800; }
   mask-repeat: no-repeat;
 }
 .tool-card:hover::before { border-color: var(--accent-bright); }
-.stat-value { font-size: 32px; font-weight: 800; color: var(--accent); line-height: 1; }
-.stat-label { font-size: 14px; font-weight: 600; color: var(--ink-soft); }
 
 /* ===== merged hero: kicker pinned on top, advantages overlaid on the video ===== */
 .hero-head {
@@ -513,7 +491,6 @@ h1, h2, h3 { margin: 0; color: var(--ink-strong); font-weight: 800; }
 .hero-advhead .kicker,
 .hero-advhead h2,
 .adv-title, .adv-text,
-.stat-value, .stat-label,
 .partners-kicker {
   text-shadow: 0 1px 3px rgba(0,0,0,0.6), 0 2px 16px rgba(0,0,0,0.45);
 }
