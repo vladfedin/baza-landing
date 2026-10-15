@@ -33,7 +33,8 @@ There is no build: what is in `www/` is what is served.
 - `index.html` — the landing. Inline `<head>` script only for the no-flash theme.
 - `css/styles.css` — all landing styles; theme tokens at the top
   (`:root` = Blackout/dark, `:root[data-theme="parchment"]` = light),
-  `@font-face` for the self-hosted fonts in `fonts/`.
+  `--font-app` — the app's system UI font stack (same face and weights as
+  beta.rolebaza.ru); no web fonts are loaded.
 - `js/` — one IIFE / DOMContentLoaded module per behaviour: `hero-video`,
   `scroll-paging`, `dice` (+ `roll-card`), `arsenal-video`, `speech-bubble`,
   `reading-ruler`, `party`, `music-player`, `theme-toggle`, `live`, `marks`,
@@ -54,7 +55,7 @@ There is no build: what is in `www/` is what is served.
   is neither checked nor versioned — put it in an attribute and read it.
   New file attribute → add it to that list.
 - Swapping a sprite icon changes only the part after `#` (the path carries `?v=`).
-- **No third-party requests on page load.** Fonts and libraries are ours; the
+- **No third-party requests on page load.** Libraries are ours, text uses system fonts; the
   only outside call is Yandex.Metrika, and only after consent (`js/consent.js`).
 - Data from the app (`js/live.js`): public GET endpoints only, user text via
   `textContent`, images only from the app's own origin.
