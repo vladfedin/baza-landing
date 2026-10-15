@@ -59,6 +59,9 @@
     <!-- action-bar theme switch (Blackout ⇄ parchment) -->
     <script defer src="js/theme-toggle.js"></script>
 
+    <!-- upcoming games, blog posts, participant count from the app's public API -->
+    <script defer src="js/live.js"></script>
+
     <!-- the visitor's die throw answered with a roll card, as in the table's chat -->
     <script defer src="js/roll-card.js"></script>
 
@@ -204,6 +207,11 @@
             <div class="stat">
                 <div class="stat-value">5</div>
 	            <div class="stat-label"><b>сохранённых игр</b><br>бесплатно</div>
+            </div>
+            <!-- live count from the app (js/live.js); hidden until it arrives -->
+            <div class="stat" id="stat-members" hidden>
+                <div class="stat-value"></div>
+                <div class="stat-label"><b>участников</b><br>уже с нами</div>
             </div>
             <!-- "0 ₽ / за весь базовый функционал" commented out per request:
             <div class="stat">
@@ -381,6 +389,26 @@
         </div>
 
         <div class="note-banner">Всё это работает <strong>без регистрации для игроков</strong> — они просто переходят по ссылке.</div>
+    </section>
+
+    <!-- ============ LIVE: what is happening on Rolebaza now (js/live.js) ============
+         Filled from the app's public API; each block and the section itself
+         stay hidden until there is something to show. -->
+    <section class="section" id="live" hidden>
+        <div class="section-head">
+            <div class="kicker">Сейчас на Ролебазе</div>
+            <h2>Предстоящие игры</h2>
+            <div class="serif section-sub">Мастера уже собирают партии</div>
+        </div>
+        <div class="live-block" id="live-games-block" hidden>
+            <div class="games-row" id="live-games"></div>
+            <a class="live-more" href="https://beta.rolebaza.ru/?utm_source=rolebaza.ru&amp;utm_medium=landing&amp;utm_content=live" data-goal="games_all">Все игры</a>
+        </div>
+        <div class="live-block" id="live-posts-block" hidden>
+            <h3 class="live-subhead">Пишут мастера</h3>
+            <div class="posts-row" id="live-posts"></div>
+            <a class="live-more" href="https://beta.rolebaza.ru/community/blogs?utm_source=rolebaza.ru&amp;utm_medium=landing&amp;utm_content=live" data-goal="blog">Все блоги</a>
+        </div>
     </section>
 
     <!-- ============ FINALE: campfire send-off ============ -->

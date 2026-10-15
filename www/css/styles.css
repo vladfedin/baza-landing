@@ -384,12 +384,14 @@ h1, h2, h3 { margin: 0; color: var(--ink-strong); font-weight: 800; }
 .stats-head h3 { margin-bottom: 18px; font-size: clamp(22px, 2.6vw, 30px); }
 .stats-strip {
   background: none; border: none; border-radius: 0; padding: 0;
-  /* two stat groups sit side by side (the 3rd — "0 ₽" — is commented out in
-     index.html); auto-fit collapsed to one column inside the centred hero */
-  display: grid; grid-template-columns: repeat(2, 1fr);
+  /* stat chips sit side by side, as many columns as are shown (the live
+     participant count appears only once the app answers) */
+  display: grid; grid-auto-flow: column; grid-auto-columns: 1fr;
   gap: clamp(12px, 2vw, 22px); text-align: center;
 }
-@media (max-width: 520px) { .stats-strip { grid-template-columns: 1fr; } }
+.stat[hidden] { display: none; }
+.stat-value { white-space: nowrap; }
+@media (max-width: 720px) { .stats-strip { grid-auto-flow: row; } }
 .stat {
   /* horizontal chip: big value beside its label so each stat is ~1 line tall
      (was a taller stacked card) — reclaims vertical space on the first screen */
@@ -1084,4 +1086,109 @@ html { scroll-padding-top: 84px; }
 .roll-card--fumble .roll-card__total { color: #a2957e; }
 @media (prefers-reduced-motion: reduce) {
   .roll-card { transition: none; transform: none; }
+}
+
+/* ============ live: upcoming games + community posts (js/live.js) ============ */
+.live-block { margin-top: clamp(20px, 3vw, 32px); }
+.live-block[hidden], #live[hidden] { display: none; }
+.live-subhead {
+  font-size: clamp(20px, 2.2vw, 26px); text-align: center;
+  color: var(--ink-title); margin: clamp(28px, 4vw, 48px) 0 18px;
+}
+.live-more {
+  display: table; margin: 18px auto 0;
+  font-weight: 700; font-size: 15px; letter-spacing: .02em;
+  padding: 8px 16px; border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+  transition: background-color .16s ease, border-color .16s ease;
+}
+.live-more:hover { background: color-mix(in srgb, var(--accent) 12%, transparent); border-color: var(--accent); }
+
+/* A game is the app's portrait card (ScheduledGameCard.tsx): cover, type and
+   system on top, title in the middle, master / time / seats / price below.
+   White text over the cover in both themes, as in the app. */
+.games-row {
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(12px, 1.6vw, 20px);
+}
+.game-card {
+  position: relative; display: flex; flex-direction: column;
+  aspect-ratio: 2 / 3; border-radius: 18px; overflow: hidden;
+  color: #fff; isolation: isolate;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+  transition: transform .16s ease, box-shadow .16s ease;
+}
+.game-card:hover { color: #fff; transform: translateY(-3px); box-shadow: 0 16px 38px rgba(0,0,0,0.45); }
+.game-card:focus-visible { outline: 2px solid var(--accent-bright); outline-offset: 3px; }
+.game-card__cover {
+  position: absolute; inset: 0; z-index: -1;
+  background-size: cover; background-position: center;
+}
+.game-card__cover::after {      /* legibility: dim the middle, darken the foot */
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(rgba(0,0,0,0.15), rgba(0,0,0,0.25) 45%, rgba(0,0,0,0.72));
+}
+.game-card__top { display: flex; justify-content: space-between; gap: 6px; padding: 12px; }
+.game-card__pill {
+  padding: 4px 10px; border-radius: 8px; font-size: 10px; font-weight: 700;
+  background: rgba(0,0,0,0.45); color: #fff;
+  max-width: 60%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.game-card__mid { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 0 16px; text-align: center; }
+.game-card__title {
+  font-size: 19px; font-weight: 800; line-height: 1.2; color: #fff; margin: 0 0 8px;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.8), 0 0 12px rgba(0,0,0,0.5);
+  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+}
+.game-card__desc {
+  font-size: 12px; line-height: 1.5; margin: 0; text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.game-card__foot { padding: 20px 12px 12px; font-size: 12px; text-shadow: 0 1px 2px rgba(0,0,0,0.8); }
+.game-card__master { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; font-weight: 600; }
+.game-card__when { font-size: 11px; opacity: .9; margin-bottom: 6px; }
+.game-card__row { display: flex; justify-content: space-between; font-weight: 700; }
+.game-card__slots.is-full { color: #ffa94d; }
+.game-card__price { color: #ffa94d; }
+.game-card__price.is-free { color: #51cf66; }
+
+/* the token: a round avatar with the gold rim tokens wear on the table */
+.live-token {
+  flex: 0 0 auto; width: 22px; height: 22px; border-radius: 50%; overflow: hidden;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: #2a2117; color: #f0cf8e; font-size: 11px; font-weight: 800; text-shadow: none;
+  box-shadow: 0 0 0 1.5px #d9b36a;
+}
+.live-token img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.posts-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(12px, 1.6vw, 20px); }
+.post-card {
+  display: flex; flex-direction: column; gap: 10px;
+  padding: 18px 20px; border-radius: 14px;
+  background: var(--card-bg); color: var(--ink-body);
+  border: 1px solid color-mix(in srgb, var(--accent) 22%, transparent);
+  transition: border-color .16s ease, transform .16s ease;
+}
+.post-card:hover { color: var(--ink-body); border-color: var(--accent); transform: translateY(-2px); }
+.post-card__title { font-size: 17px; line-height: 1.3; color: var(--ink-title); margin: 0; }
+.post-card__text {
+  margin: 0; font-size: 14px; line-height: 1.55; flex: 1;
+  display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden;
+}
+.post-card__by { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; color: var(--ink-soft); }
+
+/* narrower screens: the cards become a swipeable row instead of shrinking */
+@media (max-width: 900px) {
+  .games-row, .posts-row {
+    display: flex; overflow-x: auto; scroll-snap-type: x mandatory;
+    margin: 0 calc(-1 * clamp(20px, 5vw, 64px)); padding: 4px clamp(20px, 5vw, 64px) 12px;
+    scrollbar-width: none;
+  }
+  .games-row::-webkit-scrollbar, .posts-row::-webkit-scrollbar { display: none; }
+  .game-card { flex: 0 0 min(62vw, 240px); scroll-snap-align: start; }
+  .post-card { flex: 0 0 min(80vw, 320px); scroll-snap-align: start; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .game-card, .post-card { transition: none; }
+  .game-card:hover, .post-card:hover { transform: none; }
 }

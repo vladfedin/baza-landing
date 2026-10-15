@@ -10,9 +10,15 @@ document.addEventListener('DOMContentLoaded', function () {
     var logoSvg = document.querySelector('.hero-logo');
     if (logoSvg && logoSvg.pauseAnimations) logoSvg.pauseAnimations();
   }
-  var pages = ['hero', 'arsenal', 'finale']
-    .map(function (id) { return document.getElementById(id); })
-    .filter(Boolean);
+  /* sections the cue steps through; some (live data) appear later, so the
+     visible set is resolved on every use rather than once */
+  var PAGE_IDS = ['hero', 'arsenal', 'live', 'team', 'faq', 'finale'];
+  function visiblePages() {
+    return PAGE_IDS
+      .map(function (id) { return document.getElementById(id); })
+      .filter(function (p) { return p && !p.hidden; });
+  }
+  var pages = visiblePages();
   if (pages.length < 2) return;
 
   /* keep --abar-h in sync so the scroll cues sit right above the action bar */
@@ -24,6 +30,7 @@ document.addEventListener('DOMContentLoaded', function () {
   window.addEventListener('resize', syncAbarH, { passive: true });
 
   function tops() {
+    pages = visiblePages();
     return pages.map(function (p) {
       return Math.round(p.getBoundingClientRect().top + window.pageYOffset);
     });
