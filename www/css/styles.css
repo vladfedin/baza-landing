@@ -1019,15 +1019,19 @@ html { scroll-padding-top: 84px; }
 .ask {
   --ally: var(--accent);
   display: inline-flex; align-items: center; gap: 6px; height: 30px; padding: 0 12px;
-  font: inherit; font-size: 13px; font-weight: 700; cursor: pointer; border: 0; border-radius: 999px;
-  background: color-mix(in srgb, var(--ally) 22%, rgba(12, 10, 18, 0.5));
-  color: color-mix(in srgb, var(--ally) 60%, #f2f2f5);
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ally) 55%, transparent),
-              0 0 8px -1px color-mix(in srgb, var(--ally) 45%, transparent), 0 2px 8px rgba(0, 0, 0, 0.35);
+  font: inherit; font-size: 13px; font-weight: 600; cursor: pointer; border: 0; border-radius: 999px;
+  /* quieter than the allies: a help for newcomers, not a call to action */
+  background: color-mix(in srgb, var(--ally) 8%, rgba(12, 10, 18, 0.4));
+  color: var(--ink-soft);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ally) 28%, transparent);
   text-shadow: none;
-  transition: background-color .16s ease, color .16s ease;
+  transition: background-color .16s ease, color .16s ease, box-shadow .16s ease;
 }
-.ask:hover, .ask[aria-expanded="true"] { color: #fff; background: color-mix(in srgb, var(--ally) 38%, rgba(12, 10, 18, 0.5)); }
+.ask svg { color: color-mix(in srgb, var(--ally) 75%, transparent); }
+.ask:hover, .ask[aria-expanded="true"] {
+  color: var(--ink-title); background: color-mix(in srgb, var(--ally) 18%, rgba(12, 10, 18, 0.5));
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ally) 55%, transparent);
+}
 .ask:focus-visible { outline: 2px solid var(--accent-bright); outline-offset: 2px; }
 .ask svg { width: 15px; height: 15px; }
 .ask-answer {
