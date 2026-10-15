@@ -288,9 +288,9 @@ h1, h2, h3 { margin: 0; color: var(--ink-strong); font-weight: 800; }
   justify-content: center; align-items: center; text-align: center;
   /* bottom padding clears the pinned action bar so all hero content is visible */
   padding: 8px clamp(20px, 5vw, 64px) calc(var(--abar-h, 88px) + 16px);
-  /* width:100% — the partners marquee is max-content wide (two tag sets);
-     without a definite width this flex item grows to it, and a phone's
-     layout viewport widens to 1160px with the page cut off on the right */
+  /* width:100% — without a definite width this flex item grows to its
+     widest content (once the partners marquee: a phone's layout viewport
+     widened to 1160px with the page cut off on the right) */
   width: 100%; max-width: 1160px; margin: 0 auto;
 }
 .hero-logo-wrap {
@@ -407,53 +407,48 @@ h1, h2, h3 { margin: 0; color: var(--ink-strong); font-weight: 800; }
   background: var(--wash-bg); border-radius: 12px;
 }
 
-/* ===== partners marquee ("Союзники") — meduza-style scrolling pill tags,
-   pinned as a new row at the bottom of the hero content ===== */
+/* ===== allies ("Союзники") — every ally visible at once, as an award plaque
+   of the app (shared/types/mark-look.ts, kind «achievement»): a cast plate in
+   the ally's own colour, a darker rim, a light imprint, a shine on hover; the
+   «notched» shape of the app's awards (mark-shapes.ts). The colour of each
+   ally comes from its logo or page (list below). ===== */
 .hero-partners {
-  width: 100%; margin-top: clamp(8px, 1.6vh, 18px);
-  display: flex; flex-direction: row; align-items: center; gap: 16px;
+  width: 100%; margin-top: clamp(10px, 1.8vh, 20px);
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
 }
-/* static label pinned left of the scrolling line (doesn't scroll); stretch to
-   the row height and center its text so it lines up with the padded pills */
-.partners-kicker {
-  margin: 0; flex: 0 0 auto; white-space: nowrap;
-  display: flex; align-items: center; align-self: stretch; line-height: 1;
+.partners-kicker { margin: 0; line-height: 1; }
+.allies { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+.ally {
+  --ally: #6b6b78;
+  position: relative; display: inline-flex; align-items: center; gap: 6px;
+  height: 30px; padding: 0 11px; white-space: nowrap;
+  font-size: 13px; font-weight: 600; line-height: 1;
+  color: #fffaf0; text-shadow: 0 1px 0 rgba(0,0,0,0.35);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--ally), #fff 8%), color-mix(in srgb, var(--ally), #000 12%));
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ally), #000 40%);
+  clip-path: polygon(5px 0, calc(100% - 5px) 0, 100% 5px, 100% calc(100% - 5px),
+    calc(100% - 5px) 100%, 5px 100%, 0 calc(100% - 5px), 0 5px);
+  transition: filter .16s ease;
 }
-.hero-partners .partners { flex: 1 1 auto; min-width: 0; }
-/* the viewport window with soft fade-out edges */
-.partners {
-  position: relative; width: 100%; overflow: hidden;
-  -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
-          mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+.ally:hover, .ally:focus-visible { color: #fff; filter: brightness(1.08); }
+.ally:focus-visible { outline: 2px solid var(--accent-bright); outline-offset: 2px; }
+.ally svg { width: 14px; height: 14px; flex: 0 0 auto; }
+.ally::after {          /* the award shine, run once on hover */
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background-image: linear-gradient(110deg, transparent 30%, rgb(255 255 255 / 55%) 47%, rgb(255 255 255 / 0) 60%);
+  background-size: 280% 100%; background-position: 130% 0;
 }
-/* the moving track: two identical tag sets, scrolled by exactly one set width */
-.partners-track {
-  display: flex; width: max-content; gap: 12px;
-  animation: partners-scroll 34s linear infinite;
-}
-.partners:hover .partners-track,
-.partners:focus-within .partners-track { animation-play-state: paused; }
-@keyframes partners-scroll {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
-}
-.partner-tag {
-  flex: 0 0 auto; display: inline-flex; align-items: center;
-  padding: 7px 16px; border-radius: 999px;
-  border: 1px solid rgba(217,179,106,0.35);
-  background: rgba(20,15,10,0.42);
-  color: var(--ink-soft); font-size: 14px; font-weight: 600; white-space: nowrap;
-  transition: color .2s ease, border-color .2s ease, background .2s ease;
-}
-.partner-tag:hover, .partner-tag:focus-visible {
-  color: var(--accent-bright); border-color: var(--accent);
-  background: rgba(217,179,106,0.14);
-}
-@media (prefers-reduced-motion: reduce) {
-  .partners { -webkit-mask-image: none; mask-image: none; }
-  .partners-track { animation: none; width: 100%; flex-wrap: wrap; justify-content: center; }
-  .partner-tag[aria-hidden="true"] { display: none; }   /* drop the duplicate set when static */
-}
+.ally:hover::after { animation: ally-shine .9s ease-out; }
+@keyframes ally-shine { from { background-position: 130% 0; } to { background-position: -30% 0; } }
+@media (prefers-reduced-motion: reduce) { .ally:hover::after { animation: none; } }
+/* ally colours: from the logo where we could reach it, else from the name */
+.ally--dndsu    { --ally: #b04a35; }  /* dnd.su — the brick red of D&D */
+.ally--hobby    { --ally: #c48a14; }  /* Hobby Games — honey yellow of the logo */
+.ally--loh      { --ally: #a0263a; }  /* League of Heroes — wine red of the server icon */
+.ally--alliance { --ally: #2c8a7e; }  /* Альянс Вольных Мастеров — logo unreachable (VK), teal */
+.ally--yuji     { --ally: #6745c4; }  /* Юджиквест — violet of the channel avatar */
+.ally--guild    { --ally: #4b9440; }  /* Торговая Гильдия — logo unreachable (VK), guild green */
+.ally--myindie  { --ally: #5b616e; }  /* MyIndie — monochrome logo, graphite */
 
 /* ===== emphasized rectangular corner brackets (magicorp-style) on every card =====
    A single inset ::before draws a thin square frame in the accent colour, then a
