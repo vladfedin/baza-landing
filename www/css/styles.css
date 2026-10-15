@@ -111,12 +111,10 @@
 :root[data-theme="parchment"] .hero-shade {
   background: linear-gradient(180deg, var(--shade-1) 0%, var(--shade-2) 85%, var(--bg) 100%);
 }
-/* arsenal cards stay dark "media" panels so the footage reads instead of washing
-   out pale over a light card; their text goes light again.
-   TEMPORARY: this targets ALL .tool-card (not just .tool-card--video) so the
-   video-less cards match the video ones until their clips are added. To revert,
-   narrow the selector back to `.tool-card--video`. */
-:root[data-theme="parchment"] .tool-card {
+/* arsenal cards WITH a clip stay dark "media" panels so the footage reads
+   instead of washing out pale over a light card; their text goes light again.
+   Cards without a clip are paper like the rest of the light page. */
+:root[data-theme="parchment"] .tool-card--video {
   --card-bg: #241d14;
   --ink-title: #f3ead9;
   --ink-body: #c4b8a1;
@@ -534,24 +532,30 @@ html { scroll-padding-top: 84px; }
 #arsenal { padding-top: clamp(88px, 9vw, 108px); }
 
 .scroll-cue {
-  /* one global cue, fixed just above the sticky action bar (--abar-h from JS);
-     shown on every locked page, fades out on the finale and below */
+  /* one global cue: a small handle on the action bar's gold top edge
+     (--abar-h from JS), so it never sits over hero content; fades out on the
+     finale and below. Touch screens scroll by swipe — no cue there. */
   position: fixed; left: 50%; z-index: 999;
-  bottom: calc(var(--abar-h, 88px) + 12px);
+  bottom: calc(var(--abar-h, 88px) - 15px);
   transform: translateX(-50%);
-  transition: opacity 0.35s ease;
+  transition: opacity 0.35s ease, color .16s ease, border-color .16s ease;
   display: flex; align-items: center; justify-content: center;
-  width: 72px; height: 76px; margin: 0; padding: 0;
-  background: none; border: 0; cursor: pointer;
+  width: 30px; height: 30px; margin: 0; padding: 0;
+  background: #1b150f; border: 1.5px solid var(--accent); border-radius: 50%;
+  cursor: pointer;
   color: var(--accent);
   animation: cue-bob 2.4s ease-in-out infinite;
 }
-.scroll-cue:hover, .scroll-cue:focus-visible { color: var(--accent-bright); }
-.scroll-cue svg { width: 34px; height: 65px; display: block; fill: currentColor; }
+.scroll-cue:hover, .scroll-cue:focus-visible { color: var(--accent-bright); border-color: var(--accent-bright); }
+.scroll-cue svg {
+  width: 18px; height: 18px; display: block;
+  fill: none; stroke: currentColor; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round;
+}
+@media (max-width: 768px), (pointer: coarse) { .scroll-cue { display: none; } }
 .scroll-cue.is-hidden { opacity: 0; pointer-events: none; }
 @keyframes cue-bob {
   0%, 100% { transform: translate(-50%, 0); }
-  50%      { transform: translate(-50%, 8px); }
+  50%      { transform: translate(-50%, 3px); }
 }
 @media (prefers-reduced-motion: reduce) { .scroll-cue { animation: none; } }
 
@@ -859,8 +863,13 @@ html { scroll-padding-top: 84px; }
   .action-bar-left, .action-bar-right { position: static; flex-shrink: 0; }
   .cta-main {
     flex: 1; min-width: 0; max-width: none;
-    padding: 16px 12px; font-size: 16px;
+    padding: 16px 12px; font-size: 16px; white-space: nowrap;
   }
+}
+/* narrow phones: the main button needs the room more than the dice toys do
+   (the die itself stays on the page and can still be thrown) */
+@media (max-width: 560px) {
+  .action-bar-left { display: none; }
 }
 
 /* footer */
