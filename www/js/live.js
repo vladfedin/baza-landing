@@ -1,6 +1,6 @@
 /*
-  Live Rolebaza on the landing: upcoming games, community blog posts and the
-  participant count, straight from the app's public API.
+  Live Rolebaza on the landing: upcoming games and community blog posts,
+  straight from the app's public API.
   ---------------------------------------------------------------------------
   Same data the app's home page shows, drawn the way the app draws it: a game
   is a portrait card (ScheduledGameCard.tsx) — cover, type and system on top,
@@ -209,18 +209,7 @@
     }).catch(function () {});
   }
 
-  function loadCount() {
-    var chip = document.getElementById('stat-members');
-    if (!chip) return;
-    getJson('/api/landing/waitlist/count').then(function (res) {
-      var n = Number(res && res.total);
-      if (!(n > 0)) return;
-      chip.querySelector('.stat-value').textContent = n.toLocaleString('ru-RU');
-      chip.hidden = false;
-    }).catch(function () {});
-  }
-
-  function start() { loadCount(); loadGames(); loadPosts(); }
+  function start() { loadGames(); loadPosts(); }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
   else start();
 })();
