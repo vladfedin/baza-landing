@@ -1,15 +1,6 @@
 /* ============ base ============ */
-/* Landing theme tokens. Two palettes toggle via [data-theme] on <html>
-   (js/theme-toggle.js, switch in the action bar):
-     · :root defaults        = "Blackout"  — near-black gold palette (DARK, default)
-     · :root[data-theme="parchment"] = "Parchment" — warm light-brown paper (LIGHT)
-   "Blackout"/"parchment" mirror the app's palette reference in theme-palettes.md;
-   on the landing they're also called "dark" (default) and "light".
-
-   Light mode is applied to the page BODY (arsenal, finale, footer). The video
-   hero and the sticky top/bottom bars keep the dark Blackout chrome (see the
-   scoped override below) — their text sits over dark footage and must stay
-   light there regardless of theme. */
+/* Landing palette: the app's "Blackout" — near-black with gold (theme-palettes.md).
+   One theme only: the page is dark, as the table's default is. */
 :root {
   --accent: #d9b36a;          /* NB: the old dc-props default was #b8c48a (green),
                                  but every hard-coded color on the page is gold —
@@ -33,76 +24,6 @@
   --drawer-bg: rgba(26,20,13,0.96);    /* mobile slide-in menu */
   --shade-1: rgba(20,15,10,0.08);      /* hero video shade, top */
   --shade-2: rgba(22,17,12,0.12);      /* hero video shade, mid */
-}
-/* "Parchment" — landing LIGHT mode. Warm light-brown paper + honey-brown accent,
-   lifted from the app's parchment theme (theme-palettes.md). No blues carried over.
-   These tokens light up the page body; the dark chrome is re-darkened just below. */
-:root[data-theme="parchment"] {
-  --accent: #a3611f;          /* honey / caramel brown */
-  --accent-bright: #c4873a;
-  --accent-red: #b8402f;      /* only used in the (dark) hero + bars */
-  --bg: #e8dcc8;              /* light parchment paper */
-  --ink: #2b1d0e;
-  --ink-strong: #20150b;
-  --ink-title: #241a0d;
-  --ink-body: #4a3a26;
-  --ink-soft: #5c4832;
-  --ink-serif: #6b4a24;
-  --ink-faint: #8a7458;
-
-  --card-bg: #f1e7d4;                    /* warm tan card — not stark white */
-  --wash-bg: rgba(250,245,236,0.8);
-  /* bars stay dark chrome, but warm + more opaque so they don't read as a muddy
-     cold-grey translucency over the light page */
-  --bar-bg: rgba(30,22,14,0.82);
-  --bar-bg-strong: rgba(30,22,14,0.92);
-  --drawer-bg: rgba(30,22,14,0.97);      /* drawer stays dark (opens over the hero) */
-  --shade-1: rgba(20,15,10,0.08);
-  --shade-2: rgba(22,17,12,0.12);
-}
-/* Keep the dark Blackout chrome on the video hero (topbar-shell + drawer are its
-   descendants) and the sticky bottom bar / docked mini-player, so their gold and
-   light text stay legible over the dark footage while the body below goes light.
-   Custom-property inheritance takes the nearest ancestor, so these win for their
-   subtrees over the :root[data-theme="parchment"] values above. */
-:root[data-theme="parchment"] .hero,
-:root[data-theme="parchment"] .action-bar {
-  --accent: #d9b36a;
-  --accent-bright: #f0cf8e;
-  --ink: #e8e0d2;
-  --ink-strong: #f7efdf;
-  --ink-title: #f3ead9;
-  --ink-body: #c4b8a1;
-  --ink-soft: #cabfa8;
-  --ink-serif: #c9ba9a;
-  --ink-faint: #a2957e;
-  --card-bg: #241d14;
-  --wash-bg: rgba(20,15,10,0.54);
-}
-/* Light-mode fixups (parchment only) --------------------------------------- */
-/* keep the video shade dark most of the hero, fade into the light page only at
-   the very bottom (the default 55%→100% ramp veils too much of the hero) */
-:root[data-theme="parchment"] .hero-shade {
-  background: linear-gradient(180deg, var(--shade-1) 0%, var(--shade-2) 85%, var(--bg) 100%);
-}
-/* arsenal cards WITH a clip stay dark "media" panels so the footage reads
-   instead of washing out pale over a light card; their text goes light again.
-   Cards without a clip are paper like the rest of the light page. */
-:root[data-theme="parchment"] .tool-card--video {
-  --card-bg: #241d14;
-  --ink-title: #f3ead9;
-  --ink-body: #c4b8a1;
-  --accent: #d9b36a;
-}
-/* party cheers ("ДЛИННЫЙ ОТДЫХ" / level-up) float over the light body — darken
-   the fills and swap the neon glow for a dark drop shadow so they stay legible */
-:root[data-theme="parchment"] .party-cheer__text {
-  color: #248b3c;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.4), 0 0 12px rgba(255,255,255,0.5);
-}
-:root[data-theme="parchment"] .party-cheer--level .party-cheer__text {
-  color: #9a6510;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.4), 0 0 12px rgba(255,255,255,0.5);
 }
 /* the app's font (client/src/styles/global.css): the system UI face */
 :root {
@@ -1205,7 +1126,6 @@ html { scroll-padding-top: 84px; }
    Compact profile of the app (UserPopover.tsx): avatar, name, @alias, one row
    of marks; below — the person's own words as a chat message. */
 :root { --mark-hue-ink: 52%; --mark-hue-fill: 20%; --mark-ink: #fbf1dc; --mark-relief: 0 0 7px rgba(234,208,144,0.16); }
-:root[data-theme="parchment"] { --mark-hue-ink: 80%; --mark-hue-fill: 14%; --mark-ink: #20150b; --mark-relief: 0 1px 3px rgba(0,0,0,0.20); }
 .user-plaque {
   margin: 0; padding: 18px 20px 20px; border-radius: 16px;
   background: var(--card-bg);

@@ -27,10 +27,6 @@
 
     <link rel="stylesheet" href="css/styles.css">
 
-    <!-- apply the landing theme before first paint (no flash): the saved choice,
-         else the system's light preference; default is "Blackout" (dark) -->
-    <script>try{var t=localStorage.getItem('rb-theme');if(t==='parchment'||(!t&&matchMedia('(prefers-color-scheme: light)').matches))document.documentElement.setAttribute('data-theme','parchment');}catch(e){}</script>
-
     <!-- hero background video controller -->
     <script defer src="js/hero-video.js"></script>
 
@@ -52,9 +48,6 @@
 
     <!-- background-music player in the "Музыка и голосовая связь" card -->
     <script defer src="js/music-player.js"></script>
-
-    <!-- action-bar theme switch (Blackout ⇄ parchment) -->
-    <script defer src="js/theme-toggle.js"></script>
 
     <!-- a person drawn as the table draws them: avatar, name, marks -->
     <script defer src="js/marks.js"></script>
@@ -651,12 +644,8 @@
                 </button>
             </div>
             <a class="btn-primary cta-main" href="https://beta.rolebaza.ru/?start=game&amp;utm_source=rolebaza.ru&amp;utm_medium=landing&amp;utm_content=action_bar" data-goal="cta_play">Зайди и играй!</a>
-            <!-- RIGHT cluster: theme switch + background-music play/pause -->
+            <!-- RIGHT: background-music play/pause -->
             <div class="action-bar-right">
-                <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Переключить тему" title="Переключить тему">
-                    <svg class="theme-ico theme-ico--sun" viewBox="0 0 24 24"><use href="img/icons.svg#theme-sun"/></svg>
-                    <svg class="theme-ico theme-ico--moon" viewBox="0 0 24 24"><use href="img/icons.svg#theme-moon"/></svg>
-                </button>
                 <button class="bar-music-btn" id="music-toggle-bar" type="button" aria-label="Играть фоновую музыку" aria-pressed="false" title="Фоновая музыка">
                     <svg viewBox="0 0 24 24"><use href="img/icons.svg#play"/></svg>
                 </button>

@@ -62,9 +62,7 @@
 <symbol id="pause" viewBox="0 0 24 24" fill="currentColor"><path d="M7 5h3.1v14H7zM13.9 5H17v14h-3.1z"/></symbol>
 <symbol id="volume" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9 L8 9 L13 5 L13 19 L8 15 L4 15 Z"/><path d="M16.5 9 A4.5 4.5 0 0 1 16.5 15"/></symbol>
 
-<symbol id="theme-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5V4.6"/><path d="M12 19.4V21.5"/><path d="M2.5 12H4.6"/><path d="M19.4 12H21.5"/><path d="M5.2 5.2 6.7 6.7"/><path d="M17.3 17.3 18.8 18.8"/><path d="M18.8 5.2 17.3 6.7"/><path d="M6.7 17.3 5.2 18.8"/></symbol>
 
-<symbol id="theme-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13.4A8 8 0 1 1 10.6 4 6.3 6.3 0 0 0 20 13.4Z"/></symbol>
 <!-- Lucide (ISC), the icon set of the app: marks, allies, free list -->
 <symbol id="lu-crown" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11.562 3.266a.5.5 0 0 1 .876 0L15.39 8.87a1 1 0 0 0 1.516.294L21.183 5.5a.5.5 0 0 1 .798.519l-2.834 10.246a1 1 0 0 1-.956.734H5.81a1 1 0 0 1-.957-.734L2.02 6.02a.5.5 0 0 1 .798-.519l4.276 3.664a1 1 0 0 0 1.516-.294z"/><path d="M5 21h14"/></symbol>
 <symbol id="lu-castle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 5V3"/><path d="M14 5V3"/><path d="M15 21v-3a3 3 0 0 0-6 0v3"/><path d="M18 3v8"/><path d="M18 5H6"/><path d="M22 11H2"/><path d="M22 9v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9"/><path d="M6 3v8"/></symbol>
