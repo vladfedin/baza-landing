@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
+  wireDrawer();   // first: the video part below may stop early
   var v = document.querySelector('.hero-video');
   if (!v) return;
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return; // CSS hides it too
@@ -21,7 +22,20 @@ document.addEventListener('DOMContentLoaded', function () {
   v.addEventListener('error', function () {
     var w = v.closest('.hero-video-wrap'); if (w) w.remove(); // photo stays as fallback
   });
-  // --- mobile drawer ---
+  // pause when the hero scrolls out of view
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { var p = v.play(); if (p && p.catch) p.catch(function () {}); }
+        else v.pause();
+      });
+    }, { threshold: 0.05 }).observe(document.querySelector('.hero'));
+  }
+});
+
+// --- mobile drawer --- (independent of the hero clip: it must open even when
+// the clip is skipped for reduced motion or an unsupported codec)
+function wireDrawer() {
   var drawer = document.getElementById('nav-drawer');
   var backdrop = document.getElementById('drawer-backdrop');
   var burger = document.getElementById('nav-burger');
@@ -46,14 +60,4 @@ document.addEventListener('DOMContentLoaded', function () {
       if (e.key === 'Escape') setDrawer(false);
     });
   }
-
-  // pause when the hero scrolls out of view
-  if ('IntersectionObserver' in window) {
-    new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) {
-        if (e.isIntersecting) { var p = v.play(); if (p && p.catch) p.catch(function () {}); }
-        else v.pause();
-      });
-    }, { threshold: 0.05 }).observe(document.querySelector('.hero'));
-  }
-});
+}
