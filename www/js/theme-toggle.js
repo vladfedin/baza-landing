@@ -6,8 +6,12 @@
  *   · data-theme="parchment"  = "Parchment" — warm light-brown paper (LIGHT)
  *
  * The choice persists in localStorage under 'rb-theme'. A tiny inline script in
- * <head> applies the saved value before first paint (no flash); this file only
- * wires the button once the DOM is ready.
+ * <head> applies the saved value before first paint (no flash) — or, before any
+ * choice, the system's light preference; this file wires the button.
+ *
+ * An explicit choice is also written to the cookie 'rb_theme' on .rolebaza.ru
+ * as the app's theme name (Blackout = 'arcane', Parchment = 'parchment'): the app
+ * opens in it for a visitor who has not picked a theme there yet.
  */
 (function () {
   'use strict';
@@ -26,7 +30,14 @@
       root.removeAttribute('data-theme');   // blackout is the CSS default
     }
     try { localStorage.setItem(KEY, theme); } catch (e) { /* storage blocked */ }
+    shareWithApp(theme);
     sync();
+  }
+
+  function shareWithApp(theme) {
+    var appTheme = theme === 'parchment' ? 'parchment' : 'arcane';
+    var domain = /(^|\.)rolebaza\.ru$/.test(location.hostname) ? '; Domain=rolebaza.ru' : '';
+    document.cookie = 'rb_theme=' + appTheme + domain + '; Path=/; Max-Age=31536000; SameSite=Lax; Secure';
   }
 
   var btn;
