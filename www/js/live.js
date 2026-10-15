@@ -1,6 +1,6 @@
 /*
-  Live Rolebaza on the landing: upcoming games, community blog posts and the
-  app's tutorials, straight from its public API.
+  Live Rolebaza on the landing: upcoming games and the app's tutorials,
+  straight from its public API.
   ---------------------------------------------------------------------------
   Same data the app's home page shows, drawn the way the app draws it: a game
   is a portrait card (ScheduledGameCard.tsx) — cover, type and system on top,
@@ -22,7 +22,7 @@
   var LOCAL = /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
   var API = LOCAL ? '' : APP;
   var UTM = 'utm_source=rolebaza.ru&utm_medium=landing&utm_content=live';
-  var MAX_GAMES = 4, MAX_POSTS = 3;
+  var MAX_GAMES = 4;
 
   function getJson(path) {
     return fetch(API + path, { credentials: 'omit' }).then(function (r) {
@@ -155,25 +155,6 @@
     return a;
   }
 
-  function excerpt(body) {
-    var text = String(body || '').split(/\n+/).map(function (s) { return s.trim(); })
-      .filter(function (s) { return s && !/\.(jpe?g|png|webp|gif)$/i.test(s); }).join(' ');
-    return text.length > 180 ? text.slice(0, 177).replace(/\s+\S*$/, '') + '…' : text;
-  }
-
-  function postCard(p) {
-    var a = el('a', 'post-card');
-    a.href = appUrl('/blog/' + encodeURIComponent(p.slug || p.id));
-    a.setAttribute('data-goal', 'post_open');
-    a.appendChild(el('h3', 'post-card__title', p.title));
-    a.appendChild(el('p', 'post-card__text', excerpt(p.body)));
-    var by = el('div', 'post-card__by');
-    by.appendChild(token(p.author_name, null));
-    by.appendChild(el('span', null, p.author_name || ''));
-    a.appendChild(by);
-    return a;
-  }
-
   function reveal(block) {
     block.hidden = false;
     var section = block.closest('section');
@@ -196,17 +177,6 @@
       games.forEach(function (g) { row.appendChild(gameCard(g)); });
       reveal(document.getElementById('live-games-block'));
     }).catch(function () { /* the block stays hidden */ });
-  }
-
-  function loadPosts() {
-    var row = document.getElementById('live-posts');
-    if (!row) return;
-    getJson('/api/community/blog-posts?limit=' + MAX_POSTS).then(function (res) {
-      var posts = (res.items || []).filter(function (p) { return p && p.title; }).slice(0, MAX_POSTS);
-      if (!posts.length) return;
-      posts.forEach(function (p) { row.appendChild(postCard(p)); });
-      reveal(document.getElementById('live-posts-block'));
-    }).catch(function () {});
   }
 
   // Tutorials of the app (/api/tutorials): cover, title, summary; on a pointer
@@ -262,7 +232,7 @@
     }).catch(function () {});
   }
 
-  function start() { loadGames(); loadPosts(); loadTutorials(); }
+  function start() { loadGames(); loadTutorials(); }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
   else start();
 })();

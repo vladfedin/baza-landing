@@ -7,7 +7,7 @@
   asked again.
 
   Goals: any element with data-goal="<name>" reports a Metrika goal on click
-  (if Metrika is running). Names: cta_play, game_open, post_open, table_open, review_profile, guild_join.
+  (if Metrika is running). Names: cta_play, game_open, table_open, review_profile, guild_join.
 */
 (function () {
   'use strict';
