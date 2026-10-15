@@ -1438,3 +1438,14 @@ html { scroll-padding-top: 84px; }
   .tut-card { flex: 0 0 min(78vw, 300px); scroll-snap-align: start; }
 }
 @media (prefers-reduced-motion: reduce) { .tut-card { transition: none; } .tut-card:hover { transform: none; } }
+
+/* ============ reviews: masters of the guild (js/marks.js) ============ */
+.reviews-grid { column-count: 2; column-gap: clamp(14px, 2vw, 24px); max-width: 1040px; margin: 0 auto; }
+.reviews-grid .user-plaque { break-inside: avoid; margin: 0 0 clamp(14px, 2vw, 24px); }
+.reviews-grid .user-plaque__said { flex-direction: column; align-items: stretch; gap: 6px; }
+.reviews-grid .user-plaque__said time { align-self: flex-end; }
+.user-plaque__text p { margin: 0; font-size: 15.5px; line-height: 1.55; color: var(--ink-title); }
+.user-plaque__text p + p { margin-top: 8px; }
+.user-plaque__shots { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; }
+.user-plaque__shots img { width: 100%; height: auto; aspect-ratio: 2 / 1; object-fit: cover; border-radius: 8px; display: block; }
+@media (max-width: 860px) { .reviews-grid { column-count: 1; } }
