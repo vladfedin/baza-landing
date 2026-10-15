@@ -2,25 +2,22 @@ document.addEventListener('DOMContentLoaded', function () {
   wireDrawer();   // first: the video part below may stop early
   var v = document.querySelector('.hero-video');
   if (!v) return;
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return; // CSS hides it too
+  // reduced motion, no codec or a failed load: the poster (the closed curtain) stays
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
   // one clip for every viewport — it scales to fit both orientations.
   // AV1 where supported (Chrome/Firefox/Android + Safari w/ AV1 hardware),
-  // HEVC fallback for all other Safari/iOS; neither -> plain hero background.
+  // HEVC fallback for all other Safari/iOS; neither -> the poster alone.
   // Paths come from the markup so the deploy step versions them.
   var src = v.canPlayType('video/mp4; codecs="av01.0.05M.08"') ? v.getAttribute('data-av1')
           : v.canPlayType('video/mp4; codecs="hvc1"')          ? v.getAttribute('data-hevc')
           : '';
-  if (!src) { var w = v.closest('.hero-video-wrap'); if (w) w.remove(); return; }
+  if (!src) return;
   v.setAttribute('src', src);
   v.load();
 
   v.addEventListener('canplay', function () {
-    v.classList.add('is-ready');
     var p = v.play(); if (p && p.catch) p.catch(function () {});
-  });
-  v.addEventListener('error', function () {
-    var w = v.closest('.hero-video-wrap'); if (w) w.remove(); // photo stays as fallback
   });
   // pause when the hero scrolls out of view
   if ('IntersectionObserver' in window) {
