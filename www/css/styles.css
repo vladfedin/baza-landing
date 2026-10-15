@@ -403,11 +403,12 @@ h1, h2, h3 { margin: 0; color: var(--ink-strong); font-weight: 800; }
   background: var(--wash-bg); border-radius: 12px;
 }
 
-/* ===== allies ("Союзники") — every ally visible at once, as an award plaque
-   of the app (shared/types/mark-look.ts, kind «achievement»): a cast plate in
-   the ally's own colour, a darker rim, a light imprint, a shine on hover; the
-   «notched» shape of the app's awards (mark-shapes.ts). The colour of each
-   ally comes from its logo or page (list below). ===== */
+/* ===== allies ("Союзники") — every ally visible at once, drawn as the app
+   draws a participation level (shared/types/mark-look.ts, kind
+   «participation»): a translucent pill tinted in the ally's own colour, a rim
+   and a soft glow of the same colour, a glass glint every 7 s. They sit on the
+   hero video, so the «on cover» values of mark-look.ts apply: a dark underlay,
+   ink 52 %, fill 26 % — the same in both themes. Colours — list below. ===== */
 .hero-partners {
   width: 100%; margin-top: clamp(10px, 1.8vh, 20px);
   display: flex; flex-direction: column; align-items: center; gap: 10px;
@@ -417,26 +418,35 @@ h1, h2, h3 { margin: 0; color: var(--ink-strong); font-weight: 800; }
 .ally {
   --ally: #6b6b78;
   position: relative; display: inline-flex; align-items: center; gap: 6px;
-  height: 30px; padding: 0 11px; white-space: nowrap;
-  font-size: 13px; font-weight: 600; line-height: 1;
-  color: #fffaf0; text-shadow: 0 1px 0 rgba(0,0,0,0.35);
-  background: linear-gradient(180deg, color-mix(in srgb, var(--ally), #fff 8%), color-mix(in srgb, var(--ally), #000 12%));
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ally), #000 40%);
-  clip-path: polygon(5px 0, calc(100% - 5px) 0, 100% 5px, 100% calc(100% - 5px),
-    calc(100% - 5px) 100%, 5px 100%, 0 calc(100% - 5px), 0 5px);
-  transition: filter .16s ease;
+  height: 30px; padding: 0 12px; white-space: nowrap; border-radius: 999px;
+  font-size: 13px; font-weight: 700; line-height: 1;
+  background: color-mix(in srgb, var(--ally) 26%, rgba(12, 10, 18, 0.5));
+  color: color-mix(in srgb, var(--ally) 52%, #f2f2f5);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ally) 55%, transparent),
+              0 0 8px -1px color-mix(in srgb, var(--ally) 50%, transparent),
+              0 2px 8px rgba(0, 0, 0, 0.35);
+  transition: background-color .16s ease, color .16s ease;
 }
-.ally:hover, .ally:focus-visible { color: #fff; filter: brightness(1.08); }
+.ally:hover, .ally:focus-visible {
+  color: color-mix(in srgb, var(--ally) 30%, #fff);
+  background: color-mix(in srgb, var(--ally) 38%, rgba(12, 10, 18, 0.5));
+}
 .ally:focus-visible { outline: 2px solid var(--accent-bright); outline-offset: 2px; }
 .ally svg { width: 14px; height: 14px; flex: 0 0 auto; }
-.ally::after {          /* the award shine, run once on hover */
-  content: ""; position: absolute; inset: 0; pointer-events: none;
-  background-image: linear-gradient(110deg, transparent 30%, rgb(255 255 255 / 55%) 47%, rgb(255 255 255 / 0) 60%);
+.ally::after {          /* the level's glass glint; staggered so the row ripples */
+  content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  background-image: linear-gradient(115deg, transparent 30%, rgb(255 255 255 / 10%) 42%,
+    rgb(255 255 255 / 38%) 49%, rgb(255 255 255 / 10%) 56%, transparent 68%);
   background-size: 280% 100%; background-position: 130% 0;
+  animation: mark-glint 7s ease-in-out infinite;
 }
-.ally:hover::after { animation: ally-shine .9s ease-out; }
-@keyframes ally-shine { from { background-position: 130% 0; } to { background-position: -30% 0; } }
-@media (prefers-reduced-motion: reduce) { .ally:hover::after { animation: none; } }
+.ally:nth-child(2)::after { animation-delay: .35s; }
+.ally:nth-child(3)::after { animation-delay: .7s; }
+.ally:nth-child(4)::after { animation-delay: 1.05s; }
+.ally:nth-child(5)::after { animation-delay: 1.4s; }
+.ally:nth-child(6)::after { animation-delay: 1.75s; }
+.ally:nth-child(7)::after { animation-delay: 2.1s; }
+@media (prefers-reduced-motion: reduce) { .ally::after { animation: none; } }
 /* ally colours: from the logo where we could reach it, else from the name */
 .ally--dndsu    { --ally: #b04a35; }  /* dnd.su — the brick red of D&D */
 .ally--hobby    { --ally: #c48a14; }  /* Hobby Games — honey yellow of the logo */
@@ -1333,6 +1343,7 @@ html { scroll-padding-top: 84px; }
   animation: mark-glint 7s ease-in-out infinite;
 }
 .mark--achievement::after { background-image: linear-gradient(110deg, transparent 30%, rgb(255 255 255 / 55%) 47%, rgb(255 255 255 / 0) 60%); }
-.mark--achievement:hover::after { animation: ally-shine .9s ease-out; }
+.mark--achievement:hover::after { animation: mark-shine .9s ease-out; }
+@keyframes mark-shine { from { background-position: 130% 0; } to { background-position: -30% 0; } }
 @keyframes mark-glint { 0%, 72% { background-position: 130% 0; } 92%, 100% { background-position: -30% 0; } }
 @media (prefers-reduced-motion: reduce) { .mark::after { animation: none !important; } }
