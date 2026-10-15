@@ -332,7 +332,6 @@ h1, h2, h3 { margin: 0; color: var(--ink-strong); font-weight: 800; }
   font-size: clamp(28px, 4vw, 50px); line-height: 1.08; text-wrap: balance;
 }
 .serif { font-family: 'PT Serif', serif; font-style: italic; }
-.hero-sub { font-size: clamp(16px, 2vw, 22px); color: #d5c6a6; margin-bottom: 0; }
 .l-red { color: var(--accent-red); }
 .btn-primary {
   display: inline-flex; align-items: center; gap: 10px;
@@ -481,11 +480,6 @@ h1, h2, h3 { margin: 0; color: var(--ink-strong); font-weight: 800; }
 .stat-label { font-size: 14px; font-weight: 600; color: var(--ink-soft); }
 
 /* ===== merged hero: kicker pinned on top, advantages overlaid on the video ===== */
-.hero-topkicker {
-  position: relative; z-index: 2; text-align: center;
-  padding: 6px clamp(20px, 5vw, 64px) 0;
-  font-size: clamp(14px, 1.1vw, 16px);
-}
 .hero-head {
   display: flex; align-items: center; justify-content: center;
   gap: clamp(22px, 4.5vw, 60px); flex-wrap: wrap;
@@ -500,7 +494,6 @@ h1, h2, h3 { margin: 0; color: var(--ink-strong); font-weight: 800; }
   display: flex; flex-direction: column; align-items: flex-start;
   gap: 4px; text-align: left; max-width: 720px;
 }
-.hero-headtext .hero-sub { margin: 0; }
 @media (max-width: 640px) {
   .hero-head { flex-direction: column; }
   .hero-headtext { align-items: center; text-align: center; }
@@ -510,8 +503,6 @@ h1, h2, h3 { margin: 0; color: var(--ink-strong); font-weight: 800; }
 .hero-advhead h2 { font-size: clamp(20px, 2.6vw, 30px); margin: 0; }
 /* legibility: this content now sits directly on the video (no card fills) */
 .hero-inner h1,
-.hero-inner .hero-sub,
-.hero-topkicker,
 .hero-advhead .kicker,
 .hero-advhead h2,
 .adv-title, .adv-text,
