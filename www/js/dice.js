@@ -1,11 +1,17 @@
 /*
-  The die is decoration: three.js + cannon.js weigh ~700 KB, so they are not
-  in the page's critical path. After the page has loaded and the browser is
-  idle, the libs are fetched from our own server (paths on #dice-overlay —
-  versioned there with the rest of the page's assets), then the die starts.
+  The die is decoration: three.js + cannon.js weigh ~700 KB, and no die lies on
+  the page until the visitor asks for one. So the libs are fetched only on
+  intent — the pointer over a Ролебаза logo ([data-throw-die]), its focus or a
+  click — from our own server (paths on #dice-overlay, versioned with the rest
+  of the page's assets). Clicks made while they load are kept and played after.
+
+  A click throws one more d20, up to five on the table; the sixth clears them
+  all, and the count starts over (window.diceOverlay.press).
 */
 (function () {
   'use strict';
+  var state = 'idle';          // idle → loading → ready | failed
+  var queued = 0;
   function loadScript(src) {
     return new Promise(function (resolve, reject) {
       var s = document.createElement('script');
@@ -15,13 +21,19 @@
     });
   }
   function boot() {
+    if (state !== 'idle') return;
     var host = document.getElementById('dice-overlay');
-    if (!host) return;
+    if (!host) { state = 'failed'; return; }
+    state = 'loading';
     loadScript(host.getAttribute('data-three'))
       .then(function () { return loadScript(host.getAttribute('data-cannon')); })
       .then(function () { return loadDiceFonts(host); })
-      .then(startDice)
-      .catch(function () { /* no die — the page works without it */ });
+      .then(function () {
+        startDice();
+        state = 'ready';
+        for (; queued > 0; queued--) window.diceOverlay.press();
+      })
+      .catch(function () { state = 'failed'; /* no die — the page works without it */ });
   }
   // the brand set's faces (promo-goldcaps of the app): Dicefont digits and the
   // Gotfridus «P»; a font that fails leaves the die on a system face
@@ -36,12 +48,19 @@
     };
     return Promise.all([load('RbDiceDigits', 'data-font-digits'), load('RbDiceBrand', 'data-font-brand')]);
   }
-  function whenIdle() {
-    if ('requestIdleCallback' in window) requestIdleCallback(boot, { timeout: 2500 });
-    else setTimeout(boot, 600);
+  function wire() {
+    document.querySelectorAll('[data-throw-die]').forEach(function (el) {
+      el.addEventListener('pointerenter', boot);
+      el.addEventListener('focus', boot);
+      el.addEventListener('click', function () {
+        if (state === 'ready') { window.diceOverlay.press(); return; }
+        if (queued < 5) queued++;
+        boot();
+      });
+    });
   }
-  if (document.readyState === 'complete') whenIdle();
-  else window.addEventListener('load', whenIdle);
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', wire);
+  else wire();
 })();
 
 function startDice() {
@@ -50,7 +69,7 @@ function startDice() {
 
   /* ----------------------- CONFIG ----------------------- */
   const CONFIG = {
-    diceCount:     1,
+    diceCount:     0,   // none on the page until a click on the logo
     dieRadius:     1.35,        // in world units (world is ~24 units tall)
     dieColor:      '#b8402f',   // matches --accent-red (НРИ letters)
     numberColor:   '#d9b36a',   // Rolebaza accent gold
@@ -401,91 +420,6 @@ function startDice() {
   }
   for (let i = 0; i < CONFIG.diceCount; i++) addDie();
 
-  function rollFromTop() {
-    dice.forEach((d, i) => {
-      const b = d.body;
-      b.wakeUp();
-      // spawn from under the navbar: die 0 in the left third, die 1 in the right
-      const side = (i % 2 === 0 ? -1 : 1);
-      const third = worldW / 3;
-      b.position.set(
-        side * third + (Math.random() - 0.5) * third * 0.5,
-        ceilY - CONFIG.dieRadius * 1.6,
-        (Math.random() - 0.5) * CONFIG.depth * 0.6
-      );
-      b.quaternion.setFromAxisAngle(
-        new CANNON.Vec3(Math.random(), Math.random(), Math.random()).unit(),
-        Math.random() * Math.PI * 2
-      );
-      b.velocity.set(0, 0, 0);
-      b.angularVelocity.set(0, 0, 0);
-      // random force on load: an impulse with random direction & strength,
-      // applied off-center so it also spins the die
-      const impulse = new CANNON.Vec3(
-        (Math.random() - 0.5) * 10,          // random sideways
-        -(2 + Math.random() * 5),            // gentle downward shove
-        (Math.random() - 0.5) * 3
-      );
-      const offCenter = new CANNON.Vec3(
-        (Math.random() - 0.5) * CONFIG.dieRadius,
-        (Math.random() - 0.5) * CONFIG.dieRadius,
-        (Math.random() - 0.5) * CONFIG.dieRadius
-      );
-      b.applyImpulse(impulse, b.position.vadd(offCenter));
-      // extra random tumble so the roll always reads as a roll
-      b.angularVelocity.x += (Math.random() - 0.5) * 12;
-      b.angularVelocity.y += (Math.random() - 0.5) * 12;
-      b.angularVelocity.z += (Math.random() - 0.5) * 12;
-    });
-  }
-
-  function settleQuietly() { // prefers-reduced-motion: no tumbling intro
-    syncBounds();
-    dice.forEach((d, i) => {
-      d.body.position.set(
-        (-(dice.length - 1) / 2 + i) * CONFIG.dieRadius * 2.6,
-        floorY + CONFIG.dieRadius * 1.05, 0
-      );
-      d.body.velocity.set(0, 0, 0);
-      d.body.angularVelocity.set(0, 0, 0);
-    });
-  }
-
-  function rollOnTable() {          // NEW_BEHAVIOR intro: skitter across the table
-    syncBounds();
-    dice.forEach((d) => {
-      const b = d.body; b.wakeUp();
-      // spawn in the LEFT-TOP third of the viewport so the die is less likely to
-      // sit over content; a gentler skitter keeps it roughly in that corner
-      b.position.set(
-        -worldW / 3 + (Math.random() - 0.5) * worldW * 0.1,
-        worldH / 3 + (Math.random() - 0.5) * worldH * 0.1,
-        CONFIG.liftZ * 0.5                         // start a bit raised, then drop & roll
-      );
-      b.quaternion.setFromAxisAngle(
-        new CANNON.Vec3(Math.random(), Math.random(), Math.random()).unit(),
-        Math.random() * Math.PI * 2
-      );
-      b.velocity.set((Math.random() - 0.5) * 9, (Math.random() - 0.5) * 9, 0);
-      b.angularVelocity.set(
-        (Math.random() - 0.5) * 14, (Math.random() - 0.5) * 14, (Math.random() - 0.5) * 14
-      );
-    });
-  }
-
-  function settleOnTable() {        // NEW_BEHAVIOR reduced-motion: rest quietly on the table
-    syncBounds();
-    dice.forEach((d, i) => {
-      d.body.position.set(
-        -worldW / 3 + (-(dice.length - 1) / 2 + i) * CONFIG.dieRadius * 2.6,   // left-top third
-        worldH / 3,
-        CONFIG.tableZ + CONFIG.dieRadius
-      );
-      d.body.velocity.set(0, 0, 0);
-      d.body.angularVelocity.set(0, 0, 0);
-    });
-  }
-
   /* ---------- grab / drag / throw ----------
      The canvas keeps pointer-events:none so the page stays usable.
      We listen on window in the CAPTURE phase; only when the ray
@@ -663,9 +597,8 @@ function startDice() {
   }
 
   /* ---------- boot ---------- */
-  /* ---------- a click on the Ролебаза logo ([data-throw-die]) throws a d20 ---------- */
-  const MAX_DICE = 12;     // past this a click re-throws a die already out instead of minting one
-  let rethrowNext = 0;
+  /* ---------- a click on the Ролебаза logo throws a d20; the sixth clears ---------- */
+  const MAX_DICE = 5;
 
   function dropIn(d) {
     const b = d.body;
@@ -703,37 +636,18 @@ function startDice() {
     );
   }
 
-  function pickDieToThrow() {
-    // a hidden die first, then a fresh one, then the dice already out in turn
-    const hidden = dice.find(x => !x.mesh.visible && !x.shrinking);
-    if (hidden) {
-      world.addBody(hidden.body);
-      hidden.mesh.visible = true;
-      return hidden;
-    }
-    if (dice.length < MAX_DICE) {
-      const d = addDie();
-      d.extra = true;
-      return d;
-    }
-    for (let i = 0; i < dice.length; i++) {
-      const d = dice[(rethrowNext + i) % dice.length];
-      if (d.shrinking || (drag && drag.die === d)) continue;
-      rethrowNext = (dice.indexOf(d) + 1) % dice.length;
-      return d;
-    }
-    return null;
-  }
   function throwOneDie() {
-    const d = pickDieToThrow();
-    if (!d) return null;
+    const d = addDie();
+    d.extra = true;                  // every die is a visitor's: reset takes it away
     dropIn(d);
     d.thrown = true;                 // its face is announced like a visitor's throw
     return d;
   }
-  document.querySelectorAll('[data-throw-die]').forEach(function (el) {
-    el.addEventListener('click', function () { throwOneDie(); });
-  });
+  function press() {
+    const out = dice.filter(d => d.mesh.visible && !d.shrinking).length;
+    if (out >= MAX_DICE) resetDice();
+    else throwOneDie();
+  }
 
   /* ---------- reset: shrink-to-zero, destroy extras ---------- */
   const shrinking = [];   // { mesh, die|null, removeFromScene }
@@ -761,11 +675,10 @@ function startDice() {
 
   layout();
   window.addEventListener('resize', layout);
-  if (NEW) { syncBounds(); if (reducedMotion) settleOnTable(); else rollOnTable(); }
-  else     { if (reducedMotion) settleQuietly(); else rollFromTop(); }
+  syncBounds();
   requestAnimationFrame(tick);
 
   // tiny public API
-  window.diceOverlay = { roll: NEW ? rollOnTable : rollFromTop, throwOne: throwOneDie, reset: resetDice, dice, world, config: CONFIG };
+  window.diceOverlay = { press, throwOne: throwOneDie, reset: resetDice, dice, world, config: CONFIG };
 })();
 }
