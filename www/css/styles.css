@@ -199,15 +199,14 @@ h1, h2, h3 { margin: 0; color: var(--ink-strong); font-weight: 800; }
   display: flex; align-items: center; justify-content: center;
   color: var(--accent); font-weight: 800; font-size: 16px;
 }
-/* header brand mark now holds the vector logo instead of the «Р» letter:
-   drop the boxed border and let a slightly-taller logo overflow the 34px
-   slot so the top bar's overflow:hidden crops it under the gold border */
-.brand-mark--logo { width: 68px; border: none; border-radius: 0; overflow: visible; }
-.brand-logo {
-  display: block;
-  width: 68px; height: auto;   /* 2x the «Р» mark's 34px; height stays proportional */
-  color: var(--accent);        /* golden — the #brand-logo paths inherit currentColor */
-}
+/* the brand mark is the app's logo v2 (img/logo-v2-*.svg, from /logo-v2):
+   no box, the cube at its own proportions */
+.brand-mark--logo { width: auto; height: auto; border: none; border-radius: 0; }
+.brand-logo { display: block; width: 40px; height: auto; }
+/* the footer sits on the themed page: dark cube on Blackout, light on parchment */
+.brand-logo--on-light { display: none; }
+:root[data-theme="parchment"] .footer .brand-logo--on-dark { display: none; }
+:root[data-theme="parchment"] .footer .brand-logo--on-light { display: block; }
 .brand-word { font-weight: 800; font-size: 18px; letter-spacing: 0.14em; color: var(--ink-title); }
 .topnav { display: flex; align-items: center; gap: 26px; }  /* desktop breathing room (mobile drops to 12px below) */
 .nav-link { font-size: 15px; font-weight: 600; color: var(--ink-soft); }
@@ -247,8 +246,8 @@ h1, h2, h3 { margin: 0; color: var(--ink-strong); font-weight: 800; }
 .drawer.is-open { transform: translateX(0); }
 .drawer-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
 /* drawer brand uses the same golden vector logo as the header, drawer-scaled */
-.drawer .brand-mark--logo { width: 44px; height: 44px; }
-.drawer .brand-logo { width: 44px; }
+.drawer .brand-mark--logo { width: auto; height: auto; }
+.drawer .brand-logo { width: 38px; }
 .drawer-close {
   width: 38px; height: 38px; padding: 9px;
   background: transparent; border: none; cursor: pointer; color: var(--ink-soft);
@@ -272,7 +271,7 @@ h1, h2, h3 { margin: 0; color: var(--ink-strong); font-weight: 800; }
 @media (max-width: 420px) {
   .topbar { gap: 10px; padding-left: 14px; padding-right: 14px; }
   .topbar .brand { gap: 8px; min-width: 0; }
-  .topbar .brand-mark--logo, .topbar .brand-logo { width: 52px; }
+  .topbar .brand-logo { width: 38px; }
   .topbar .brand-word { font-size: 15px; letter-spacing: 0.1em; }
   .topnav .btn-solid { padding: 10px 14px; font-size: 14px; }
 }
@@ -303,9 +302,7 @@ h1, h2, h3 { margin: 0; color: var(--ink-strong); font-weight: 800; }
   display: block; width: 100%; height: auto;
   filter: drop-shadow(0 6px 22px rgba(0,0,0,0.55));
 }
-/* logo animation: SMIL inside the SVG sweeps a bright band through the
-   gradient while the end colors slowly trade places; out here the whole
-   mark breathes with a warm golden glow in the same base colors */
+/* the logo (img/logo-v2-dark.svg) breathes with a warm golden glow */
 .hero-logo {
   animation: logo-glow 4.5s ease-in-out infinite alternate;
 }
@@ -877,8 +874,8 @@ html { scroll-padding-top: 84px; }
 }
 .footer .brand-mark { width: 30px; height: 30px; border-radius: 7px; font-size: 14px; }
 /* footer brand uses the same golden vector logo as the header, footer-scaled */
-.footer .brand-mark--logo { width: 40px; height: 40px; }
-.footer .brand-logo { width: 40px; }
+.footer .brand-mark--logo { width: auto; height: auto; }
+.footer .brand-logo { width: 34px; }
 .footer .brand-word { font-size: 15px; }
 .footer-links { display: flex; gap: 22px; flex-wrap: wrap; }
 .footer-links a { font-size: 15px; font-weight: 600; }

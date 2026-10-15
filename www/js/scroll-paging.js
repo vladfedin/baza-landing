@@ -5,11 +5,6 @@ document.addEventListener('DOMContentLoaded', function () {
      still jumps to the next page (that path is independent of this flag). */
   var WHEEL_PAGING = false;
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (reduced) {
-    /* SMIL does not honor prefers-reduced-motion by itself */
-    var logoSvg = document.querySelector('.hero-logo');
-    if (logoSvg && logoSvg.pauseAnimations) logoSvg.pauseAnimations();
-  }
   /* sections the cue steps through; some (live data) appear later, so the
      visible set is resolved on every use rather than once */
   var PAGE_IDS = ['hero', 'free', 'arsenal', 'live', 'team', 'faq', 'finale'];
