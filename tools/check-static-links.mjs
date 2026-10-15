@@ -16,15 +16,9 @@
  */
 import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { join, dirname, resolve, relative, posix } from 'node:path';
+import { attrRefs, cssUrlRefs, EXTERNAL, TEMPLATE } from './asset-refs.mjs';
 
 const ROOT = resolve(process.argv[2] ?? 'www');
-
-/** Схемы и якоря, за которые сайт не отвечает. */
-const EXTERNAL = /^(?:[a-z][a-z0-9+.-]*:|\/\/|#|$)/i;
-
-/** Шаблон, который страница собирает в скрипте (`src="${f}"`): адреса ещё нет,
- *  проверять статически нечего — за такие файлы отвечает сборка страницы. */
-const TEMPLATE = /\$\{/;
 
 function htmlFiles(dir) {
   const out = [];
@@ -36,11 +30,9 @@ function htmlFiles(dir) {
   return out;
 }
 
-/** href/src/poster + каждый кандидат srcset + относительный og:image. */
+/** Файловые атрибуты (asset-refs.mjs) + каждый кандидат srcset + относительный og:image. */
 function linksOf(html) {
-  const links = [];
-  const attr = /(?:href|src|poster)\s*=\s*"([^"]*)"/gi;
-  for (const m of html.matchAll(attr)) links.push(m[1]);
+  const links = attrRefs(html).map((ref) => ref.value);
   for (const m of html.matchAll(/srcset\s*=\s*"([^"]*)"/gi)) {
     for (const candidate of m[1].split(',')) links.push(candidate.trim().split(/\s+/)[0]);
   }
@@ -48,6 +40,14 @@ function linksOf(html) {
     links.push(m[1]);
   }
   return links;
+}
+
+function cssFiles(dir) {
+  try {
+    return readdirSync(dir).filter((f) => f.endsWith('.css')).map((f) => join(dir, f));
+  } catch {
+    return [];
+  }
 }
 
 function exists(path) {
@@ -70,6 +70,17 @@ function targetPath(link, fromFile) {
 const broken = [];
 const pages = htmlFiles(ROOT).sort();
 let checked = 0;
+
+// url() стилей лендинга — тоже ссылки на файлы источника (шрифты, фоны).
+for (const sheet of cssFiles(join(ROOT, 'css'))) {
+  for (const { value } of cssUrlRefs(readFileSync(sheet, 'utf8'))) {
+    if (EXTERNAL.test(value) || value.startsWith('data:')) continue;
+    const target = targetPath(value, sheet);
+    if (!target) continue;
+    checked++;
+    if (!exists(target)) broken.push({ page: relative(ROOT, sheet), link: value, target: relative(ROOT, target) });
+  }
+}
 
 for (const page of pages) {
   const html = readFileSync(page, 'utf8');

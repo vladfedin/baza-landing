@@ -1,40 +1,37 @@
 /*
   Arsenal cards ship a few short background clips. They're decorative
   (opacity 0.25, behind the card text), so we lazy-load them: the tags
-  carry preload="none" + a data-src BASE path; the real <source> variants
-  are attached only when the card scrolls into view, then paused when it
-  leaves so a long visit doesn't keep them decoding off-screen.
+  carry preload="none" and their file paths in data-av1 / data-hevc; the
+  <source>s are attached only when the card scrolls into view, then the clip
+  is paused when it leaves so a long visit doesn't keep it decoding off-screen.
   (Under prefers-reduced-motion the CSS sets .tool-video{display:none}, so
   the cards never gain a layout box, never intersect, and never load.)
 
-  Multi-codec fallback — each clip is encoded three ways and the browser
-  picks the first <source> it can decode (only that one file is fetched;
-  on a load error it advances to the next):
-      <base>.av1.mp4    AV1  — Chrome/Edge/Firefox/Android + Safari w/ AV1 HW
-      <base>.hevc.mp4   HEVC — all Safari / iOS, incl. devices with no AV1
-      <base>.h264.mp4   H.264 — universal last-resort (older browsers)
-  <base> is data-src with any trailing extension stripped, e.g.
-  data-src="vid/ars_2_tokens.mp4" -> vid/ars_2_tokens.{av1,hevc,h264}.mp4
-  Drop a tier from SOURCES if you don't ship that variant.
+  The paths live in the markup, not here, so the deploy step versions them
+  with every other asset (tools/version-assets.mjs). The browser picks the
+  first <source> it can decode and fetches only that file:
+      data-av1   AV1  — Chrome/Edge/Firefox/Android + Safari with AV1 hardware
+      data-hevc  HEVC — every Safari / iOS, incl. devices without AV1
+  A browser with neither shows the card without its clip.
 */
 document.addEventListener('DOMContentLoaded', function () {
-  var videos = document.querySelectorAll('video.tool-video[data-src]');
+  var videos = document.querySelectorAll('video.tool-video[data-av1]');
   if (!videos.length) return;
 
   // best compression first, widest compatibility last
   var SOURCES = [
-    { suffix: '.av1.mp4',  type: 'video/mp4; codecs="av01.0.05M.08"' },
-    { suffix: '.hevc.mp4', type: 'video/mp4; codecs="hvc1"' },
-    { suffix: '.h264.mp4', type: 'video/mp4; codecs="avc1.4d401e"' }
+    { attr: 'data-av1',  type: 'video/mp4; codecs="av01.0.05M.08"' },
+    { attr: 'data-hevc', type: 'video/mp4; codecs="hvc1"' }
   ];
 
   function wire(v) {
     if (v.dataset.wired) return;        // attach <source>s once
     v.dataset.wired = '1';
-    var base = v.getAttribute('data-src').replace(/\.(mp4|webm|mov|m4v)$/i, '');
     SOURCES.forEach(function (s) {
+      var src = v.getAttribute(s.attr);
+      if (!src) return;
       var el = document.createElement('source');
-      el.src = base + s.suffix;
+      el.src = src;
       el.type = s.type;
       v.appendChild(el);
     });

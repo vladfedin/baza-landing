@@ -5,10 +5,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // one clip for every viewport — it scales to fit both orientations.
   // AV1 where supported (Chrome/Firefox/Android + Safari w/ AV1 hardware),
-  // HEVC fallback for all other Safari/iOS; neither -> photo fallback below.
-  var base = './vid/video_title';
-  var src = v.canPlayType('video/mp4; codecs="av01.0.05M.08"') ? base + '.av1.mp4'
-          : v.canPlayType('video/mp4; codecs="hvc1"')          ? base + '.hevc.mp4'
+  // HEVC fallback for all other Safari/iOS; neither -> plain hero background.
+  // Paths come from the markup so the deploy step versions them.
+  var src = v.canPlayType('video/mp4; codecs="av01.0.05M.08"') ? v.getAttribute('data-av1')
+          : v.canPlayType('video/mp4; codecs="hvc1"')          ? v.getAttribute('data-hevc')
           : '';
   if (!src) { var w = v.closest('.hero-video-wrap'); if (w) w.remove(); return; }
   v.setAttribute('src', src);

@@ -17,12 +17,11 @@ document.addEventListener('DOMContentLoaded', function () {
   var vol       = document.getElementById('music-vol');
   if (!toggle || !audio || !vol) return;
 
-  var ICON_BASE = 'img/icons.svg#';               // build.ps1 rewrites this to "#" for the inlined sprite
+  // swap only the symbol: the sprite path before '#' carries the deploy's ?v=
   function setIcon(use, id) {
     if (!use) return;
-    var href = use.getAttribute('href');
-    var base = (href && href.charAt(0) === '#') ? '#' : ICON_BASE;
-    use.setAttribute('href', base + id);
+    var href = use.getAttribute('href') || '';
+    use.setAttribute('href', href.replace(/#.*$/, '') + '#' + id);
   }
   var icon    = toggle.querySelector('use');
   var iconBar = toggleBar && toggleBar.querySelector('use');
