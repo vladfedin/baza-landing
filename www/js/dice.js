@@ -19,8 +19,22 @@
     if (!host) return;
     loadScript(host.getAttribute('data-three'))
       .then(function () { return loadScript(host.getAttribute('data-cannon')); })
+      .then(function () { return loadDiceFonts(host); })
       .then(startDice)
       .catch(function () { /* no die — the page works without it */ });
+  }
+  // the brand set's faces (promo-goldcaps of the app): Dicefont digits and the
+  // Gotfridus «P»; a font that fails leaves the die on a system face
+  function loadDiceFonts(host) {
+    if (!('FontFace' in window)) return Promise.resolve();
+    var load = function (family, attr) {
+      var src = host.getAttribute(attr);
+      if (!src) return Promise.resolve();
+      return new FontFace(family, 'url(' + src + ')').load()
+        .then(function (f) { document.fonts.add(f); })
+        .catch(function () {});
+    };
+    return Promise.all([load('RbDiceDigits', 'data-font-digits'), load('RbDiceBrand', 'data-font-brand')]);
   }
   function whenIdle() {
     if ('requestIdleCallback' in window) requestIdleCallback(boot, { timeout: 2500 });
@@ -53,7 +67,11 @@ function startDice() {
     maxThrow:      45,          // clamp on throw speed
     shadows:       true,
     // --- NEW_BEHAVIOR only (marble dice rolling on the screen "tabletop") ---
-    dieColorNew:   '#15130f',   // marble near-black base
+    // the app's brand set «Фирменные кубы Ролебазы» (dice_skins promo-goldcaps):
+    // black mirror body, gold digits with a dark outline, gold corner caps
+    dieColorNew:   '#0b0b0f',   // body
+    digitNew:      '#e3b54c',   // digits and the «P»
+    outlineNew:    '#2a1e06',   // digit outline
     gravityZ:      -30,         // gravity pointed "into the screen" (tabletop)
     tableZ:        -1.2,        // rest-plane depth (dice sit ~at the screen)
     liftZ:          9,          // how far a grabbed die rises toward the viewer
@@ -92,40 +110,6 @@ function startDice() {
   const VERT_SCALE = CONFIG.dieRadius / Math.hypot(1, T, 0);
   const VERTS = RAW_VERTS.map(v => v.map(c => c * VERT_SCALE));
 
-  /* ---------- faint marble veining for NEW_BEHAVIOR dice ---------- */
-  function paintMarble(ctx, w, h) {
-    ctx.save();
-    for (let i = 0; i < 26; i++) {                       // soft grey veins
-      ctx.beginPath();
-      let x = Math.random() * w, y = Math.random() * h;
-      ctx.moveTo(x, y);
-      const segs = 3 + (Math.random() * 3 | 0);
-      for (let s = 0; s < segs; s++) {
-        x += (Math.random() - 0.5) * w * 0.5;
-        y += (Math.random() - 0.5) * h * 0.5;
-        ctx.lineTo(x, y);
-      }
-      const g = 150 + (Math.random() * 70 | 0);
-      ctx.strokeStyle = 'rgba(' + g + ',' + g + ',' + g + ',' + (0.03 + Math.random() * 0.05).toFixed(3) + ')';
-      ctx.lineWidth = 1 + Math.random() * 2.5;
-      ctx.stroke();
-    }
-    for (let i = 0; i < 6; i++) {                        // brighter hairline veins
-      ctx.beginPath();
-      let x = Math.random() * w, y = Math.random() * h;
-      ctx.moveTo(x, y);
-      for (let s = 0; s < 5; s++) {
-        x += (Math.random() - 0.5) * w * 0.3;
-        y += (Math.random() - 0.5) * h * 0.3;
-        ctx.lineTo(x, y);
-      }
-      ctx.strokeStyle = 'rgba(210,205,190,0.05)';
-      ctx.lineWidth = 0.8;
-      ctx.stroke();
-    }
-    ctx.restore();
-  }
-
   /* ---------- number atlas texture (5 × 4 cells, faces 1–20) ---------- */
   function makeAtlas() {
     const COLS = 5, ROWS = 4, CS = 256;
@@ -134,10 +118,26 @@ function startDice() {
     const ctx = cv.getContext('2d');
     ctx.fillStyle = NEW ? CONFIG.dieColorNew : CONFIG.dieColor;
     ctx.fillRect(0, 0, cv.width, cv.height);
-    if (NEW) paintMarble(ctx, cv.width, cv.height);
 
     const pad = CS * 0.055;
     const uvs = []; // per face: 3 uv pairs (apex, baseL, baseR)
+
+    // a gold cap («пирамидка») on one corner of a face, as the brand set's
+    // overlays draw it: two gold tones split from the corner, a dark line
+    // along the inner edge; caps of the five faces meeting at a vertex make
+    // the gold pyramid of the brand die
+    function cap(v, a, b) {
+      const t = 0.24;
+      const p1 = [v[0] + (a[0] - v[0]) * t, v[1] + (a[1] - v[1]) * t];
+      const p2 = [v[0] + (b[0] - v[0]) * t, v[1] + (b[1] - v[1]) * t];
+      const m = [(p1[0] + p2[0]) / 2, (p1[1] + p2[1]) / 2];
+      ctx.beginPath(); ctx.moveTo(v[0], v[1]); ctx.lineTo(p1[0], p1[1]); ctx.lineTo(m[0], m[1]); ctx.closePath();
+      ctx.fillStyle = '#d6a63c'; ctx.fill();
+      ctx.beginPath(); ctx.moveTo(v[0], v[1]); ctx.lineTo(m[0], m[1]); ctx.lineTo(p2[0], p2[1]); ctx.closePath();
+      ctx.fillStyle = '#f0c962'; ctx.fill();
+      ctx.beginPath(); ctx.moveTo(p1[0], p1[1]); ctx.lineTo(p2[0], p2[1]);
+      ctx.strokeStyle = '#8a6418'; ctx.lineWidth = CS * 0.014; ctx.stroke();
+    }
 
     for (let i = 0; i < 20; i++) {
       const col = i % COLS, row = (i / COLS) | 0;
@@ -145,35 +145,49 @@ function startDice() {
       const apex  = [x0 + CS / 2,  y0 + pad];
       const baseL = [x0 + pad,     y0 + CS - pad];
       const baseR = [x0 + CS - pad, y0 + CS - pad];
-
-      // thin inlay line just inside each facet edge
-      ctx.strokeStyle = CONFIG.edgeColor;
-      ctx.lineWidth = CS * 0.028;
-      ctx.lineJoin = 'round';
-      ctx.beginPath();
-      ctx.moveTo(apex[0], apex[1]); ctx.lineTo(baseR[0], baseR[1]);
-      ctx.lineTo(baseL[0], baseL[1]); ctx.closePath();
-      ctx.stroke();
-
-      // number at the triangle centroid (optically nudged up)
       const n = i + 1;
-      const isRb = NEW && n === 20;                   // face «20» → stylized «Р» (Ролебаза)
-      const label = isRb ? 'Р' : String(n);
       const cx = x0 + CS / 2;
-      const cy = (apex[1] + baseL[1] + baseR[1]) / 3 - CS * 0.02;
-      const fs = CS * (isRb ? 0.46 : 0.33);
-      ctx.font = isRb ? `italic 700 ${fs}px Georgia, "PT Serif", "Times New Roman", serif` : `800 ${fs}px "Arial Black", "Segoe UI", system-ui, sans-serif`;
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.lineJoin = 'round';
-      ctx.strokeStyle = 'rgba(120,72,10,0.9)';        // darker gold rim → gilded look
-      ctx.lineWidth = fs * 0.08;
-      ctx.strokeText(label, cx, cy);
-      ctx.fillStyle = CONFIG.numberColor;
-      ctx.fillText(label, cx, cy);
-      if (n === 6 || n === 9) {                       // disambiguate 6 / 9
-        ctx.strokeRect(cx - fs * 0.28, cy + fs * 0.52, fs * 0.56, fs * 0.07);
-        ctx.fillRect(cx - fs * 0.28, cy + fs * 0.52, fs * 0.56, fs * 0.07);
+      const cy = (apex[1] + baseL[1] + baseR[1]) / 3 + CS * 0.02;
+
+      if (NEW) {
+        cap(apex, baseL, baseR); cap(baseL, apex, baseR); cap(baseR, apex, baseL);
+        // face «20» carries the brand «P» (Gotfridus), the rest Dicefont digits
+        const isRb = n === 20;
+        const label = isRb ? 'P' : String(n);
+        const fs = CS * (isRb ? 0.5 : 0.36);
+        ctx.font = isRb ? `${fs}px RbDiceBrand, Georgia, serif` : `${fs}px RbDiceDigits, "Arial Black", system-ui, sans-serif`;
+        ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.lineJoin = 'round';
+        ctx.strokeStyle = CONFIG.outlineNew; ctx.lineWidth = fs * 0.06;
+        ctx.strokeText(label, cx, cy);
+        ctx.fillStyle = CONFIG.digitNew;
+        ctx.fillText(label, cx, cy);
+        if (n === 6 || n === 9) {                     // the app marks 6 / 9 with a dot after the digit
+          const dx = cx + ctx.measureText(label).width / 2 + fs * 0.12;
+          ctx.beginPath(); ctx.arc(dx, cy + fs * 0.28, fs * 0.055, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      } else {
+        // thin inlay line just inside each facet edge
+        ctx.strokeStyle = CONFIG.edgeColor;
+        ctx.lineWidth = CS * 0.028;
+        ctx.lineJoin = 'round';
+        ctx.beginPath();
+        ctx.moveTo(apex[0], apex[1]); ctx.lineTo(baseR[0], baseR[1]);
+        ctx.lineTo(baseL[0], baseL[1]); ctx.closePath();
+        ctx.stroke();
+        const label = String(n);
+        const fs = CS * 0.33;
+        ctx.font = `800 ${fs}px "Arial Black", "Segoe UI", system-ui, sans-serif`;
+        ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.lineJoin = 'round';
+        ctx.strokeStyle = 'rgba(120,72,10,0.9)';      // darker gold rim → gilded look
+        ctx.lineWidth = fs * 0.08;
+        ctx.strokeText(label, cx, cy - CS * 0.04);
+        ctx.fillStyle = CONFIG.numberColor;
+        ctx.fillText(label, cx, cy - CS * 0.04);
+        if (n === 6 || n === 9) {                     // disambiguate 6 / 9
+          ctx.strokeRect(cx - fs * 0.28, cy - CS * 0.04 + fs * 0.52, fs * 0.56, fs * 0.07);
+          ctx.fillRect(cx - fs * 0.28, cy - CS * 0.04 + fs * 0.52, fs * 0.56, fs * 0.07);
+        }
       }
 
       const W = cv.width, H = cv.height;
@@ -341,7 +355,7 @@ function startDice() {
   const dieGeo = makeDieGeometry(uvs);
   const dieMaterial = new THREE.MeshStandardMaterial(
     NEW
-      ? { map: tex, roughness: 0.26, metalness: 0.0,  flatShading: true }   // polished marble
+      ? { map: tex, roughness: 0.2,  metalness: 0.35, flatShading: true }   // black mirror of the brand set
       : { map: tex, roughness: 0.38, metalness: 0.22, flatShading: true }
   );
 
