@@ -1318,3 +1318,52 @@ html { scroll-padding-top: 84px; }
 
 .kicker-link { color: inherit; text-decoration: none; border-bottom: 1px solid color-mix(in srgb, var(--accent) 45%, transparent); transition: border-color .16s ease, color .16s ease; }
 .kicker-link:hover { color: var(--accent-bright); border-color: var(--accent-bright); }
+
+/* ============ the stage (js/hero-stage.js) ============
+   When the clip opens its curtain and the page is at the top, the hero makes
+   room for the theatre: the cube settles into the top bar's logo spot (the
+   script measures it: --stage-logo-*), the title and the question chips sit
+   in the bar's middle, the advantages shrink to a row of pills at the bottom
+   and the allies leave below the edge. Any scroll down brings every block back
+   to its reading form. The script animates the move (FLIP); this is only the
+   staged layout. */
+.hero.is-stage { overflow: clip; }
+.hero.is-stage .hero-logo-wrap {
+  position: fixed; z-index: 1001; margin: 0;
+  left: var(--stage-logo-x); top: var(--stage-logo-y); width: var(--stage-logo-w);
+}
+.hero.is-stage .topbar .brand-mark { visibility: hidden; }
+.hero.is-stage .hero-headtext {
+  position: fixed; z-index: 1001; top: 0; left: 0; right: 0; height: var(--stage-bar-h, 95px);
+  flex-direction: row; align-items: center; justify-content: center; gap: 16px;
+  max-width: none; text-align: left; pointer-events: none;
+}
+.hero.is-stage .hero-headtext > * { pointer-events: auto; }
+.hero.is-stage .hero-inner h1 { margin: 0; font-size: 17px; line-height: 1.15; }
+.hero.is-stage .asks { flex-direction: column; align-items: flex-start; gap: 4px; margin: 0; }
+.hero.is-stage .adv-grid {
+  position: absolute; left: 0; right: 0; bottom: 40px; margin: 0;
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 8px;
+}
+.hero.is-stage .adv-card {
+  flex-direction: row; gap: 8px; padding: 4px 14px 4px 4px; border-radius: 999px;
+  background: rgba(12, 10, 18, 0.55);
+}
+.hero.is-stage .adv-icon { width: 30px; height: 30px; margin: 0; }
+.hero.is-stage .adv-icon svg { max-width: 16px; max-height: 18px; }
+.hero.is-stage .adv-title { font-size: 13.5px; min-height: 0; }
+.hero.is-stage .adv-text { display: none; }
+.hero.is-stage .hero-partners { position: absolute; left: 0; right: 0; top: 100%; }
+/* while a card morphs its box, its content waits and then fades in */
+.hero.is-morphing .adv-card > * { opacity: 0; transition: none; }
+.hero .adv-card > * { transition: opacity 220ms ease; }
+/* narrower than the bar's middle: title and chips sit just under the bar */
+@media (max-width: 1100px) {
+  .hero.is-stage .hero-headtext { top: var(--stage-bar-h, 78px); height: auto; padding: 10px 16px; flex-wrap: wrap; gap: 8px 14px; }
+  .hero.is-stage .asks { flex-direction: row; }
+}
+@media (max-width: 640px) {
+  .hero.is-stage .hero-headtext { flex-direction: column; text-align: center; }
+  .hero.is-stage .hero-inner h1 { font-size: 16px; }
+  .hero.is-stage .asks { justify-content: center; }
+}
