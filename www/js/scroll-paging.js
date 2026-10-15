@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   /* sections the cue steps through; some (live data) appear later, so the
      visible set is resolved on every use rather than once */
-  var PAGE_IDS = ['hero', 'free', 'arsenal', 'live', 'faq', 'finale'];
+  var PAGE_IDS = ['hero', 'free', 'arsenal', 'tables', 'live', 'tutorials', 'reviews', 'faq', 'finale'];
   function visiblePages() {
     return PAGE_IDS
       .map(function (id) { return document.getElementById(id); })

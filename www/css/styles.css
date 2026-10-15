@@ -1347,3 +1347,54 @@ html { scroll-padding-top: 84px; }
   .ask-answer.is-open { transform: translate(-50%, 0); }
 }
 @media (prefers-reduced-motion: reduce) { .ask-answer, .ask-answer.is-open { transition: none; } }
+
+/* ============ tables: the best tables of the contest ============
+   Status pills in the app's rarity colours (as on the contest page:
+   winners legendary, Чамка epic, editors' choice rare); the nomination in
+   its own pastel. Both drawn as translucent level marks. */
+.tables-row { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(12px, 1.6vw, 20px); }
+.table-card {
+  display: flex; flex-direction: column; border-radius: 16px; overflow: hidden;
+  background: var(--card-bg); border: 1px solid color-mix(in srgb, var(--accent) 22%, transparent);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  transition: transform .16s ease, border-color .16s ease;
+}
+.table-card:hover { transform: translateY(-3px); border-color: color-mix(in srgb, var(--accent) 55%, transparent); }
+.table-card__img { display: block; aspect-ratio: 16 / 10; overflow: hidden; }
+.table-card__img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .4s ease; }
+.table-card:hover .table-card__img img { transform: scale(1.04); }
+.table-card__body { display: flex; flex-direction: column; gap: 8px; padding: 14px 16px 18px; flex: 1; }
+.table-card__marks { display: flex; flex-wrap: wrap; gap: 6px; }
+.tmark {
+  --hue: #6b6b78;
+  display: inline-flex; align-items: center; gap: 5px; height: 22px; padding: 0 9px; border-radius: 999px;
+  font-size: 12px; font-weight: 700; white-space: nowrap;
+  background: color-mix(in srgb, var(--hue) var(--mark-hue-fill), transparent);
+  color: color-mix(in srgb, var(--hue) var(--mark-hue-ink), var(--mark-ink));
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--hue) 55%, transparent);
+}
+.tmark svg { width: 12px; height: 12px; }
+.tmark--legendary { --hue: #e67300; }
+.tmark--epic { --hue: #9330d6; }
+.tmark--rare { --hue: #0065c7; }
+.tmark--nom-chronicle { --hue: #c4705a; }
+.tmark--nom-light { --hue: #b8923e; }
+.tmark--nom-voyage { --hue: #3a9a92; }
+.tmark--nom-editor { --hue: #4a7fc4; }
+.table-card__title { font-size: 18px; line-height: 1.25; margin: 2px 0 0; }
+.table-card__title a { color: var(--ink-title); }
+.table-card__title a:hover { color: var(--accent-bright); }
+.table-card__meta { font-size: 13px; color: var(--ink-faint); }
+.table-card__meta a { color: var(--ink-soft); text-decoration: underline; text-underline-offset: 2px; }
+.table-card__story {
+  margin: 0; font-size: 14px; line-height: 1.5; color: var(--ink-body);
+  display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden;
+}
+.live-more-row { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+.live-more-row .live-more { margin: 0; }
+@media (max-width: 1100px) { .tables-row { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px) { .tables-row { grid-template-columns: 1fr; } }
+@media (prefers-reduced-motion: reduce) {
+  .table-card, .table-card__img img { transition: none; }
+  .table-card:hover, .table-card:hover .table-card__img img { transform: none; }
+}
