@@ -1,4 +1,36 @@
-document.addEventListener('DOMContentLoaded', function () {
+/*
+  The die is decoration: three.js + cannon.js weigh ~700 KB, so they are not
+  in the page's critical path. After the page has loaded and the browser is
+  idle, the libs are fetched from our own server (paths on #dice-overlay —
+  versioned there with the rest of the page's assets), then the die starts.
+*/
+(function () {
+  'use strict';
+  function loadScript(src) {
+    return new Promise(function (resolve, reject) {
+      var s = document.createElement('script');
+      s.src = src; s.async = false;
+      s.onload = resolve; s.onerror = reject;
+      document.head.appendChild(s);
+    });
+  }
+  function boot() {
+    var host = document.getElementById('dice-overlay');
+    if (!host) return;
+    loadScript(host.getAttribute('data-three'))
+      .then(function () { return loadScript(host.getAttribute('data-cannon')); })
+      .then(startDice)
+      .catch(function () { /* no die — the page works without it */ });
+  }
+  function whenIdle() {
+    if ('requestIdleCallback' in window) requestIdleCallback(boot, { timeout: 2500 });
+    else setTimeout(boot, 600);
+  }
+  if (document.readyState === 'complete') whenIdle();
+  else window.addEventListener('load', whenIdle);
+})();
+
+function startDice() {
 (function () {
   'use strict';
 
@@ -779,4 +811,4 @@ document.addEventListener('DOMContentLoaded', function () {
   // tiny public API
   window.diceOverlay = { roll: NEW ? rollOnTable : rollFromTop, spawnOne: spawnOneDie, reset: resetDice, multiball: triggerMultiball, dice, world, config: CONFIG };
 })();
-});
+}

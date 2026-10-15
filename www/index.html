@@ -5,17 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Ролебаза — Виртуальный стол для настольных RPG</title>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=PT+Serif:ital,wght@1,400;1,700&display=swap" rel="stylesheet">
+    <link rel="preload" href="fonts/manrope-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="css/styles.css">
 
     <!-- apply the saved landing theme before first paint (no flash);
          default is "Blackout" (dark) — no attribute needed -->
     <script>try{var t=localStorage.getItem('rb-theme');if(t==='parchment')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
-
-    <!-- 3D + physics libs for the dice -->
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/cannon.js/0.6.2/cannon.min.js"></script>
 
     <!-- hero background video controller -->
     <script defer src="js/hero-video.js"></script>
@@ -455,7 +450,7 @@
 </button>
 
 <!-- D20 dice overlay layer -->
-<div id="dice-overlay" aria-hidden="true"></div>
+<div id="dice-overlay" aria-hidden="true" data-three="vendor/three-r128.min.js" data-cannon="vendor/cannon-0.6.2.min.js"></div>
 
 </body>
 </html>
