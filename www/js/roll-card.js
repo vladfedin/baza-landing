@@ -7,7 +7,7 @@
   header, the total large in the middle, the dice line under it; a natural 20
   is a critical success in red, a natural 1 a muted critical failure.
 
-  Cards stack above the action bar, newest at the bottom, and fade out on their
+  Cards stack at the bottom right, newest at the bottom, and fade out on their
   own; at most three stay. The feed is aria-live so the result is also read out.
 */
 document.addEventListener('DOMContentLoaded', function () {

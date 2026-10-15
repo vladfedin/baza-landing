@@ -16,14 +16,6 @@ document.addEventListener('DOMContentLoaded', function () {
   var pages = visiblePages();
   if (pages.length < 2) return;
 
-  /* keep --abar-h in sync so the scroll cues sit right above the action bar */
-  var abar = document.querySelector('.action-bar');
-  function syncAbarH() {
-    if (abar) document.documentElement.style.setProperty('--abar-h', abar.offsetHeight + 'px');
-  }
-  syncAbarH();
-  window.addEventListener('resize', syncAbarH, { passive: true });
-
   function tops() {
     pages = visiblePages();
     return pages.map(function (p) {
@@ -55,7 +47,7 @@ document.addEventListener('DOMContentLoaded', function () {
     /* hide as soon as the finale rises into the lower half of the viewport —
        on tall screens the finale top may never be scrolled fully past
        (short finale + footer < one viewport), so a page-index check alone
-       would leave the cue hanging over the footer/action bar */
+       would leave the cue hanging over the footer */
     var hide = currentPage(t) >= last || y >= t[last] - window.innerHeight * 0.55;
     cue.classList.toggle('is-hidden', hide);
   }

@@ -91,7 +91,6 @@ function startDice() {
 
   const container = document.getElementById('dice-overlay');
   const navBarEl = document.querySelector('.topbar-shell');
-  const actionBarEl = document.querySelector('.action-bar');
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   /* ---------- icosahedron shared by visuals & physics ---------- */
@@ -313,15 +312,13 @@ function startDice() {
   let floorY = -worldH / 2, ceilY = worldH / 2;
   let prevFloorY = floorY;
 
-  // glue the physics floor/ceiling to the on-screen action bar / navbar
+  // glue the physics ceiling to the navbar and the floor to the viewport's bottom
   function syncBounds() {
     const hpx = container.clientHeight || window.innerHeight;
     const pxToY = (px) => worldH / 2 - (px / hpx) * worldH;
     ceilY = navBarEl ? pxToY(navBarEl.getBoundingClientRect().bottom) : worldH / 2;
-    // rest the dice 16px above the action bar's top edge (no overlap)
-    floorY = actionBarEl
-      ? Math.max(pxToY(actionBarEl.getBoundingClientRect().top - 16), -worldH / 2)
-      : -worldH / 2;
+    // rest the dice 16px above the viewport's bottom edge
+    floorY = Math.max(pxToY(hpx - 16), -worldH / 2);
     if (floorY > ceilY - CONFIG.dieRadius * 3) floorY = ceilY - CONFIG.dieRadius * 3;
     floor.position.y = floorY;
     ceiling.position.y = ceilY;
@@ -623,8 +620,7 @@ function startDice() {
     lastT = now;
 
     syncBounds();
-    // when the docked action bar re-sticks to the viewport bottom (scrolling up
-    // from the page end) the floor drops — wake sleeping dice so they fall to it
+    // when the floor drops (the window grew taller) wake sleeping dice so they fall to it
     if (floorY < prevFloorY - 0.01) {
       for (const d of dice) { if (d.mesh.visible && !d.shrinking) d.body.wakeUp(); }
     }
@@ -668,7 +664,6 @@ function startDice() {
 
   /* ---------- boot ---------- */
   /* ---------- a click on the Ролебаза logo ([data-throw-die]) throws a d20 ---------- */
-  const resetBtn = document.getElementById('dice-reset');
   const MAX_DICE = 12;     // past this a click re-throws a die already out instead of minting one
   let rethrowNext = 0;
 
@@ -763,7 +758,6 @@ function startDice() {
       }
     }
   }
-  if (resetBtn) resetBtn.addEventListener('click', resetDice);
 
   layout();
   window.addEventListener('resize', layout);

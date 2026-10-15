@@ -2,6 +2,7 @@
 /* Landing palette: the app's "Blackout" — near-black with gold (theme-palettes.md).
    One theme only: the page is dark, as the table's default is. */
 :root {
+  --abar-h: 0px;              /* height of a bar pinned to the bottom: none now */
   --accent: #d9b36a;          /* NB: the old dc-props default was #b8c48a (green),
                                  but every hard-coded color on the page is gold —
                                  change the whole theme here if needed */
@@ -19,7 +20,7 @@
   /* surfaces (were hard-coded dark washes; tokenized so the theme can swap them) */
   --card-bg: #241d14;                  /* solid tool-card fill */
   --wash-bg: rgba(20,15,10,0.54);      /* translucent card wash over the video */
-  --bar-bg: rgba(20,15,10,0.6);        /* top bar + action bar dimmer */
+  --bar-bg: rgba(20,15,10,0.6);        /* top bar dimmer */
   --bar-bg-strong: rgba(20,15,10,0.82);/* docked mini-player */
   --drawer-bg: rgba(26,20,13,0.96);    /* mobile slide-in menu */
   --shade-1: rgba(20,15,10,0.08);      /* hero video shade, top */
@@ -179,7 +180,7 @@ h1, h2, h3 { margin: 0; color: var(--ink-strong); font-weight: 800; }
 .hero-inner {
   position: relative; flex: 1; display: flex; flex-direction: column;
   justify-content: center; align-items: center; text-align: center;
-  /* bottom padding clears the pinned action bar so all hero content is visible */
+  /* bottom padding keeps the hero content off the viewport's bottom edge */
   padding: 8px clamp(20px, 5vw, 64px) calc(var(--abar-h, 88px) + 16px);
   /* width:100% — without a definite width this flex item grows to its
      widest content (once the partners marquee: a phone's layout viewport
@@ -388,7 +389,7 @@ html { scroll-padding-top: 84px; }
   /* one "page": section fills a viewport (FullHD minus browser UI = 100vh) */
   position: relative;
   min-height: 100vh; display: flex; flex-direction: column; justify-content: center;
-  /* bottom padding clears the sticky action bar and the pinned scroll cue */
+  /* bottom padding clears the pinned scroll cue */
   padding: 96px clamp(20px, 5vw, 64px) calc(var(--abar-h, 88px) + 88px);
 }
 @supports (height: 100dvh) { .hero, .section--pane { min-height: 100dvh; } }
@@ -396,11 +397,10 @@ html { scroll-padding-top: 84px; }
 #arsenal { padding-top: clamp(88px, 9vw, 108px); }
 
 .scroll-cue {
-  /* one global cue: a small handle on the action bar's gold top edge
-     (--abar-h from JS), so it never sits over hero content; fades out on the
-     finale and below. Touch screens scroll by swipe — no cue there. */
+  /* one global cue: a small handle at the viewport's bottom edge; fades out on
+     the finale and below. Touch screens scroll by swipe — no cue there. */
   position: fixed; left: 50%; z-index: 999;
-  bottom: calc(var(--abar-h, 88px) - 15px);
+  bottom: 14px;
   transform: translateX(-50%);
   transition: opacity 0.35s ease, color .16s ease, border-color .16s ease;
   display: flex; align-items: center; justify-content: center;
@@ -603,75 +603,6 @@ html { scroll-padding-top: 84px; }
 }
 .note-banner strong { color: var(--accent); font-weight: 700; }
 
-/* the action bar: docking CTA strip, mirror of the navbar dimmer */
-.action-bar {
-  position: sticky; bottom: 0; z-index: 500;
-  margin-top: clamp(40px, 6vw, 72px);
-  padding: 14px clamp(20px, 5vw, 64px);
-  background: var(--bar-bg);
-  border-top: 1px solid rgba(212, 175, 96, 0.3);      /* a soft gold rim, like the logo cube's edges */
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-}
-.action-bar-inner {
-  position: relative; display: flex; justify-content: center; align-items: center;
-  max-width: 1240px; margin: 0 auto;
-}
-.cta-main {
-  position: relative; overflow: hidden;
-  justify-content: center;
-  min-width: 330px;                   /* ~50% wider than the original button */
-  max-width: calc(100vw - 140px);     /* leave room for the side buttons */
-  padding: 23px 34px;                 /* ~25% taller */
-  background: linear-gradient(180deg, #f3d99b 0%, #d9b36a 45%, #b98e45 100%);
-  border: 1px solid rgba(255, 233, 180, 0.65);
-  box-shadow: 0 8px 32px rgba(217,179,106,0.35), inset 0 1px 0 rgba(255,244,214,0.8);
-}
-.cta-main:hover {
-  background: linear-gradient(180deg, #f7e2af 0%, #e2bd75 45%, #c49a4e 100%);
-  box-shadow: 0 8px 40px rgba(240,207,142,0.45), inset 0 1px 0 rgba(255,244,214,0.9);
-}
-/* attention shine: a light streak passes over every ~3s */
-.cta-main::after {
-  content: ""; position: absolute; top: -20%; bottom: -20%; width: 36%; left: -60%;
-  background: linear-gradient(105deg, transparent 0%, rgba(255,255,255,0.5) 50%, transparent 100%);
-  transform: skewX(-18deg); pointer-events: none;
-  animation: cta-shine 3.2s ease-in-out infinite;
-}
-@keyframes cta-shine {
-  0%   { left: -60%; }
-  28%  { left: 130%; }
-  100% { left: 130%; }
-}
-@media (prefers-reduced-motion: reduce) { .cta-main::after { animation: none; display: none; } }
-/* action-bar clusters: hide-the-dice left, music right */
-.action-bar-left  { position: absolute; left: 0;  display: flex; align-items: center; gap: 10px; }
-.action-bar-right { position: absolute; right: 0; display: flex; align-items: center; gap: 10px; }
-.reset-btn, .bar-music-btn {
-  width: 46px; height: 46px; padding: 10px;
-  display: flex; align-items: center; justify-content: center;
-  background: transparent; cursor: pointer;
-  border: 1.5px solid rgba(217,179,106,0.35); border-radius: 12px;
-  color: var(--ink-soft);
-}
-.reset-btn:hover, .bar-music-btn:hover { color: var(--accent); border-color: var(--accent); }
-.reset-btn svg, .bar-music-btn svg { width: 100%; height: 100%; }
-/* music button lights up while playing */
-.bar-music-btn[aria-pressed="true"] { color: var(--accent); border-color: var(--accent); }
-@media (max-width: 768px) {
-  .action-bar { padding: 10px 12px; }
-  .action-bar-inner { justify-content: space-between; gap: 10px; }
-  .action-bar-left, .action-bar-right { position: static; flex-shrink: 0; }
-  .cta-main {
-    flex: 1; min-width: 0; max-width: none;
-    padding: 16px 12px; font-size: 16px; white-space: nowrap;
-  }
-}
-/* narrow phones: the main button needs the room more than the dice toys do
-   (the die itself stays on the page and can still be thrown) */
-@media (max-width: 560px) {
-  .action-bar-left { display: none; }
-}
 
 /* footer */
 .footer {
@@ -805,7 +736,7 @@ html { scroll-padding-top: 84px; }
 }
 
 /* ============ cookies consent (js/consent.js) ============
-   A quiet card above the action bar, not a plaque over the hero: the page
+   A quiet card at the bottom left, not a plaque over the hero: the page
    stays readable while the visitor decides. Theme-aware via the body tokens. */
 .cookie-banner {
   position: fixed; z-index: 600;
