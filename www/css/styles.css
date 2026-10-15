@@ -274,10 +274,7 @@ h1, h2, h3 { margin: 0; color: var(--ink-strong); font-weight: 800; }
   .topbar .brand { gap: 8px; min-width: 0; }
   .topbar .brand-mark--logo, .topbar .brand-logo { width: 52px; }
   .topbar .brand-word { font-size: 15px; letter-spacing: 0.1em; }
-  .topnav .btn-solid { padding: 8px 14px; font-size: 14px; }
-}
-@media (max-width: 350px) {
-  .topbar .brand-word { display: none; }
+  .topnav .btn-solid { padding: 10px 14px; font-size: 14px; }
 }
 .btn-solid {
   display: inline-flex; align-items: center; justify-content: center; text-align: center;
@@ -395,13 +392,12 @@ h1, h2, h3 { margin: 0; color: var(--ink-strong); font-weight: 800; }
 .stats-head h3 { margin-bottom: 18px; font-size: clamp(22px, 2.6vw, 30px); }
 .stats-strip {
   background: none; border: none; border-radius: 0; padding: 0;
-  /* stat chips sit side by side, one column per shown chip */
-  display: grid; grid-auto-flow: column; grid-auto-columns: 1fr;
+  /* two stat groups sit side by side (the 3rd — "0 ₽" — is commented out in
+     index.html); auto-fit collapsed to one column inside the centred hero */
+  display: grid; grid-template-columns: repeat(2, 1fr);
   gap: clamp(12px, 2vw, 22px); text-align: center;
 }
-.stat[hidden] { display: none; }
-.stat-value { white-space: nowrap; }
-@media (max-width: 720px) { .stats-strip { grid-auto-flow: row; } }
+@media (max-width: 520px) { .stats-strip { grid-template-columns: 1fr; } }
 .stat {
   /* horizontal chip: big value beside its label so each stat is ~1 line tall
      (was a taller stacked card) — reclaims vertical space on the first screen */
@@ -1119,11 +1115,12 @@ html { scroll-padding-top: 84px; }
 /* A game is the app's portrait card (ScheduledGameCard.tsx): cover, type and
    system on top, title in the middle, master / time / seats / price below.
    White text over the cover in both themes, as in the app. */
-/* fewer cards than columns stay centred at their usual size */
+/* a wrapping row: four cards fill it, fewer stay centred at their size */
 .games-row {
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 260px));
-  justify-content: center; gap: clamp(12px, 1.6vw, 20px);
+  display: flex; flex-wrap: wrap; justify-content: center;
+  gap: clamp(12px, 1.6vw, 20px);
 }
+.games-row > .game-card { flex: 1 1 200px; max-width: 250px; }
 .game-card {
   position: relative; display: flex; flex-direction: column;
   aspect-ratio: 2 / 3; border-radius: 18px; overflow: hidden;
@@ -1175,9 +1172,10 @@ html { scroll-padding-top: 84px; }
 .live-token img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
 .posts-row {
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 360px));
-  justify-content: center; gap: clamp(12px, 1.6vw, 20px);
+  display: flex; flex-wrap: wrap; justify-content: center;
+  gap: clamp(12px, 1.6vw, 20px);
 }
+.posts-row > .post-card { flex: 1 1 280px; max-width: 360px; }
 .post-card {
   display: flex; flex-direction: column; gap: 10px;
   padding: 18px 20px; border-radius: 14px;
@@ -1196,13 +1194,16 @@ html { scroll-padding-top: 84px; }
 /* narrower screens: the cards become a swipeable row instead of shrinking */
 @media (max-width: 900px) {
   .games-row, .posts-row {
-    display: flex; overflow-x: auto; scroll-snap-type: x mandatory;
+    /* start-aligned: centring a scroller pushes its first cards out of reach */
+    display: flex; flex-wrap: nowrap; justify-content: flex-start;
+    overflow-x: auto; scroll-snap-type: x mandatory;
+    scroll-padding-inline: clamp(20px, 5vw, 64px);   /* snap to the padded edge, not the screen edge */
     margin: 0 calc(-1 * clamp(20px, 5vw, 64px)); padding: 4px clamp(20px, 5vw, 64px) 12px;
     scrollbar-width: none;
   }
   .games-row::-webkit-scrollbar, .posts-row::-webkit-scrollbar { display: none; }
-  .game-card { flex: 0 0 min(62vw, 240px); scroll-snap-align: start; }
-  .post-card { flex: 0 0 min(80vw, 320px); scroll-snap-align: start; }
+  .games-row > .game-card { flex: 0 0 min(62vw, 240px); max-width: none; scroll-snap-align: start; }
+  .posts-row > .post-card { flex: 0 0 min(80vw, 320px); max-width: none; scroll-snap-align: start; }
 }
 @media (prefers-reduced-motion: reduce) {
   .game-card, .post-card { transition: none; }
