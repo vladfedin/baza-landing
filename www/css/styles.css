@@ -94,6 +94,9 @@ h1, h2, h3 { margin: 0; color: var(--ink-strong); font-weight: 800; }
   gap: 16px; padding: 24px clamp(20px, 5vw, 64px);
   max-width: 1240px; width: 100%; margin: 0 auto;
 }
+/* the bar grows lower as the page scrolls (js/topbar-shrink.js sets --bar-k 0…1) */
+.topbar { padding-top: calc(24px - 14px * var(--bar-k, 0)); padding-bottom: calc(24px - 14px * var(--bar-k, 0)); }
+.topbar .brand-logo { width: calc(40px - 8px * var(--bar-k, 0)); }
 .brand { display: flex; align-items: center; gap: 12px; }
 .brand-mark {
   width: 34px; height: 34px; border: 1.5px solid var(--accent); border-radius: 8px;
@@ -170,7 +173,7 @@ h1, h2, h3 { margin: 0; color: var(--ink-strong); font-weight: 800; }
 @media (max-width: 420px) {
   .topbar { gap: 10px; padding-left: 14px; padding-right: 14px; }
   .topbar .brand { gap: 8px; min-width: 0; }
-  .topbar .brand-logo { width: 38px; }
+  .topbar .brand-logo { width: calc(38px - 6px * var(--bar-k, 0)); }
   .topbar .brand-word { font-size: 17px; }
   .topnav .btn-solid { padding: 10px 14px; font-size: 14px; }
 }
@@ -198,9 +201,6 @@ h1, h2, h3 { margin: 0; color: var(--ink-strong); font-weight: 800; }
   margin-bottom: 0; flex-shrink: 0;
 }
 .hero-logo { display: block; width: 100%; height: auto; }   /* flat: no glow, no shadow */
-.kicker {
-  font-size: 13px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase;
-  color: var(--accent);
 /* both Ролебаза logos throw a d20 (js/dice.js, [data-throw-die]) */
 .throw-die {
   display: block; padding: 0; margin: 0; width: 100%;
@@ -213,6 +213,9 @@ h1, h2, h3 { margin: 0; color: var(--ink-strong); font-weight: 800; }
 .throw-die:active { transform: rotate(8deg) scale(0.96); }
 .throw-die:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
 @media (prefers-reduced-motion: reduce) { .throw-die, .throw-die:hover, .throw-die:active { transform: none; transition: none; } }
+.kicker {
+  font-size: 13px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--accent);
 }
 .hero-inner .kicker { margin-bottom: clamp(10px, 2vh, 20px); }
 .hero-inner h1 {
