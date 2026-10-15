@@ -298,27 +298,7 @@ h1, h2, h3 { margin: 0; color: var(--ink-strong); font-weight: 800; }
   width: clamp(112px, 17vh, 176px);
   margin-bottom: 0; flex-shrink: 0;
 }
-.hero-logo {
-  display: block; width: 100%; height: auto;
-  filter: drop-shadow(0 6px 22px rgba(0,0,0,0.55));
-}
-/* the logo (img/logo-v2-dark.svg) breathes with a warm golden glow */
-.hero-logo {
-  animation: logo-glow 4.5s ease-in-out infinite alternate;
-}
-@keyframes logo-glow {
-  from {
-    filter: drop-shadow(0 0 10px rgba(232, 178, 74, 0.40))
-            drop-shadow(0 0 26px rgba(156, 110, 34, 0.30))
-            drop-shadow(0 6px 22px rgba(0, 0, 0, 0.55));
-  }
-  to {
-    filter: drop-shadow(0 0 20px rgba(232, 178, 74, 0.75))
-            drop-shadow(0 0 48px rgba(156, 110, 34, 0.60))
-            drop-shadow(0 6px 22px rgba(0, 0, 0, 0.55));
-  }
-}
-@media (prefers-reduced-motion: reduce) { .hero-logo { animation: none; } }
+.hero-logo { display: block; width: 100%; height: auto; }   /* flat: no glow, no shadow */
 .kicker {
   font-size: 13px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase;
   color: var(--accent);
