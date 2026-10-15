@@ -4,46 +4,73 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project
 
-**Ролебаза (Rolebaza)** — landing page for a Russian-language virtual tabletop RPG platform. Deployed at `land.rolebaza.ru` with a production mirror at `rolebaza.ru`.
-
-## Tech Stack
-
-Pure static site — no build system, no bundler, no package manager.
-
-- **HTML5** (`www/index.html`) — single-page, Russian-language content
-- **CSS3** (`www/styles.css`) — custom CSS with CSS variables for theming, no preprocessor
-- **Vanilla JS** (`www/main.js`) — IIFE-module pattern, no frameworks
-- **Tailwind CSS** — loaded via CDN bundle (`www/vendor/`), not built locally
-- **Service Worker** (`www/sw.js`) — image fallback between `rolebaza.ru` ↔ `land.rolebaza.ru`
+**Ролебаза (Rolebaza)** — the public landing of a Russian-language virtual
+tabletop. Served at `rolebaza.ru`; the app itself lives at `beta.rolebaza.ru`
+(repository `../magicorp-vtt`, its `docs/landing-system-guide.md` §0 describes
+how the two talk).
 
 ## Deployment
 
-GitHub Actions (`.github/workflows/deploy.yml`) triggers on push to `main` (prod) or `dev` branches:
-- Cache-busting via MD5 hashes appended to CSS/JS/SW filenames
-- Deploys via `rsync` over SSH to `/opt/rolebaza-landing/`
-- Nginx config lives in `devops/nginx.land.rolebaza.ru.conf`
+GitHub Actions (`.github/workflows/deploy.yml`) on push:
 
-There are no build or test commands — changes are deployed by pushing to the appropriate branch.
+- **`dev` is production** (`rolebaza.ru`, `/opt/rolebaza-landing`). `main`
+  targets the host of a retired prod — nothing pushed there arrives anywhere.
+- Steps: `tools/check-static-links.mjs` (every local link must hit a file in
+  `www/`) → `tools/version-assets.mjs` (adds `?v=<md5>` to every local asset
+  reference of the root pages and to `url()` in `www/css/`) → `rsync --delete
+  www/` → permissions.
+- `rsync --delete` erases anything not in `www/`: every static page of the main
+  domain (contests, guides, legal pages) lives here, never only on the server.
+- nginx answers a missing path with `index.html` and **200**, so a lost page
+  looks like the landing instead of a 404 — that is what the link check is for.
+- nginx caches css/js for 7 days and clips/images for 30 days as `immutable`:
+  an asset path the versioning step cannot see is served stale after a deploy.
 
-## Architecture
+There is no build: what is in `www/` is what is served.
 
-All site code lives in `www/`:
+## Layout of `www/`
 
-**styles.css** — Dark fantasy theme with gold accents. Design tokens defined as CSS custom properties at `:root`. Key component classes: `.btn-engraved`, `.guild-column`, `.parchment-card`, `.master-card`, `.founder-medallion`, `.side-vignette`. Custom keyframe animations for torch flicker, floating logo, scroll bounce, and founder page transitions.
-
-**main.js** — Five IIFE modules:
-1. Header scroll effect (class toggle at 60px)
-2. Fade-in on scroll via Intersection Observer
-3. Waitlist counter — fetches from `https://beta.rolebaza.ru/api/landing/waitlist/count`, animates count, exponential backoff retry
-4. Founder section toggle — interactive portrait switching, persists selection in cookies + localStorage
-5. Waitlist form — POST to `/api/landing/waitlist`, updates counter on success
-
-**sw.js** — Intercepts image requests and falls back between mirror domains with a 3-second timeout. Returns a transparent 1x1 GIF if both fail.
+- `index.html` — the landing. Inline `<head>` script only for the no-flash theme.
+- `css/styles.css` — all landing styles; theme tokens at the top
+  (`:root` = Blackout/dark, `:root[data-theme="parchment"]` = light),
+  `@font-face` for the self-hosted fonts in `fonts/`.
+- `js/` — one IIFE / DOMContentLoaded module per behaviour: `hero-video`,
+  `scroll-paging`, `dice` (+ `roll-card`), `arsenal-video`, `speech-bubble`,
+  `reading-ruler`, `party`, `music-player`, `theme-toggle`, `live`, `consent`.
+- `img/` (avif art, `icons.svg` sprite, `founders/`), `vid/` (AV1 + HEVC per
+  clip), `sfx/` (Opus + AAC), `vendor/` (three.js, cannon.js — loaded after the
+  page, see `js/dice.js`).
+- Legal pages (`privacy.html`, `consent.html`, …) still use the previous
+  landing's `styles.css`; `tutorials-contest/`, `tables-contest/`, `guides/` are
+  self-contained archives.
 
 ## Conventions
 
-- All user-facing text is in Russian
-- IIFE pattern for JS module isolation (no global namespace pollution)
-- Fonts: Cinzel (headings), Cormorant Garamond (body serif), Fira Sans (UI text)
-- Responsive design via CSS media queries
-- Storage: cookies with root domain fallback + localStorage for persistence
+- **Asset paths live in markup.** The checker and the versioner read the same
+  attribute list (`tools/asset-refs.mjs`: `href`, `src`, `poster`, `data-av1`,
+  `data-hevc`, `data-avatar`, `data-three`, `data-cannon`). A path built in JS
+  is neither checked nor versioned — put it in an attribute and read it.
+  New file attribute → add it to that list.
+- Swapping a sprite icon changes only the part after `#` (the path carries `?v=`).
+- **No third-party requests on page load.** Fonts and libraries are ours; the
+  only outside call is Yandex.Metrika, and only after consent (`js/consent.js`).
+- Data from the app (`js/live.js`): public GET endpoints only, user text via
+  `textContent`, images only from the app's own origin.
+- Links into the app carry `utm_source=rolebaza.ru&utm_medium=landing` and a
+  `data-goal` (Metrika goal on click).
+- All user-facing text is Russian; claims about the product must match what
+  it ships (limits, levels, features) — check the app before writing numbers.
+- Respect `prefers-reduced-motion`; transitions default to 160 ms.
+
+## Local preview
+
+```
+node tools/preview.mjs        # http://127.0.0.1:8790/
+node tools/check-static-links.mjs
+```
+
+The preview serves `www/` with Range responses (clips), falls back to
+`index.html` like nginx, and forwards `GET /api/*` to the app — the app's CORS
+admits only `*.rolebaza.ru`, so `js/live.js` asks same-origin on localhost.
+Do not run `tools/version-assets.mjs` on the working tree: it rewrites files
+in place and is meant for the CI checkout.
