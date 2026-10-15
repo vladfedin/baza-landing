@@ -372,7 +372,8 @@ function startDice() {
   }
 
   // Face f of the geometry carries the number f + 1 (makeAtlas / makeDieGeometry).
-  // The face the viewer reads is the one whose centre points most toward the camera (+Z).
+  // The rolled face is the one pointing against gravity: toward the camera (+Z)
+  // on the screen "tabletop" (NEW), up the screen (+Y) for falling dice (OLD).
   const FACE_CENTERS = FACES.map(([a, b, c]) => new CANNON.Vec3(
     (VERTS[a][0] + VERTS[b][0] + VERTS[c][0]) / 3,
     (VERTS[a][1] + VERTS[b][1] + VERTS[c][1]) / 3,
@@ -381,8 +382,9 @@ function startDice() {
   function faceTowardViewer(body) {
     let best = 0, bestZ = -Infinity;
     FACE_CENTERS.forEach((v, f) => {
-      const z = body.quaternion.vmult(v).z;
-      if (z > bestZ) { bestZ = z; best = f; }
+      const w = body.quaternion.vmult(v);
+      const up = NEW ? w.z : w.y;
+      if (up > bestZ) { bestZ = up; best = f; }
     });
     return best + 1;
   }
