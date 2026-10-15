@@ -1099,7 +1099,9 @@ html { scroll-padding-top: 84px; }
 }
 
 /* ============ live: upcoming games + community posts (js/live.js) ============ */
-.live-block { margin-top: clamp(20px, 3vw, 32px); }
+.section-head--kicker { margin-bottom: 0; }
+.live-block { margin-top: 14px; }
+.live-block .section-head { margin-bottom: 40px; }
 .live-block[hidden], #live[hidden] { display: none; }
 .live-subhead {
   font-size: clamp(20px, 2.2vw, 26px); text-align: center;
@@ -1117,9 +1119,10 @@ html { scroll-padding-top: 84px; }
 /* A game is the app's portrait card (ScheduledGameCard.tsx): cover, type and
    system on top, title in the middle, master / time / seats / price below.
    White text over the cover in both themes, as in the app. */
+/* fewer cards than columns stay centred at their usual size */
 .games-row {
-  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: clamp(12px, 1.6vw, 20px);
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 260px));
+  justify-content: center; gap: clamp(12px, 1.6vw, 20px);
 }
 .game-card {
   position: relative; display: flex; flex-direction: column;
@@ -1171,7 +1174,10 @@ html { scroll-padding-top: 84px; }
 }
 .live-token img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-.posts-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(12px, 1.6vw, 20px); }
+.posts-row {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 360px));
+  justify-content: center; gap: clamp(12px, 1.6vw, 20px);
+}
 .post-card {
   display: flex; flex-direction: column; gap: 10px;
   padding: 18px 20px; border-radius: 14px;

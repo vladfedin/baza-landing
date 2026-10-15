@@ -391,12 +391,15 @@
          Filled from the app's public API; each block and the section itself
          stay hidden until there is something to show. -->
     <section class="section" id="live" hidden>
-        <div class="section-head">
+        <div class="section-head section-head--kicker">
             <div class="kicker">Сейчас на Ролебазе</div>
-            <h2>Предстоящие игры</h2>
-            <div class="serif section-sub">Мастера уже собирают партии</div>
         </div>
+        <!-- each block carries its own heading: either may be absent -->
         <div class="live-block" id="live-games-block" hidden>
+            <div class="section-head">
+                <h2>Предстоящие игры</h2>
+                <div class="serif section-sub">Мастера уже собирают партии</div>
+            </div>
             <div class="games-row" id="live-games"></div>
             <a class="live-more" href="https://beta.rolebaza.ru/?utm_source=rolebaza.ru&amp;utm_medium=landing&amp;utm_content=live" data-goal="games_all">Все игры</a>
         </div>
