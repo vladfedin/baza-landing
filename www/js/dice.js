@@ -355,7 +355,7 @@ function startDice() {
   const dieGeo = makeDieGeometry(uvs);
   const dieMaterial = new THREE.MeshStandardMaterial(
     NEW
-      ? { map: tex, roughness: 0.2,  metalness: 0.35, flatShading: true }   // black mirror of the brand set
+      ? { map: tex, roughness: 0.42, metalness: 0.2,  flatShading: true }   // glossy black of the brand set; rougher than a mirror so a face never flares white
       : { map: tex, roughness: 0.38, metalness: 0.22, flatShading: true }
   );
 
