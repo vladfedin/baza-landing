@@ -36,7 +36,9 @@ There is no build: what is in `www/` is what is served.
   `@font-face` for the self-hosted fonts in `fonts/`.
 - `js/` — one IIFE / DOMContentLoaded module per behaviour: `hero-video`,
   `scroll-paging`, `dice` (+ `roll-card`), `arsenal-video`, `speech-bubble`,
-  `reading-ruler`, `party`, `music-player`, `theme-toggle`, `live`, `consent`.
+  `reading-ruler`, `party`, `music-player`, `theme-toggle`, `live`, `marks`,
+  `consent`. `marks.js` mirrors the app's account marks (order, look, shapes)
+  to draw a person as the table does — change it when the app's marks change.
 - `img/` (avif art, `icons.svg` sprite, `founders/`), `vid/` (AV1 + HEVC per
   clip), `sfx/` (Opus + AAC), `vendor/` (three.js, cannon.js — loaded after the
   page, see `js/dice.js`).
