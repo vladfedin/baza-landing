@@ -86,9 +86,9 @@
                     <button class="hamburger" id="nav-burger" type="button" aria-label="Меню" aria-expanded="false">
                         <svg viewBox="0 0 24 24"><use href="img/icons.svg#menu"/></svg>
                     </button>
-                    <div class="brand-mark brand-mark--logo">
+                    <button class="brand-mark brand-mark--logo throw-die" type="button" data-throw-die aria-label="Бросить d20" title="Бросить d20">
                         <img class="brand-logo" src="img/logo-v2.svg" alt="" width="44" height="50">
-                    </div>
+                    </button>
                     <div class="brand-word">Ролебаза</div>
                 </div>
                 <nav class="topnav">
@@ -134,7 +134,9 @@
         <div class="hero-inner">
             <div class="hero-head">
                 <div class="hero-logo-wrap">
-                    <img class="hero-logo" src="img/logo-v2.svg" alt="Ролебаза" width="160" height="183">
+                    <button class="throw-die" type="button" data-throw-die aria-label="Ролебаза — бросить d20" title="Бросить d20">
+                        <img class="hero-logo" src="img/logo-v2.svg" alt="" width="160" height="183">
+                    </button>
                 </div>
                 <div class="hero-headtext">
                     <h1>Виртуальный стол для<br><span class="l-red">Н</span>астольных <span class="l-red">Р</span>олевых <span class="l-red">И</span>гр</h1>
@@ -631,14 +633,8 @@
          footer) when the page is scrolled to the very end. -->
     <div class="action-bar">
         <div class="action-bar-inner">
-            <!-- LEFT cluster: dice controls (pouch + reset) -->
+            <!-- LEFT: hide the dice (they are thrown by a click on the Ролебаза logo) -->
             <div class="action-bar-left">
-                <div class="pouch-wrap">
-                    <button class="pouch-btn" id="dice-pouch" type="button" aria-label="Держите, чтобы бросить дополнительный кубик" title="Кубики: удерживайте">
-                        <span class="pouch-fill" id="pouch-fill" aria-hidden="true"></span>
-                        <svg viewBox="0 0 24 24"><use href="img/icons.svg#dice-pouch"/></svg>
-                    </button>
-                </div>
                 <button class="reset-btn" id="dice-reset" type="button" aria-label="Спрятать все кубики" title="Спрятать кубики">
                     <svg viewBox="0 0 24 24"><use href="img/icons.svg#dice-reset"/></svg>
                 </button>
@@ -736,8 +732,6 @@
     </div>
 </footer>
 
-<!-- multiball overlay (disabled; js/dice.js can re-enable it if this element exists)
-<div class="multiball" id="multiball" hidden aria-hidden="true"><p style="z-index: 9998;">MULTIBALL!</p></div>
 -->
 
 <!-- global "scroll further" cue -->

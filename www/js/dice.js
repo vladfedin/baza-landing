@@ -667,19 +667,10 @@ function startDice() {
   }
 
   /* ---------- boot ---------- */
-  /* ---------- pouch: hold 3s to spawn a die; 3 fills => MULTIBALL ---------- */
-  const pouchBtn = document.getElementById('dice-pouch');
-  const pouchFill = document.getElementById('pouch-fill');
+  /* ---------- a click on the Ролебаза logo ([data-throw-die]) throws a d20 ---------- */
   const resetBtn = document.getElementById('dice-reset');
-  const multiballEl = document.getElementById('multiball');
-  const FILL_SECONDS = 1;
-  let holding = false;
-  let progress = 0;        // 0..1, drains at the same speed when released
-  let fillsDone = 0;       // completed holds since last reset
-  let progressRaf = null;
-  let lastPT = 0;
-  let sparkTimer = null;
-  let multiballTimer = null;
+  const MAX_DICE = 12;     // past this a click re-throws a die already out instead of minting one
+  let rethrowNext = 0;
 
   function dropIn(d) {
     const b = d.body;
@@ -717,103 +708,39 @@ function startDice() {
     );
   }
 
-  function spawnOneDie() {
-    // revive a hidden default die first; then mint fresh extras
-    let d = dice.find(x => !x.mesh.visible && !x.shrinking);
-    if (d) {
-      world.addBody(d.body);
-      d.mesh.visible = true;
-    } else {
-      d = addDie();
-      d.extra = true;
+  function pickDieToThrow() {
+    // a hidden die first, then a fresh one, then the dice already out in turn
+    const hidden = dice.find(x => !x.mesh.visible && !x.shrinking);
+    if (hidden) {
+      world.addBody(hidden.body);
+      hidden.mesh.visible = true;
+      return hidden;
     }
+    if (dice.length < MAX_DICE) {
+      const d = addDie();
+      d.extra = true;
+      return d;
+    }
+    for (let i = 0; i < dice.length; i++) {
+      const d = dice[(rethrowNext + i) % dice.length];
+      if (d.shrinking || (drag && drag.die === d)) continue;
+      rethrowNext = (dice.indexOf(d) + 1) % dice.length;
+      return d;
+    }
+    return null;
+  }
+  function throwOneDie() {
+    const d = pickDieToThrow();
+    if (!d) return null;
     dropIn(d);
+    d.thrown = true;                 // its face is announced like a visitor's throw
     return d;
   }
+  document.querySelectorAll('[data-throw-die]').forEach(function (el) {
+    el.addEventListener('click', function () { throwOneDie(); });
+  });
 
-  function hideMultiball() {
-    if (!multiballEl) return;
-    clearTimeout(multiballTimer);
-    multiballEl.classList.remove('is-on');
-    multiballEl.hidden = true;
-  }
-  function triggerMultiball() {
-    if (multiballEl) {
-      multiballEl.hidden = false;
-      // restart the CSS animation even if it was shown before
-      void multiballEl.offsetWidth;
-      multiballEl.classList.add('is-on');
-      clearTimeout(multiballTimer);
-      multiballTimer = setTimeout(hideMultiball, 4200);
-    }
-    for (let i = 0; i < 5; i++) setTimeout(spawnOneDie, i * 140);
-  }
-
-  function setFill(p) {
-    if (pouchFill) pouchFill.style.height = (p * 100).toFixed(1) + '%';
-  }
-  function progressTick(now) {
-    const pdt = Math.min((now - lastPT) / 1000, 0.1);
-    lastPT = now;
-    if (holding) {
-      progress += pdt / FILL_SECONDS;   // 1s per extra die
-      if (progress >= 1) {
-        progress = 0;                 // the background resets
-        fillsDone++;
-        spawnOneDie();                // ...and if still held, fills again
-        if (fillsDone === 3) triggerMultiball();
-      }
-    } else {
-      progress = Math.max(0, progress - pdt / FILL_SECONDS);
-    }
-    setFill(progress);
-    if (holding || progress > 0) progressRaf = requestAnimationFrame(progressTick);
-    else progressRaf = null;
-  }
-  function ensureProgressLoop() {
-    if (progressRaf === null) {
-      lastPT = performance.now();
-      progressRaf = requestAnimationFrame(progressTick);
-    }
-  }
-
-  function spawnSpark() {
-    const s = document.createElement('span');
-    s.className = 'pouch-spark';
-    const ang = Math.random() * Math.PI * 2;
-    const dist = 26 + Math.random() * 34;
-    s.style.setProperty('--dx', (Math.cos(ang) * dist).toFixed(1) + 'px');
-    s.style.setProperty('--dy', (Math.sin(ang) * dist - 14).toFixed(1) + 'px');
-    s.style.left = (50 + (Math.random() - 0.5) * 40) + '%';
-    s.style.top = (50 + (Math.random() - 0.5) * 40) + '%';
-    pouchBtn.parentElement.appendChild(s);
-    s.addEventListener('animationend', function () { s.remove(); });
-  }
-
-  if (pouchBtn) {
-    pouchBtn.addEventListener('contextmenu', function (e) { e.preventDefault(); });
-    pouchBtn.addEventListener('pointerdown', function (e) {
-      e.preventDefault();
-      holding = true;
-      try { pouchBtn.setPointerCapture(e.pointerId); } catch (err) {}
-      ensureProgressLoop();
-      if (!reducedMotion) {
-        clearInterval(sparkTimer);
-        sparkTimer = setInterval(spawnSpark, 70);   // golden particles while held
-      }
-    });
-    const release = function () {
-      if (!holding) return;
-      holding = false;
-      clearInterval(sparkTimer);
-      ensureProgressLoop();                          // keep draining
-    };
-    pouchBtn.addEventListener('pointerup', release);
-    pouchBtn.addEventListener('pointercancel', release);
-    window.addEventListener('blur', release);
-  }
-
-  /* ---------- reset: shrink-to-zero, destroy extras, kill the sign ---------- */
+  /* ---------- reset: shrink-to-zero, destroy extras ---------- */
   const shrinking = [];   // { mesh, die|null, removeFromScene }
   const SHRINK_MS = 300;
   function resetDice() {
@@ -835,11 +762,6 @@ function startDice() {
         }
       }
     }
-    holding = false;
-    clearInterval(sparkTimer);
-    progress = 0; setFill(0);
-    fillsDone = 0;
-    hideMultiball();
   }
   if (resetBtn) resetBtn.addEventListener('click', resetDice);
 
@@ -850,6 +772,6 @@ function startDice() {
   requestAnimationFrame(tick);
 
   // tiny public API
-  window.diceOverlay = { roll: NEW ? rollOnTable : rollFromTop, spawnOne: spawnOneDie, reset: resetDice, multiball: triggerMultiball, dice, world, config: CONFIG };
+  window.diceOverlay = { roll: NEW ? rollOnTable : rollFromTop, throwOne: throwOneDie, reset: resetDice, dice, world, config: CONFIG };
 })();
 }

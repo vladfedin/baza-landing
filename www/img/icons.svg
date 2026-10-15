@@ -43,14 +43,6 @@
 
 <symbol id="tool-audio" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9 L8 9 L13 5 L13 19 L8 15 L4 15 Z"/><path d="M16.5 9 A4.5 4.5 0 0 1 16.5 15"/><path d="M19 6.5 A8 8 0 0 1 19 17.5"/></symbol>
 
-<symbol id="dice-pouch" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-  <path d="M9.5 6.5 C6 8 4.5 11.5 4.5 15 A7.5 6 0 0 0 19.5 15 C19.5 11.5 18 8 14.5 6.5 Z"/>
-  <path d="M9 3.5 L15 3.5"/>
-  <path d="M9.5 6.5 L9 3.5"/>
-  <path d="M14.5 6.5 L15 3.5"/>
-  <path d="M12 10.5 L14.3 12 L14.3 14.8 L12 16.3 L9.7 14.8 L9.7 12 Z"/>
-  <path d="M12 10.5 L12 13.2 L14.3 14.8 M12 13.2 L9.7 14.8"/>
-</symbol>
 
 <symbol id="dice-reset" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
   <rect x="6.5" y="6.5" width="11" height="11" rx="2"/>
