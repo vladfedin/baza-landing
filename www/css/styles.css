@@ -933,7 +933,6 @@ html { scroll-padding-top: 84px; }
   display: flex; align-items: flex-end; gap: 12px;
 }
 .user-plaque__said p { margin: 0; font-size: 17px; line-height: 1.4; color: var(--ink-title); }
-.user-plaque__said time { flex: 0 0 auto; font-size: 11px; color: var(--ink-faint); font-variant-numeric: tabular-nums; }
 
 /* marks — shared/types/mark-look.ts, size «md» */
 .mark {
