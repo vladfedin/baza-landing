@@ -103,8 +103,6 @@ h1, h2, h3 { margin: 0; color: var(--ink-strong); font-weight: 800; }
 .brand-logo { display: block; width: 40px; height: auto; }
 .brand-word { font-weight: 700; font-size: 20px; color: var(--ink-title); }   /* as the app writes its name */
 .topnav { display: flex; align-items: center; gap: 26px; }  /* desktop breathing room (mobile drops to 12px below) */
-.nav-link { font-size: 15px; font-weight: 600; color: var(--ink-soft); }
-.nav-link:hover { color: var(--accent); }
 .nav-icon {
   display: inline-flex; width: 20px; height: 20px;
   color: var(--ink-soft);                        /* same subdued tone as «Новости» */
@@ -159,7 +157,7 @@ h1, h2, h3 { margin: 0; color: var(--ink-strong); font-weight: 800; }
 .drawer-cta { margin-top: auto; justify-content: center; }
 @media (max-width: 768px) {
   .hamburger { display: inline-flex; }
-  .topnav .nav-link, .topnav .nav-icon { display: none; }  /* collapsed into the drawer */
+  .topnav .nav-icon { display: none; }  /* collapsed into the drawer */
   .topnav { gap: 12px; }
 }
 /* narrow phones: burger + logo + word + «Войти» must fit down to 320px */
@@ -168,14 +166,20 @@ h1, h2, h3 { margin: 0; color: var(--ink-strong); font-weight: 800; }
   .topbar .brand { gap: 8px; min-width: 0; }
   .topbar .brand-logo { width: calc(38px - 6px * var(--bar-k, 0)); }
   .topbar .brand-word { font-size: 17px; }
-  .topnav .btn-solid { padding: 10px 14px; font-size: 14px; }
+  .topnav .btn-create { padding: 8px 12px; font-size: 13.5px; }
 }
-.btn-solid {
-  display: inline-flex; align-items: center; justify-content: center; text-align: center;
-  line-height: 1.2; font-size: 15px; font-weight: 700;
-  color: #1b1409; background: var(--accent); padding: 10px 20px; border-radius: 10px;
+/* «Создать игру» — the app's button (HomeHeaderActions, the parchment theme's
+   btn-primary): caramel fill, dark ink, the outline play icon */
+.btn-create {
+  display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+  padding: 8px 16px; border-radius: 6px;
+  background: #c4873a; color: #20150b;
+  font-size: 14px; font-weight: 500; line-height: 1.2; white-space: nowrap;
+  transition: background 160ms ease;
 }
-.btn-solid:hover { background: var(--accent-bright); color: #1b1409; }
+.btn-create svg { width: 15px; height: 15px; flex: 0 0 auto; }
+.btn-create:hover { background: #a8702e; color: #20150b; }
+.btn-create:focus-visible { outline: 2px solid var(--accent-bright); outline-offset: 3px; }
 
 .hero-inner {
   position: relative; flex: 1; display: flex; flex-direction: column;
