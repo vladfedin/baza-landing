@@ -46,11 +46,9 @@
     <!-- reusable scroll-triggered character speech bubbles -->
     <script defer src="js/speech-bubble.js"></script>
 
-    <!-- desktop reading-progress "XP" ruler -->
-    <script defer src="js/reading-ruler.js"></script>
-
-    <!-- scroll-collected party token avatars (follow the XP ruler) -->
-    <script defer src="js/party.js"></script>
+    <!-- the side "XP" ruler and the party that follows it (js/reading-ruler.js,
+         js/party.js) are off for now: to bring them back, restore these two
+         script tags and the .reading-ruler block before the footer -->
 
     <!-- background-music player in the "Музыка и голосовая связь" card -->
     <script defer src="js/music-player.js"></script>
@@ -539,13 +537,6 @@
     </div>
 
 </main>
-
-<!-- ============ READING RULER: desktop reading-progress "XP" ruler ============ -->
-<div class="reading-ruler" aria-hidden="true">
-    <div class="reading-ruler__rail"><i class="reading-ruler__rail-fill"></i></div>
-    <div class="reading-ruler__ticks"></div>
-    <div class="reading-ruler__cursor"><b class="reading-ruler__xp">0 XP</b></div>
-</div>
 
 <!-- ============ FOOTER ============ -->
 <footer class="footer">
