@@ -1148,14 +1148,18 @@ html { scroll-padding-top: 84px; }
    author's profile cover full-bleed, marks on top, the brightest lines in the
    middle, the author at the bottom; turned over — the whole text */
 .review-deck { max-width: 1160px; margin: 0 auto; }
+/* the view clips the row at its sides only, so the cards' shadows stay whole */
+.review-deck__view { clip-path: inset(-48px 0); }
 .review-deck__row {
-  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(14px, 2vw, 22px);
-  touch-action: pan-y;               /* a sideways swipe is ours: it turns the page */
+  --deck-per: 3; --deck-gap: clamp(14px, 2vw, 22px);
+  position: relative; display: flex; gap: var(--deck-gap);
+  transition: transform 520ms cubic-bezier(0.3, 0.7, 0.3, 1);
+  touch-action: pan-y;               /* a sideways swipe is ours: it slides the page */
 }
-@media (max-width: 1000px) { .review-deck__row { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (max-width: 640px)  { .review-deck__row { grid-template-columns: minmax(0, 1fr); } }
-.review-card[hidden] { display: none; }
+@media (max-width: 1000px) { .review-deck__row { --deck-per: 2; } }
+@media (max-width: 640px)  { .review-deck__row { --deck-per: 1; } }
 .review-card.user-plaque {
+  flex: 0 0 calc((100% - (var(--deck-per) - 1) * var(--deck-gap)) / var(--deck-per));
   height: 500px; padding: 0; border: 0; background: none; box-shadow: none; border-radius: 16px;
   perspective: 1400px;
 }
@@ -1209,12 +1213,37 @@ html { scroll-padding-top: 84px; }
 }
 .review-card__turn:hover { background: color-mix(in srgb, var(--accent) 18%, rgba(12, 10, 18, 0.5)); border-color: var(--accent); }
 .review-card__turn:focus-visible { outline: 2px solid var(--accent-bright); outline-offset: 2px; }
-.review-card__back { transform: rotateY(180deg); padding: 22px 20px 16px; gap: 12px; background: var(--card-bg); }
+/* the back: the whole text set like a letter — a large quote mark, calm type,
+   the lines from the front marked in gold; the author signs at the bottom */
+.review-card__back {
+  transform: rotateY(180deg); padding: 18px 20px 14px; gap: 12px;
+  background: radial-gradient(130% 70% at 0% 0%, color-mix(in srgb, var(--accent) 10%, var(--card-bg)), var(--card-bg) 60%);
+}
+.review-card__back::before {
+  content: "“"; position: absolute; top: 2px; left: 16px; font-size: 84px; line-height: 1; font-weight: 800;
+  color: color-mix(in srgb, var(--accent) 30%, transparent); pointer-events: none;
+}
 .review-card__text {
-  flex: 1; min-height: 0; overflow-y: auto; padding-right: 4px;
+  position: relative; flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain;
+  padding: 30px 6px 8px 0;
   scrollbar-width: thin; scrollbar-color: rgba(222, 197, 124, 0.35) transparent;
+  -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 22px, #000 calc(100% - 22px), transparent 100%);
+          mask-image: linear-gradient(180deg, transparent 0, #000 22px, #000 calc(100% - 22px), transparent 100%);
+}
+.review-card__text p { margin: 0; font-size: 15px; line-height: 1.7; color: var(--ink-body); text-wrap: pretty; }
+.review-card__text p + p { margin-top: 10px; }
+.review-card__text mark {
+  color: var(--ink-title); background: none; font-weight: 600;
+  box-shadow: inset 0 -0.45em 0 color-mix(in srgb, var(--accent) 22%, transparent);
 }
 .review-card__back .user-plaque__shots { margin-top: 0; }
+.review-card__foot {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  padding-top: 12px; border-top: 1px solid color-mix(in srgb, var(--accent) 20%, transparent);
+}
+.review-card__foot .review-card__turn { align-self: auto; flex: 0 0 auto; }
+.review-card__sign { min-width: 0; }
+.review-card__sign .user-plaque__avatar { width: 34px; height: 34px; font-size: 14px; }
 /* the page bar: arrows and a dot per card (lit — on view) */
 .review-deck__bar { display: flex; align-items: center; justify-content: center; gap: 14px; margin-top: 18px; }
 .deck-nav {
@@ -1231,7 +1260,7 @@ html { scroll-padding-top: 84px; }
 .deck-dots { display: flex; gap: 6px; }
 .deck-dots span { width: 7px; height: 7px; border-radius: 50%; background: rgba(222, 197, 124, 0.25); transition: background-color 160ms ease; }
 .deck-dots span.is-on { background: var(--accent); }
-@media (prefers-reduced-motion: reduce) { .review-card__inner { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .review-card__inner, .review-deck__row { transition: none; } }
 .reviews-join { max-width: 720px; margin: 18px auto 0; text-align: center; color: var(--ink-body); font-size: 15px; line-height: 1.55; }
 .reviews-join a { color: var(--accent); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
 .reviews-join a:hover { color: var(--accent-bright); }

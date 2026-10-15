@@ -148,9 +148,9 @@
   }
 
   function fill(plaque, p) {
-    var avatar = plaque.querySelector('.user-plaque__avatar');
+    // a card may show its author twice (front and back): fill every copy
     var src = ownImage(p.avatarUrl);
-    if (avatar && src) {
+    if (src) plaque.querySelectorAll('.user-plaque__avatar').forEach(function (avatar) {
       var img = document.createElement('img');
       img.alt = ''; img.src = src;   // not lazy: a detached lazy image never loads
       var c = p.avatarCrop;
@@ -159,7 +159,7 @@
         img.style.left = (c.x || 0) + '%'; img.style.top = (c.y || 0) + '%';
       }
       img.addEventListener('load', function () { avatar.textContent = ''; avatar.appendChild(img); });
-    }
+    });
     // the profile's cover (a review card's background): the app's crop centre
     var cover = plaque.querySelector('.user-plaque__cover');
     var coverSrc = ownImage(p.backgroundImageUrl);
@@ -171,10 +171,8 @@
       cover.addEventListener('load', function () { cover.hidden = false; });
       cover.src = coverSrc;
     }
-    var name = plaque.querySelector('.user-plaque__name');
-    if (name && p.displayName) name.textContent = p.displayName;
-    var alias = plaque.querySelector('.user-plaque__alias');
-    if (alias && p.username) alias.textContent = '@' + p.username;
+    plaque.querySelectorAll('.user-plaque__name').forEach(function (name) { if (p.displayName) name.textContent = p.displayName; });
+    plaque.querySelectorAll('.user-plaque__alias').forEach(function (alias) { if (p.username) alias.textContent = '@' + p.username; });
     var row = plaque.querySelector('.user-plaque__marks');
     if (row) {
       // a row may ask for some kinds only (data-marks-only="participation
