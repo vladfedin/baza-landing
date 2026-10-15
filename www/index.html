@@ -59,6 +59,9 @@
     <!-- action-bar theme switch (Blackout ⇄ parchment) -->
     <script defer src="js/theme-toggle.js"></script>
 
+    <!-- the visitor's die throw answered with a roll card, as in the table's chat -->
+    <script defer src="js/roll-card.js"></script>
+
     <!-- cookies consent; Yandex.Metrika only after "Принять"; data-goal clicks -->
     <script defer src="js/consent.js"></script>
 </head>
@@ -472,6 +475,9 @@
 </button>
 
 <!-- D20 dice overlay layer -->
+<!-- roll cards of the visitor's throws (js/roll-card.js) -->
+<div class="roll-feed" id="roll-feed" aria-live="polite"></div>
+
 <div id="dice-overlay" aria-hidden="true" data-three="vendor/three-r128.min.js" data-cannon="vendor/cannon-0.6.2.min.js"></div>
 
 <!-- What the page is, in plain text for search engines and AI agents that read

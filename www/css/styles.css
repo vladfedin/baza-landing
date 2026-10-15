@@ -1047,3 +1047,41 @@ html { scroll-padding-top: 84px; }
   position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
   overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
 }
+
+/* ============ roll cards (js/roll-card.js) ============
+   Shaped like the roll card in the table's chat: quiet header, the total
+   large in the middle, the dice line under it. Bottom-right above the action
+   bar, where a chat would be; the bar's own tokens keep it legible in both
+   themes. */
+.roll-feed {
+  position: fixed; z-index: 650;
+  right: clamp(8px, 2vw, 24px);
+  bottom: calc(var(--abar-h, 88px) + 12px);
+  display: flex; flex-direction: column; gap: 8px; align-items: flex-end;
+  pointer-events: none;
+}
+.roll-card {
+  pointer-events: auto; cursor: pointer;
+  width: 168px; padding: 8px 12px 10px;
+  background: var(--bar-bg-strong);
+  border: 1px solid color-mix(in srgb, #d9b36a 30%, transparent);
+  border-radius: 10px;
+  box-shadow: 0 10px 28px rgba(0,0,0,0.4);
+  text-align: center; color: #e8e0d2;
+  -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+  opacity: 0; transform: translateY(8px);
+  transition: opacity .16s ease, transform .16s ease;
+}
+.roll-card.is-visible { opacity: 1; transform: none; }
+.roll-card__head { font-size: 12px; color: #a2957e; margin-bottom: 4px; }
+.roll-card__total {
+  font-size: 40px; font-weight: 800; line-height: 1; letter-spacing: -1px;
+  font-variant-numeric: tabular-nums; color: #f7efdf; margin: 2px 0 6px;
+}
+.roll-card__line { font-size: 11px; color: #a2957e; font-variant-numeric: tabular-nums; }
+.roll-card--critical .roll-card__total { color: #ef4444; text-shadow: 0 0 12px rgba(239,68,68,0.3); }
+.roll-card--critical .roll-card__line { color: #ef4444; }
+.roll-card--fumble .roll-card__total { color: #a2957e; }
+@media (prefers-reduced-motion: reduce) {
+  .roll-card { transition: none; transform: none; }
+}

@@ -359,9 +359,32 @@ function startDice() {
     body.sleepTimeLimit = 0.8;
     world.addBody(body);
 
-    const die = { mesh, body };
+    const die = { mesh, body, thrown: false };
+    // a die the visitor threw reports its face once it comes to rest
+    // (js/roll-card.js shows it the way the table's chat shows a roll)
+    body.addEventListener('sleep', () => {
+      if (!die.thrown) return;
+      die.thrown = false;
+      window.dispatchEvent(new CustomEvent('rb:roll', { detail: { sides: 20, value: faceTowardViewer(body) } }));
+    });
     dice.push(die);
     return die;
+  }
+
+  // Face f of the geometry carries the number f + 1 (makeAtlas / makeDieGeometry).
+  // The face the viewer reads is the one whose centre points most toward the camera (+Z).
+  const FACE_CENTERS = FACES.map(([a, b, c]) => new CANNON.Vec3(
+    (VERTS[a][0] + VERTS[b][0] + VERTS[c][0]) / 3,
+    (VERTS[a][1] + VERTS[b][1] + VERTS[c][1]) / 3,
+    (VERTS[a][2] + VERTS[b][2] + VERTS[c][2]) / 3
+  ));
+  function faceTowardViewer(body) {
+    let best = 0, bestZ = -Infinity;
+    FACE_CENTERS.forEach((v, f) => {
+      const z = body.quaternion.vmult(v).z;
+      if (z > bestZ) { bestZ = z; best = f; }
+    });
+    return best + 1;
   }
   for (let i = 0; i < CONFIG.diceCount; i++) addDie();
 
@@ -524,6 +547,7 @@ function startDice() {
         // zone, so a slow, deliberate placement barely nudges the die
         const sp = Math.hypot(v.x, v.y);
         const scale = sp <= CONFIG.deadZone ? 0 : (sp - CONFIG.deadZone) / sp;
+        drag.die.thrown = scale > 0;     // a slow placement is not a roll
         b.velocity.set(v.x * scale, v.y * scale, 0);   // gravity settles it back onto the table
         const spin = Math.min(sp * scale * 0.3, 14);
         b.angularVelocity.set(
@@ -531,6 +555,7 @@ function startDice() {
         );
       } else {
         b.velocity.set(v.x, v.y, v.z * 0.3);
+        drag.die.thrown = v.length() > CONFIG.deadZone;
         const spin = Math.min(v.length() * 0.35, 16);
         b.angularVelocity.set(
           (Math.random() - 0.5) * spin, (Math.random() - 0.5) * spin, (Math.random() - 0.5) * spin
