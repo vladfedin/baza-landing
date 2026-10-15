@@ -256,7 +256,10 @@ h1, h2, h3 { margin: 0; color: var(--ink-strong); font-weight: 800; }
   justify-content: center; align-items: center; text-align: center;
   /* bottom padding clears the pinned action bar so all hero content is visible */
   padding: 8px clamp(20px, 5vw, 64px) calc(var(--abar-h, 88px) + 16px);
-  max-width: 1160px; margin: 0 auto;
+  /* width:100% — the partners marquee is max-content wide (two tag sets);
+     without a definite width this flex item grows to it, and a phone's
+     layout viewport widens to 1160px with the page cut off on the right */
+  width: 100%; max-width: 1160px; margin: 0 auto;
 }
 .hero-logo-wrap {
   position: relative;
