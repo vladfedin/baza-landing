@@ -268,6 +268,17 @@ h1, h2, h3 { margin: 0; color: var(--ink-strong); font-weight: 800; }
   .topnav .nav-link, .topnav .nav-icon { display: none; }  /* collapsed into the drawer */
   .topnav { gap: 12px; }
 }
+/* narrow phones: burger + logo + word + «Войти» must fit down to 320px */
+@media (max-width: 420px) {
+  .topbar { gap: 10px; padding-left: 14px; padding-right: 14px; }
+  .topbar .brand { gap: 8px; min-width: 0; }
+  .topbar .brand-mark--logo, .topbar .brand-logo { width: 52px; }
+  .topbar .brand-word { font-size: 15px; letter-spacing: 0.1em; }
+  .topnav .btn-solid { padding: 8px 14px; font-size: 14px; }
+}
+@media (max-width: 350px) {
+  .topbar .brand-word { display: none; }
+}
 .btn-solid {
   display: inline-flex; align-items: center; justify-content: center; text-align: center;
   line-height: 1.2; font-size: 15px; font-weight: 700;
