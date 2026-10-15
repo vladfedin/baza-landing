@@ -45,9 +45,6 @@
     <!-- lazy-loaded arsenal card videos -->
     <script defer src="js/arsenal-video.js"></script>
 
-    <!-- reusable scroll-triggered character speech bubbles -->
-    <script defer src="js/speech-bubble.js"></script>
-
     <!-- the side "XP" ruler and the party that follows it (js/reading-ruler.js,
          js/party.js) are off for now: to bring them back, restore these two
          script tags and the .reading-ruler block before the footer -->
@@ -282,139 +279,97 @@
             <h2>Арсенал Мастера</h2>
             <div class="serif section-sub">Инструменты для создания легендарных историй</div>
         </div>
-
-        <!-- One vertical block of alternating rows. Each row is a single column
-             of two cards beside a themed character (who switches sides
-             right<->left every row) with a matching slogan. 8 cards -> 4 rows.
-             --char-h drives card height; two cards + a 16px gap = her height. -->
-        <div class="arsenal-body">
-            <!-- row 1: cards left, character right -->
-            <div class="arsenal-row">
-                <div class="tools-col">
-                    <div class="tool-card">
-                        <div class="tool-icon"><svg class="icon" viewBox="0 0 24 24"><use href="img/icons.svg#tool-map"/></svg></div>
-                        <div class="tool-title">Карты и Сцены</div>
-                        <div class="tool-text">Загружай PNG/JPG, платформа сама подстроит сетку под твои нужды.</div>
-                    </div>
-                    <div class="tool-card tool-card--video tool-card--video-fit">
-                        <video class="tool-video" data-av1="vid/ars_2_tokens.av1.mp4" data-hevc="vid/ars_2_tokens.hevc.mp4" preload="none" autoplay loop muted playsinline oncontextmenu="return false" aria-hidden="true"></video>
-                        <div class="tool-icon"><svg class="icon" viewBox="0 0 24 24"><use href="img/icons.svg#tool-tokens"/></svg></div>
-                        <div class="tool-title">Токены и Слои</div>
-                        <div class="tool-text">Перетаскивай миниатюры на карту из библиотеки или со своего компьютера.</div>
-                    </div>
-                </div>
-                <div class="arsenal-char speaker" data-speech="Кибер картография и токены на любой вкус!" data-avatar="img/3_cyber_woman.avatar.avif" aria-hidden="true">
-                    <img src="img/3_cyber_woman.avif" alt="" loading="lazy" width="549" height="1394">
-                </div>
+        <!-- four tiles with a looping clip of the table (js/arsenal-video.js),
+             then the rest as compact cards -->
+        <div class="arsenal-media">
+            <div class="tool-card tool-card--video tool-card--media">
+                <video class="tool-video" data-av1="vid/ars_2_tokens.av1.mp4" data-hevc="vid/ars_2_tokens.hevc.mp4" preload="none" autoplay loop muted playsinline oncontextmenu="return false" aria-hidden="true"></video>
+                <div class="tool-icon"><svg class="icon" viewBox="0 0 24 24"><use href="img/icons.svg#tool-tokens"/></svg></div>
+                <div class="tool-title">Токены и Слои</div>
+                <div class="tool-text">Перетаскивай миниатюры на карту из библиотеки или со своего компьютера.</div>
             </div>
-
-            <!-- row 2: character left, cards right -->
-            <div class="arsenal-row arsenal-row--reverse">
-                <div class="tools-col">
-                    <div class="tool-card tool-card--video tool-card--video-fit">
-                        <video class="tool-video" data-av1="vid/ars_3_charsheet.av1.mp4" data-hevc="vid/ars_3_charsheet.hevc.mp4" preload="none" autoplay loop muted playsinline oncontextmenu="return false" aria-hidden="true"></video>
-                        <div class="tool-icon"><svg class="icon" viewBox="0 0 24 24"><use href="img/icons.svg#tool-sheets"/></svg></div>
-                        <div class="tool-title">Листы Персонажей</div>
-                        <div class="tool-text">Универсальные бланки с привязкой к токенам.</div>
-                    </div>
-                    <div class="tool-card tool-card--video tool-card--video-fit">
-                        <video class="tool-video" data-av1="vid/ars_7_sign.av1.mp4" data-hevc="vid/ars_7_sign.hevc.mp4" preload="none" autoplay loop muted playsinline oncontextmenu="return false" aria-hidden="true"></video>
-                        <div class="tool-icon"><svg class="icon" viewBox="0 0 24 24"><use href="img/icons.svg#tool-search"/></svg></div>
-                        <div class="tool-title">Поиск Группы</div>
-                        <div class="tool-text">Мастера объявляют игры, игроки находят их и подают заявку.</div>
-                    </div>
-                </div>
-                <div class="arsenal-char speaker" data-speech="Досье игроков, лёгкий поиск игр, заметки мастера!" data-avatar="img/5_detective.avatar.avif" aria-hidden="true">
-                    <img src="img/5_detective.avif" alt="" loading="lazy" width="773" height="1465">
-                </div>
+            <div class="tool-card tool-card--video tool-card--media">
+                <video class="tool-video" data-av1="vid/ars_3_charsheet.av1.mp4" data-hevc="vid/ars_3_charsheet.hevc.mp4" preload="none" autoplay loop muted playsinline oncontextmenu="return false" aria-hidden="true"></video>
+                <div class="tool-icon"><svg class="icon" viewBox="0 0 24 24"><use href="img/icons.svg#tool-sheets"/></svg></div>
+                <div class="tool-title">Листы Персонажей</div>
+                <div class="tool-text">Универсальные бланки с привязкой к токенам.</div>
             </div>
-
-            <!-- row 3: cards left, character right -->
-            <div class="arsenal-row">
-                <div class="tools-col">
-                    <!-- "Туман Войны" commented out per request; its text merged into "Инициатива" (row 4):
-                    <div class="tool-card">
-                        <div class="tool-icon"><svg class="icon" viewBox="0 0 24 24"><use href="img/icons.svg#tool-fog"/></svg></div>
-                        <div class="tool-title">Туман Войны</div>
-                        <div class="tool-text">Скрывай тайны и открывай карту по мере продвижения группы.</div>
-                    </div>
-                    -->
-                    <div class="tool-card">
-                        <div class="tool-icon"><svg class="icon" viewBox="0 0 24 24"><use href="img/icons.svg#tool-audio"/></svg></div>
-                        <div class="tool-title">Музыка и голосовая связь</div>
-                        <div class="tool-text">Голосовая связь прямо за столом, видео — с уровня «Продвинутый». Своя музыка и звуки или библиотеки сообщества — в плеере стола.</div>
-                        <!-- background-music player (js/music-player.js); the .music-player docks to the
-                             lower-left corner on desktop when this slot scrolls out of view -->
-                        <div class="music-player-slot" id="music-slot">
-                            <div class="music-player" id="music-player">
-                                <button class="music-btn" id="music-toggle" type="button" aria-label="Играть фоновую музыку" aria-pressed="false">
-                                    <svg class="music-btn-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="img/icons.svg#play"/></svg>
-                                </button>
-                                <span class="music-vol">
-                                    <svg class="music-vol-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="img/icons.svg#volume"/></svg>
-                                    <input class="music-vol-range" id="music-vol" type="range" min="0" max="1" step="0.01" value="0.6" aria-label="Громкость музыки">
-                                </span>
-                                <audio id="bg-music" preload="none" loop>
-                                    <source src="sfx/bg_music.opus" type="audio/ogg; codecs=opus">
-                                    <source src="sfx/bg_music.m4a" type="audio/mp4">
-                                </audio>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tool-card tool-card--video">
-                        <video class="tool-video" data-av1="vid/ars_6_roll.av1.mp4" data-hevc="vid/ars_6_roll.hevc.mp4" preload="none" autoplay loop muted playsinline oncontextmenu="return false" aria-hidden="true"></video>
-                        <div class="tool-icon"><svg class="icon" viewBox="0 0 24 24"><use href="img/icons.svg#tool-dice"/></svg></div>
-                        <div class="tool-title">Кубики и Макросы</div>
-                        <div class="tool-text">/roll 2d6+3 в чате, скрытые броски мастера, формулы с модификаторами персонажа.</div>
-                    </div>
-                </div>
-                <div class="arsenal-char speaker" data-speech="Музыка и звуки, голос и общение!" data-avatar="img/1_elf.avatar.avif" aria-hidden="true">
-                    <img src="img/1_elf.avif" alt="" loading="lazy" width="644" height="1325">
-                </div>
+            <div class="tool-card tool-card--video tool-card--media">
+                <video class="tool-video" data-av1="vid/ars_6_roll.av1.mp4" data-hevc="vid/ars_6_roll.hevc.mp4" preload="none" autoplay loop muted playsinline oncontextmenu="return false" aria-hidden="true"></video>
+                <div class="tool-icon"><svg class="icon" viewBox="0 0 24 24"><use href="img/icons.svg#tool-dice"/></svg></div>
+                <div class="tool-title">Кубики и Макросы</div>
+                <div class="tool-text">/roll 2d6+3 в чате, скрытые броски мастера, формулы с модификаторами персонажа.</div>
             </div>
-
-            <!-- row 4: character left, cards right -->
-            <div class="arsenal-row arsenal-row--reverse">
-                <div class="tools-col">
-                    <div class="tool-card">
-                        <div class="tool-icon"><svg class="icon" viewBox="0 0 24 24"><use href="img/icons.svg#tool-initiative"/></svg></div>
-                        <div class="tool-title">Инициатива, Туман Войны</div>
-                        <div class="tool-text">Удобный трекер боя с подсветкой текущего хода. Скрывай тайны и открывай карту по мере продвижения группы.</div>
-                    </div>
-                    <div class="tool-card">
-                        <div class="tool-icon"><svg class="icon" viewBox="0 0 24 24"><use href="img/icons.svg#tool-hp"/></svg></div>
-                        <div class="tool-title">HP и Статусы</div>
-                        <div class="tool-text">Быстрое изменение здоровья и метки состояний на токенах.</div>
-                    </div>
-                </div>
-                <div class="arsenal-char speaker" data-speech="Моё мачете посчитает урон!" data-avatar="img/2_machete.avatar.avif" aria-hidden="true">
-                    <img src="img/2_machete.avif" alt="" loading="lazy" width="851" height="1398">
-                </div>
+            <div class="tool-card tool-card--video tool-card--media">
+                <video class="tool-video" data-av1="vid/ars_7_sign.av1.mp4" data-hevc="vid/ars_7_sign.hevc.mp4" preload="none" autoplay loop muted playsinline oncontextmenu="return false" aria-hidden="true"></video>
+                <div class="tool-icon"><svg class="icon" viewBox="0 0 24 24"><use href="img/icons.svg#tool-search"/></svg></div>
+                <div class="tool-title">Поиск Группы</div>
+                <div class="tool-text">Мастера объявляют игры, игроки находят их и подают заявку.</div>
             </div>
-
-            <!-- row 5: card left, mimic chest right. The chest art is landscape,
-                 so this row keeps the character's aspect ratio (height derived
-                 from its width) and matches the single card's height to it. -->
-            <div class="arsenal-row arsenal-row--mimic">
-                <div class="tools-col">
-                    <div class="tool-card">
-                        <div class="tool-icon"><svg class="icon" viewBox="0 0 24 24"><use href="img/icons.svg#tool-library"/></svg></div>
-                        <div class="tool-title">Компендиумы</div>
-                        <div class="tool-text">Публикуй приключения, монстров, предметы и музыку для сообщества — и бери готовое у других. Библиотека бесплатна.</div>
-                    </div>
-                </div>
-                <div class="arsenal-char speaker" data-speech="Сокровища от сообщества! (Я просто сундук!)" data-avatar="img/4_chest.avatar.avif" aria-hidden="true">
-                    <img src="img/4_chest.avif" alt="" loading="lazy" width="1024" height="759">
-                </div>
+        </div>
+        <div class="arsenal-grid">
+            <div class="tool-card">
+                <div class="tool-icon"><svg class="icon" viewBox="0 0 24 24"><use href="img/icons.svg#tool-map"/></svg></div>
+                <div class="tool-title">Карты, сцены и порталы</div>
+                <div class="tool-text">Загружай PNG/JPG — сетка подстроится сама. Порталы ведут между сценами и этажами.</div>
             </div>
-
-            <!-- 9th card commented out per request (was "Библиотека материалов"):
+            <div class="tool-card">
+                <div class="tool-icon"><svg class="icon" viewBox="0 0 24 24"><use href="img/icons.svg#tool-fog"/></svg></div>
+                <div class="tool-title">Стены, двери и свет</div>
+                <div class="tool-text">Игрок видит то, что видит его персонаж: стены, двери, окна, туман войны и динамический свет.</div>
+            </div>
+            <div class="tool-card">
+                <div class="tool-icon"><svg class="icon" viewBox="0 0 24 24"><use href="img/icons.svg#tool-initiative"/></svg></div>
+                <div class="tool-title">Бой и инициатива</div>
+                <div class="tool-text">Трекер хода с подсветкой, HP и статусы на токенах — в пару кликов.</div>
+            </div>
+            <div class="tool-card">
+                <div class="tool-icon"><svg class="icon" viewBox="0 0 24 24"><use href="img/icons.svg#lu-sparkles"/></svg></div>
+                <div class="tool-title">Действия без кода</div>
+                <div class="tool-text">Атака, заклинание, эффект: бросок, урон и состояние — одной кнопкой. Собираются в редакторе действий.</div>
+            </div>
+            <div class="tool-card">
+                <div class="tool-icon"><svg class="icon" viewBox="0 0 24 24"><use href="img/icons.svg#lu-book-open"/></svg></div>
+                <div class="tool-title">Системы правил</div>
+                <div class="tool-text">D&amp;D 5e, Fate Core и системы сообщества; свою можно собрать в редакторе систем.</div>
+            </div>
+            <div class="tool-card">
+                <div class="tool-icon"><svg class="icon" viewBox="0 0 24 24"><use href="img/icons.svg#lu-clapperboard"/></svg></div>
+                <div class="tool-title">Анимированные сцены</div>
+                <div class="tool-text">Видео и GIF прямо на карте: огонь, вода и дождь оживают.</div>
+            </div>
             <div class="tool-card">
                 <div class="tool-icon"><svg class="icon" viewBox="0 0 24 24"><use href="img/icons.svg#tool-library"/></svg></div>
-                <div class="tool-title">Библиотека материалов</div>
-                <div class="tool-text">Готовые приключения, персонажи, предметы и многое другое от сообщества.</div>
+                <div class="tool-title">Сокровищница</div>
+                <div class="tool-text">Готовые столы и компендиумы сообщества: установил — и играешь. Своё можно опубликовать.</div>
             </div>
-            -->
+            <div class="tool-card">
+                <div class="tool-icon"><svg class="icon" viewBox="0 0 24 24"><use href="img/icons.svg#lu-bot"/></svg></div>
+                <div class="tool-title">ИИ-агент мастера</div>
+                <div class="tool-text">Подключи своего ИИ-агента: он расставит сцену, соберёт листы и действия по твоей просьбе. С уровня «Мастер».</div>
+            </div>
+            <div class="tool-card">
+                <div class="tool-icon"><svg class="icon" viewBox="0 0 24 24"><use href="img/icons.svg#tool-audio"/></svg></div>
+                <div class="tool-title">Музыка и голосовая связь</div>
+                <div class="tool-text">Голосовая связь прямо за столом, видео — с уровня «Продвинутый». Своя музыка и звуки или библиотеки сообщества — в плеере стола.</div>
+                <!-- background-music player (js/music-player.js); the .music-player docks to the
+                     lower-left corner on desktop when this slot scrolls out of view -->
+                <div class="music-player-slot" id="music-slot">
+                    <div class="music-player" id="music-player">
+                        <button class="music-btn" id="music-toggle" type="button" aria-label="Играть фоновую музыку" aria-pressed="false">
+                            <svg class="music-btn-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="img/icons.svg#play"/></svg>
+                        </button>
+                        <span class="music-vol">
+                            <svg class="music-vol-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="img/icons.svg#volume"/></svg>
+                            <input class="music-vol-range" id="music-vol" type="range" min="0" max="1" step="0.01" value="0.6" aria-label="Громкость музыки">
+                        </span>
+                        <audio id="bg-music" preload="none" loop>
+                            <source src="sfx/bg_music.opus" type="audio/ogg; codecs=opus">
+                            <source src="sfx/bg_music.m4a" type="audio/mp4">
+                        </audio>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="note-banner">Всё это работает <strong>без регистрации для игроков</strong> — они просто переходят по ссылке.</div>

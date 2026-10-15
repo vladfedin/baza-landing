@@ -353,11 +353,11 @@ h1, h2, h3 { margin: 0; color: var(--ink-strong); font-weight: 800; }
    brackets inside the card's rounded rectangle read as "emphasized corners". */
 .tool-card { position: relative; }
 .tool-card::before {
-  content: ""; position: absolute; inset: 8px; z-index: 3;
+  content: ""; position: absolute; inset: 6px; z-index: 3;
   border: 2px solid var(--accent); border-radius: 0;
   pointer-events: none;
   transition: border-color .2s ease;
-  --corner: 16px;
+  --corner: 12px;
   -webkit-mask:
     linear-gradient(#000 0 0) top left,
     linear-gradient(#000 0 0) top right,
@@ -468,120 +468,27 @@ html { scroll-padding-top: 84px; }
   filter: drop-shadow(0 26px 52px rgba(0, 0, 0, 0.5));
 }
 
-/* arsenal
-   One vertical block of alternating rows; each row is a single column of two
-   cards beside the character portrait. --char-h drives both the portrait
-   height and the card height, so a card is ~45% of her (two cards + a 10%
-   gap ~= her full height). The character switches sides every row. */
-.arsenal-body {
-  --char-h: clamp(360px, 46vh, 560px);
-  display: flex; flex-direction: column; gap: clamp(32px, 6vh, 72px);
-}
-.arsenal-row {
-  /* space-between pushes the card block to one content edge and the character
-     to the opposite edge — the same left/right guidelines as the #advantages
-     ("Четыре причины") grid, since both share the .section box (max-width 1160
-     + horizontal padding). Which side each lands on alternates via --reverse. */
-  display: flex; align-items: center; justify-content: space-between;
-  gap: clamp(20px, 2.5vw, 40px);
-}
-/* every other row flips the character from right to left and back */
-.arsenal-row--reverse { flex-direction: row-reverse; }
-/* the stacked cards; the block is vertically centred against the
-   character+tagline beside it (row align-items:center) and pushed to a content
-   edge (row justify-content:space-between). Fixed 640px wide; shrinks only if
-   the viewport can't fit 640 + gap + character. */
-.tools-col {
-  flex: 0 1 640px; min-width: 0;
-  display: flex; flex-direction: column; justify-content: center;
-  gap: 16px;
-}
-/* the flanking character portrait — the column hugs the image's natural width
-   (at --char-h height) so no character is ever squished by a fixed column */
-.arsenal-char {
-  flex: 0 0 auto; align-self: center;
-  display: flex; align-items: flex-start; justify-content: center;
-  /* reserve headroom above her so the speech bubble sits on top of her */
-  padding-top: clamp(44px, 6vh, 88px);
-}
-.arsenal-char img {
-  display: block; width: auto;
-  height: var(--char-h); max-width: 100%;
-  filter: drop-shadow(0 22px 44px rgba(0,0,0,0.55));
-}
-/* row 5 — the landscape mimic-chest. Unlike the portrait characters it is not
-   forced to --char-h (that would squash it); its height follows from its width
-   (1024x759). The card keeps the shared fixed 768x384 size. */
-.arsenal-row--mimic { --mimic-cw: clamp(230px, 26vw, 380px); }
-.arsenal-row--mimic .arsenal-char { flex: 0 0 var(--mimic-cw); }
-.arsenal-row--mimic .arsenal-char img { width: 100%; height: auto; }
+/* arsenal: four tiles with a clip of the table, then compact cards */
+.arsenal-media { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.arsenal-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 14px; }
+@media (max-width: 1000px) { .arsenal-media { grid-template-columns: 1fr 1fr; } .arsenal-grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 560px)  { .arsenal-media, .arsenal-grid { grid-template-columns: 1fr; } }
 
-/* character on wide screens only; without her the cards flow full-width as a
-   single evenly-spaced column of 8 */
-@media (max-width: 900px) {
-  .arsenal-char { display: none; }
-  .tool-card { width: 100%; height: auto; min-height: 0; }
-  .arsenal-body { gap: 20px; }
-  .tools-col { flex-basis: auto; width: 100%; gap: 20px; }
-}
-
-/* ============ speech bubbles ============
-   Reusable character speech bubble. Any .speaker[data-speech] element gets a
-   bubble injected by js/speech-bubble.js that pops in when scrolled into view
-   (and re-pops on each re-entry). It floats above the speaker's head with a
-   downward tail. Add more speakers by reusing the markup with a different
-   data-speech line — no CSS/JS changes needed. */
-.speaker { position: relative; }
-.speech-bubble {
-  position: absolute; left: 50%; top: 0;
-  transform: translateX(-50%) rotate(-3deg);   /* slight comic-panel tilt */
-  width: max-content; max-width: min(230px, 96%);
-  pointer-events: none; z-index: 3;
-}
-.speech-bubble__body {
-  position: relative;
-  padding: 11px 17px; border-radius: 18px;
-  background: #fdf3dc;                 /* bright comic cream — pops off the dark panel */
-  border: 3px solid #1c1610;          /* thick ink outline */
-  color: #1c1610;                     /* bold dark ink text */
-  font-weight: 800;
-  text-transform: uppercase; letter-spacing: 0.3px;
-  font-size: clamp(13px, 1.05vw, 16px); line-height: 1.2; text-align: center;
-  /* hard, un-blurred offset shadow — the classic comic drop */
-  box-shadow: 4px 4px 0 var(--accent), 4px 4px 0 3px #1c1610;
-  opacity: 0; transform: scale(0.4) translateY(8px);   /* hidden until in view */
-  transform-origin: 30% bottom;
-}
-/* tail: an ink-outlined diamond poking out the bottom, at the left third */
-.speech-bubble__body::after {
-  content: ""; position: absolute; left: 30%; bottom: -11px;
-  width: 18px; height: 18px; transform: translateX(-50%) rotate(45deg);
-  background: #fdf3dc;
-  border-right: 3px solid #1c1610;
-  border-bottom: 3px solid #1c1610;
-}
-.speech-bubble.is-visible .speech-bubble__body {
-  animation: speech-pop 0.45s cubic-bezier(0.34, 1.8, 0.64, 1) forwards;
-}
-@keyframes speech-pop {
-  0%   { opacity: 0; transform: scale(0.4) translateY(8px); }
-  60%  { opacity: 1; transform: scale(1.08) translateY(0); }
-  100% { opacity: 1; transform: scale(1) translateY(0); }
-}
-@media (prefers-reduced-motion: reduce) {
-  .speech-bubble.is-visible .speech-bubble__body { animation: none; opacity: 1; transform: none; }
-}
 .tool-card {
-  background: var(--card-bg); border: 1px solid rgba(222, 197, 124, 0.13); border-radius: 14px; padding: 28px 26px;
-  width: 100%; height: 256px;   /* fixed 640x256 (640 = the .tools-col width) */
+  background: var(--card-bg); border: 1px solid rgba(222, 197, 124, 0.13); border-radius: 14px; padding: 18px 20px;
   display: grid; grid-template-columns: auto 1fr;
   align-content: start; align-items: center;   /* header pinned top-left, description under it */
-  column-gap: 14px; row-gap: 14px;
+  column-gap: 12px; row-gap: 8px;
 }
 .tool-card:hover { border-color: rgba(222, 197, 124, 0.35); }
-.tool-icon { width: 44px; height: 44px; color: var(--accent); }
-.tool-title { font-size: 21px; font-weight: 800; color: var(--ink-title); }
-.tool-text { grid-column: 1 / -1; font-size: 16px; line-height: 1.55; color: var(--ink-body); }
+.tool-icon { width: 30px; height: 30px; color: var(--accent); }
+.tool-title { font-size: 17px; font-weight: 800; color: var(--ink-title); line-height: 1.25; }
+.tool-text { grid-column: 1 / -1; font-size: 14.5px; line-height: 1.5; color: var(--ink-body); }
+/* a tile: the clip on top, fading into the card; the text below it on the
+   card itself, so the clip's own captions never sit under the words */
+.tool-card--media { padding-top: 158px; }
+.tool-card--media .tool-video { inset: 0 0 auto 0; width: 100%; height: 150px; opacity: 0.9; border-radius: 14px 14px 0 0; }
+.tool-card--media::after { top: 90px; height: 64px; background: linear-gradient(180deg, transparent, var(--card-bg)); }
 
 /* cards with a looping background clip (see js/arsenal-video.js) */
 .tool-card--video { position: relative; overflow: hidden; }
