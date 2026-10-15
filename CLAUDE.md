@@ -34,7 +34,8 @@ There is no build: what is in `www/` is what is served.
 - `css/styles.css` — all landing styles; theme tokens at the top
   (`:root` = Blackout/dark, `:root[data-theme="parchment"]` = light),
   `--font-app` — the app's system UI font stack (same face and weights as
-  beta.rolebaza.ru); no web fonts are loaded.
+  beta.rolebaza.ru); text loads no web fonts. The die alone loads the app's
+  dice fonts (`fonts/dice/`: Dicefont digits, Gotfridus «P») for its faces.
 - `js/` — one IIFE / DOMContentLoaded module per behaviour: `hero-video`,
   `scroll-paging`, `dice` (+ `roll-card`), `arsenal-video`, `speech-bubble`,
   `reading-ruler`, `party`, `music-player`, `theme-toggle`, `live`, `marks`,
