@@ -187,7 +187,7 @@ h1, h2, h3 { margin: 0; color: var(--ink-strong); font-weight: 800; }
 .brand-logo--on-light { display: none; }
 :root[data-theme="parchment"] .footer .brand-logo--on-dark { display: none; }
 :root[data-theme="parchment"] .footer .brand-logo--on-light { display: block; }
-.brand-word { font-weight: 800; font-size: 18px; letter-spacing: 0.14em; color: var(--ink-title); }
+.brand-word { font-weight: 700; font-size: 20px; color: var(--ink-title); }   /* as the app writes its name */
 .topnav { display: flex; align-items: center; gap: 26px; }  /* desktop breathing room (mobile drops to 12px below) */
 .nav-link { font-size: 15px; font-weight: 600; color: var(--ink-soft); }
 .nav-link:hover { color: var(--accent); }
@@ -252,7 +252,7 @@ h1, h2, h3 { margin: 0; color: var(--ink-strong); font-weight: 800; }
   .topbar { gap: 10px; padding-left: 14px; padding-right: 14px; }
   .topbar .brand { gap: 8px; min-width: 0; }
   .topbar .brand-logo { width: 38px; }
-  .topbar .brand-word { font-size: 15px; letter-spacing: 0.1em; }
+  .topbar .brand-word { font-size: 17px; }
   .topnav .btn-solid { padding: 10px 14px; font-size: 14px; }
 }
 .btn-solid {
@@ -823,7 +823,7 @@ html { scroll-padding-top: 84px; }
 /* footer brand uses the same golden vector logo as the header, footer-scaled */
 .footer .brand-mark--logo { width: auto; height: auto; }
 .footer .brand-logo { width: 34px; }
-.footer .brand-word { font-size: 15px; }
+.footer .brand-word { font-size: 17px; }
 .footer-links { display: flex; gap: 22px; flex-wrap: wrap; }
 .footer-links a { font-size: 15px; font-weight: 600; }
 .legal { font-size: 13px; line-height: 1.7; color: var(--ink-faint); }
