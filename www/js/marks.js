@@ -177,7 +177,14 @@
     if (alias && p.username) alias.textContent = '@' + p.username;
     var row = plaque.querySelector('.user-plaque__marks');
     if (row) {
-      var marks = resolve(p);
+      // a row may ask for some kinds only (data-marks-only="participation
+      // achievement") and a few of them (data-marks-max): a review card keeps
+      // the level and the awards, not the profile's tags
+      var only = (row.getAttribute('data-marks-only') || '').split(/\s+/).filter(Boolean);
+      var max = parseInt(row.getAttribute('data-marks-max'), 10);
+      var marks = resolve(p).filter(function (m) { return !only.length || only.indexOf(m.kind) >= 0; });
+      if (only.length) marks.sort(function (a, b) { return only.indexOf(a.kind) - only.indexOf(b.kind); });
+      if (max > 0) marks = marks.slice(0, max);
       if (marks.length) {
         row.textContent = '';
         marks.forEach(function (m) { row.appendChild(markEl(m)); });

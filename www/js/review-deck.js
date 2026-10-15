@@ -2,10 +2,12 @@
   The masters' reviews as a deck of cards ([data-deck]).
   ---------------------------------------------------------------------------
   A page of cards is on view — as many as the row has columns (3, 2 on a
-  tablet, 1 on a phone; read back from the CSS grid). The arrows or a swipe
-  turn the page: the cards on view fold away edge-on, the next ones unfold in
-  their place one after another; the deck wraps around, so a page is always
-  full. Dots under it mark which cards are out.
+  tablet, 1 on a phone; read back from the CSS grid). The arrows, a swipe or
+  the mouse wheel over the deck turn the page: the cards on view fold away
+  edge-on, the next ones unfold in their place one after another. The deck
+  runs from the first review to the last (the last page is filled from the
+  end); at either end the wheel scrolls the page again. Dots under it mark
+  which cards are out.
 
   A card shows its brightest lines; a click on it (or «Читать полностью»)
   turns it over to the whole text, «Свернуть» or Esc turns it back. The face
@@ -53,12 +55,15 @@
       var cols = getComputedStyle(row).gridTemplateColumns.split(' ').filter(Boolean).length;
       return Math.max(1, Math.min(cols, n));
     }
+    function lastStart() { return n - perPage(); }
     function visible() {
       var out = [];
-      for (var i = 0; i < perPage(); i++) out.push(cards[(start + i) % n]);
+      for (var i = 0; i < perPage(); i++) out.push(cards[start + i]);
       return out;
     }
+    function canTurn(dir) { return dir > 0 ? start < lastStart() : start > 0; }
     function layout() {
+      start = Math.max(0, Math.min(start, lastStart()));   // a wider row shows more
       var vis = visible();
       cards.forEach(function (c, i) {
         var at = vis.indexOf(c);
@@ -69,6 +74,8 @@
       var all = n <= perPage();
       prev.hidden = next.hidden = all;
       dotsBox.hidden = all;
+      prev.disabled = !canTurn(-1);
+      next.disabled = !canTurn(1);
     }
     function fold(list, from, to, ease) {
       return Promise.all(list.map(function (c, i) {
@@ -80,10 +87,10 @@
     }
     function turnPage(dir) {
       var k = perPage();
-      if (busy || n <= k) return;
+      if (busy || !canTurn(dir)) return;
       var out = visible();
       out.forEach(function (c) { resets[cards.indexOf(c)](); });
-      start = ((start + dir * k) % n + n) % n;
+      start = Math.max(0, Math.min(start + dir * k, lastStart()));
       if (reduce) { layout(); return; }
       busy = true;
       fold(out, 0, dir > 0 ? -90 : 90, 'ease-in').then(function () {
@@ -97,6 +104,22 @@
     }
     prev.addEventListener('click', function () { turnPage(-1); });
     next.addEventListener('click', function () { turnPage(1); });
+
+    // the wheel over the deck turns its pages; past either end it is the
+    // page's again. A turn swallows the wheel's tail for a moment, so a
+    // trackpad's inertia neither turns two pages nor scrolls away.
+    var acc = 0, quietUntil = 0;
+    deck.addEventListener('wheel', function (e) {
+      var d = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+      if (!d) return;
+      if (e.deltaMode === 1) d *= 16;
+      var dir = d > 0 ? 1 : -1, now = performance.now();
+      if (!busy && now >= quietUntil && !canTurn(dir)) { acc = 0; return; }
+      e.preventDefault();
+      if (busy || now < quietUntil) return;
+      acc += d;
+      if (Math.abs(acc) >= 40) { acc = 0; turnPage(dir); quietUntil = now + 450; }
+    }, { passive: false });
 
     // a sideways swipe on a touch screen turns the page too
     var sx = null, sy = 0;
