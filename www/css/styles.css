@@ -230,16 +230,29 @@ h1, h2, h3 { margin: 0; color: var(--ink-strong); font-weight: 800; }
 .hero-logo { display: block; width: 100%; height: auto; }   /* flat: no glow, no shadow */
 /* both Ролебаза logos throw a d20 (js/dice.js, [data-throw-die]) */
 .throw-die {
-  display: block; padding: 0; margin: 0; width: 100%;
+  position: relative; display: block; padding: 0; margin: 0; width: 100%;
   background: none; border: none; color: inherit; cursor: pointer;
   border-radius: 12px;
-  transition: transform 160ms ease;
 }
 .brand-mark.throw-die { width: auto; }
-.throw-die:hover { transform: rotate(-6deg) scale(1.04); }
-.throw-die:active { transform: rotate(8deg) scale(0.96); }
+/* hover: a light sweeps across the cube's three faces — masked to the faces
+   (inset from the edges), so the faces gleam, not the rims */
+.throw-die::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0;
+  background: linear-gradient(115deg, transparent 28%, rgba(255, 240, 200, 0.16) 40%, rgba(255, 243, 207, 0.62) 50%, rgba(255, 240, 200, 0.16) 60%, transparent 72%);
+  background-size: 260% 100%; background-position: 140% 0; background-repeat: no-repeat;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='59.896 54 80.208 92'%3E%3Cpath d='M100 57.2 136.9 78.5 100 99.8 63.1 78.5Z M62.9 79.9 99.2 100.8 99.2 142.6 62.9 121.6Z M137.1 79.9 137.1 121.6 100.8 142.6 100.8 100.8Z'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+          mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='59.896 54 80.208 92'%3E%3Cpath d='M100 57.2 136.9 78.5 100 99.8 63.1 78.5Z M62.9 79.9 99.2 100.8 99.2 142.6 62.9 121.6Z M137.1 79.9 137.1 121.6 100.8 142.6 100.8 100.8Z'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+}
+.throw-die:hover::after, .throw-die:focus-visible::after { animation: face-gleam 900ms ease-out forwards; }
+@keyframes face-gleam {
+  0%   { opacity: 1; background-position: 140% 0; }
+  85%  { opacity: 1; background-position: -40% 0; }
+  100% { opacity: 0; background-position: -40% 0; }
+}
+.throw-die:active { transform: scale(0.97); }
 .throw-die:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
-@media (prefers-reduced-motion: reduce) { .throw-die, .throw-die:hover, .throw-die:active { transform: none; transition: none; } }
+@media (prefers-reduced-motion: reduce) { .throw-die::after { display: none; } .throw-die:active { transform: none; } }
 .kicker {
   font-size: 13px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase;
   color: var(--accent);
