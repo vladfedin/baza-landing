@@ -21,14 +21,13 @@
   under prefers-reduced-motion it shows without the pop.
 
   A click on the figure pokes it: it flinches and says another line. Poked
-  more than 6 times in one unbroken run (no pause over POKE_GAP) lasting over
-  5 seconds, it snaps back with an angry line on a red bubble, and the count
-  starts over.
+  more than 6 times in one unbroken run (no pause over POKE_GAP), it snaps
+  back with an angry line on a red bubble, and the count starts over.
 */
 document.addEventListener('DOMContentLoaded', function () {
   'use strict';
   var WEIGHT = { common: 10, rare: 3, legendary: 1 };
-  var POKE_GAP = 1200, POKE_COUNT = 6, POKE_SPAN = 5000;
+  var POKE_GAP = 1200, POKE_COUNT = 6;
   var speakers = [].slice.call(document.querySelectorAll('.speaker'));
   if (!speakers.length) return;
 
@@ -62,7 +61,7 @@ document.addEventListener('DOMContentLoaded', function () {
     bubble.appendChild(body);
     el.appendChild(bubble);
     var s = { el: el, lines: lines, angry: angry, bubble: bubble, body: body, last: null,
-              runStart: 0, lastPoke: 0, pokes: 0 };
+              lastPoke: 0, pokes: 0 };
     state.push(s);
     var figure = el.querySelector('img');
     if (figure) figure.addEventListener('click', function () { poke(s, figure); });
@@ -78,15 +77,15 @@ document.addEventListener('DOMContentLoaded', function () {
   function say(s) { show(s, pick(s.lines, s.last)); }
   function poke(s, figure) {
     var now = performance.now();
-    if (now - s.lastPoke > POKE_GAP) { s.runStart = now; s.pokes = 0; }
+    if (now - s.lastPoke > POKE_GAP) s.pokes = 0;
     s.lastPoke = now;
     s.pokes++;
     figure.classList.remove('is-poked');
     void figure.offsetWidth;
     figure.classList.add('is-poked');
-    if (s.angry.length && s.pokes > POKE_COUNT && now - s.runStart > POKE_SPAN) {
+    if (s.angry.length && s.pokes > POKE_COUNT) {
       show(s, pick(s.angry, s.last));
-      s.pokes = 0; s.runStart = now;
+      s.pokes = 0;
     } else {
       say(s);
     }
