@@ -1415,9 +1415,18 @@ a.table-card__marks:focus-visible { outline: 2px solid var(--accent); outline-of
   .side-char--left  { right: calc(100% + 14px); }
   .side-char--right { left: calc(100% + 14px); }
   .side-char--wide  { width: min(260px, calc((100vw - 1160px) / 2 - 28px)); }
-  .side-char img { display: block; width: 100%; height: auto; filter: drop-shadow(0 22px 44px rgba(0, 0, 0, 0.55)); }
+  .side-char img { display: block; width: 100%; height: auto; filter: drop-shadow(0 22px 44px rgba(0, 0, 0, 0.55)); pointer-events: auto; cursor: pointer; transform-origin: 50% 100%; }
+  .side-char img.is-poked { animation: char-flinch 260ms ease-out; }
 }
 /* a rare line is rimmed in the rare mark's blue, the rarest in its orange */
 .speech-bubble--rare { --bubble-rim: #0070dd; }
 .speech-bubble--legendary { --bubble-rim: #ff8000; }
 .speech-bubble--legendary .speech-bubble__body { box-shadow: 4px 4px 0 var(--bubble-rim), 4px 4px 0 3px #1c1610, 0 0 18px rgba(255, 128, 0, 0.45); }
+/* poked once too often: an angry line on red */
+.speech-bubble--angry .speech-bubble__body { background: #b8402f; color: #fff4e4; --bubble-rim: #5a160d; }
+.speech-bubble--angry .speech-bubble__body::after { background: #b8402f; }
+@keyframes char-flinch {
+  0% { transform: rotate(0); } 25% { transform: rotate(-3deg) translateY(-3px); }
+  60% { transform: rotate(2deg); } 100% { transform: rotate(0); }
+}
+@media (prefers-reduced-motion: reduce) { .side-char img.is-poked { animation: none; } }
