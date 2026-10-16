@@ -21,6 +21,9 @@
   var APP = 'https://beta.rolebaza.ru';
   var LOCAL = /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
   var ENDPOINT = (LOCAL ? '' : APP) + '/api/landing/events';
+  // Только сам сайт: предпросмотры (land.rolebaza.ru) в боевую воронку не пишут.
+  var SENDS = LOCAL || /^(www\.)?rolebaza\.ru$/.test(location.hostname);
+  var PHONE = '(max-width: 768px)';
   var MARK = 'rb_lv';
   var TRAINED = 'rb_trained';
   var MARK_DAYS = 90;
@@ -59,6 +62,7 @@
     clearTimeout(timer);
     timer = 0;
     if (!queue.length) return;
+    if (!SENDS) { queue.length = 0; return; }
     var body = JSON.stringify({ visitor: visitor, events: queue.splice(0, 20) });
     var sent = false;
     try { sent = navigator.sendBeacon && navigator.sendBeacon(ENDPOINT, body); } catch (e) { sent = false; }
@@ -87,7 +91,7 @@
   push({
     name: 'landing_visited',
     first: first,
-    device: matchMedia('(max-width: 768px)').matches ? 'phone' : 'desktop',
+    device: matchMedia(PHONE).matches ? 'phone' : 'desktop',
     referrerHost: referrerHost,
     utm: utm,
   }, true);
@@ -118,10 +122,13 @@
   }
 
   // «Создать стол»: the question, unless the training table was already had.
+  // Not on a phone (beta opens no table there by a start link) and not for a
+  // click that asks for a new tab or window.
   function askBeforeStart(link, e) {
     var dialog = document.getElementById('start-choice');
     if (!dialog || dialog.getAttribute('data-training') !== 'on' || typeof dialog.showModal !== 'function') return;
-    if (readCookie(TRAINED)) return;
+    if (readCookie(TRAINED) || matchMedia(PHONE).matches) return;
+    if (e.button !== 0 || e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) return;
     e.preventDefault();
     var clean = dialog.querySelector('[data-goal="start_clean"]');
     if (clean) clean.setAttribute('href', link.getAttribute('href'));
@@ -135,6 +142,12 @@
     push({ name: 'landing_cta_clicked', goal: goal, target: targetOf(el) }, true);
     if (goal === 'cta_play') askBeforeStart(el, e);
   }, true);
+
+  // Back to the page from the app (bfcache): the question is not left open.
+  window.addEventListener('pageshow', function (e) {
+    var dialog = document.getElementById('start-choice');
+    if (e.persisted && dialog && dialog.open) dialog.close();
+  });
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', watchSections);
   else watchSections();
