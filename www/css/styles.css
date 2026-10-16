@@ -535,26 +535,36 @@ html { scroll-padding-top: 84px; }
 .note-banner strong { color: var(--accent); font-weight: 700; }
 
 
-/* footer */
+/* footer: one line of brand and links, then the small print — the law asks
+   for it, nobody reads it, so it stays small and close */
 .footer {
-  border-top: 1px solid rgba(222, 197, 124, 0.14);
-  padding: 40px clamp(20px, 5vw, 64px) 48px; max-width: 1160px; margin: 0 auto;
+  border-top: 1px solid rgba(222, 197, 124, 0.1);
+  padding: 22px clamp(20px, 5vw, 64px) 26px; max-width: 1160px; margin: 0 auto;
 }
 .footer-top {
-  display: flex; flex-wrap: wrap; gap: 24px; justify-content: space-between;
-  align-items: center; margin-bottom: 28px;
+  display: flex; flex-wrap: wrap; gap: 10px 24px; justify-content: space-between;
+  align-items: center; margin-bottom: 14px;
 }
-.footer .brand-mark { width: 30px; height: 30px; border-radius: 7px; font-size: 14px; }
-/* footer brand uses the same golden vector logo as the header, footer-scaled */
+.footer .brand { gap: 8px; }
 .footer .brand-mark--logo { width: auto; height: auto; }
-.footer .brand-logo { width: 34px; }
-.footer .brand-word { font-size: 17px; }
-.footer-links { display: flex; gap: 22px; flex-wrap: wrap; }
-.footer-links a { font-size: 15px; font-weight: 600; }
-.legal { font-size: 13px; line-height: 1.7; color: var(--ink-faint); }
-.legal a { color: var(--ink-faint); }
-.legal-links { display: flex; gap: 18px; flex-wrap: wrap; margin-top: 14px; }
-.legal-links a { font-size: 13px; color: var(--ink-faint); }
+.footer .brand-logo { width: 26px; }
+.footer .brand-word { font-size: 15px; }
+.footer-links { display: flex; gap: 6px 20px; flex-wrap: wrap; }
+.footer-links a, .footer-links .footer-link-btn {
+  font: inherit; font-size: 14px; font-weight: 600; color: var(--ink-soft);
+  background: none; border: 0; padding: 0; cursor: pointer;
+  transition: color 160ms ease;
+}
+.footer-links a:hover, .footer-links .footer-link-btn:hover { color: var(--accent); }
+.legal {
+  display: flex; flex-wrap: wrap; margin: 0;
+  font-size: 11.5px; line-height: 1.6; color: color-mix(in srgb, var(--ink-faint) 80%, transparent);
+}
+/* the dot trails its item, so a wrapped line never starts with one */
+.legal > :not(:last-child)::after { content: "·"; margin: 0 7px; color: color-mix(in srgb, var(--ink-faint) 50%, transparent); }
+.legal a { color: inherit; text-decoration: none; }
+.legal a:hover { color: var(--ink-soft); text-decoration: underline; text-underline-offset: 2px; }
+.legal-links { margin-top: 2px; }
 
 /* ============ dice overlay ============ */
 #dice-overlay {
@@ -1012,10 +1022,6 @@ html { scroll-padding-top: 84px; }
 @media (prefers-reduced-motion: reduce) { .mark::after { animation: none !important; } }
 
 /* ============ team dialog (js/dialogs.js) ============ */
-.footer-link-btn {
-  font: inherit; color: var(--accent); background: none; border: 0; padding: 0; cursor: pointer;
-}
-.footer-link-btn:hover { color: var(--accent-bright); }
 .team-dialog {
   width: min(1040px, calc(100vw - 32px)); max-height: calc(100vh - 48px);
   padding: clamp(24px, 4vw, 48px) clamp(16px, 3vw, 40px);
