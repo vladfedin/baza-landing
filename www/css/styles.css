@@ -1121,6 +1121,10 @@ html { scroll-padding-top: 84px; }
 .table-card:hover .table-card__img img { transform: scale(1.04); }
 .table-card__body { display: flex; flex-direction: column; gap: 8px; padding: 14px 16px 18px; flex: 1; }
 .table-card__marks { display: flex; flex-wrap: wrap; gap: 6px; }
+/* the marks lead to the contest page, scrolled to this table's verdict */
+a.table-card__marks { width: fit-content; border-radius: 8px; transition: filter 160ms ease; }
+a.table-card__marks:hover { filter: brightness(1.18); }
+a.table-card__marks:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 .tmark {
   --hue: #6b6b78;
   display: inline-flex; align-items: center; gap: 5px; height: 22px; padding: 0 9px; border-radius: 999px;
