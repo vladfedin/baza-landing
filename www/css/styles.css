@@ -802,11 +802,11 @@ html { scroll-padding-top: 84px; }
    system on top, title in the middle, master / time / seats / price below.
    White text over the cover in both themes, as in the app. */
 /* a wrapping row: four cards fill it, fewer stay centred at their size */
-.games-row {
-  display: flex; flex-wrap: wrap; justify-content: center;
-  gap: clamp(12px, 1.6vw, 20px);
-}
-.games-row > .game-card { flex: 1 1 200px; max-width: 250px; }
+/* upcoming games: a deck of three portrait cards (js/deck.js), as the tables;
+   the view is narrower so three portraits stay a sensible height */
+.games-row { --deck-per: 3; display: flex; flex-wrap: nowrap; justify-content: flex-start; }
+.games-row > .game-card { flex: 0 0 calc((100% - (var(--deck-per) - 1) * var(--deck-gap)) / var(--deck-per)); max-width: none; }
+#live .deck-view { max-width: 960px; margin: 0 auto; }
 .game-card {
   position: relative; display: flex; flex-direction: column;
   aspect-ratio: 2 / 3; border-radius: 18px; overflow: hidden;
@@ -857,11 +857,7 @@ html { scroll-padding-top: 84px; }
 }
 .live-token img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-/* narrower screens: the games become a deck (js/deck.js), as the reviews */
-@media (max-width: 900px) {
-  .games-row { --deck-per: 2; flex-wrap: nowrap; justify-content: flex-start; }
-  .games-row > .game-card { flex: 0 0 calc((100% - (var(--deck-per) - 1) * var(--deck-gap)) / var(--deck-per)); max-width: none; }
-}
+@media (max-width: 900px) { .games-row { --deck-per: 2; } }
 @media (max-width: 560px) {
   .games-row { --deck-per: 1; }
   #live .deck-view { max-width: 300px; margin: 0 auto; }   /* one portrait card, not a poster */

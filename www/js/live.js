@@ -22,7 +22,7 @@
   var LOCAL = /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
   var API = LOCAL ? '' : APP;
   var UTM = 'utm_source=rolebaza.ru&utm_medium=landing&utm_content=live';
-  var MAX_GAMES = 4;
+  var MAX_GAMES = 6;   // a deck of three on view (js/deck.js), like the tables
 
   function getJson(path) {
     return fetch(API + path, { credentials: 'omit' }).then(function (r) {
