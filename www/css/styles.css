@@ -290,26 +290,26 @@ a.brand-word:hover, a.brand:hover .brand-word { color: var(--accent-bright); }
 .section-sub { font-size: 18px; color: var(--ink-serif); }
 
 /* advantages — four vertical tier-style columns */
-.adv-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; align-items: stretch; }
-.adv-card {
+.perk-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; align-items: stretch; }
+.perk-card {
   /* dark wash so cards read over the video */
   background: var(--wash-bg); border: none; border-radius: 16px;
   padding: clamp(12px, 1.8vh, 20px) 16px;
   display: flex; flex-direction: column; align-items: center; text-align: center; gap: 8px;
   transition: transform .2s ease;
 }
-.adv-card:hover { transform: none; box-shadow: none; }
-.adv-icon {
+.perk-card:hover { transform: none; box-shadow: none; }
+.perk-icon {
   width: clamp(58px, 7vh, 78px); height: clamp(58px, 7vh, 78px); border-radius: 50%;
   border: 1.5px solid rgba(222, 197, 124, 0.35);
   background: radial-gradient(circle at 50% 32%, rgba(222, 197, 124, 0.16), rgba(222, 197, 124, 0.03) 72%);
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0; margin-bottom: 4px;
 }
-.adv-icon svg { display: block; }
-.adv-title-row { display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap; }
-/* min-height fits up to two lines so every .adv-text starts on the same guideline */
-.adv-title {
+.perk-icon svg { display: block; }
+.perk-title-row { display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap; }
+/* min-height fits up to two lines so every .perk-text starts on the same guideline */
+.perk-title {
   font-size: clamp(18px, 1.3vw, 21px); font-weight: 800; color: var(--ink-title);
   line-height: 1.2; min-height: 2.4em;
   display: flex; align-items: center; justify-content: center;
@@ -319,9 +319,11 @@ a.brand-word:hover, a.brand:hover .brand-word { color: var(--accent-bright); }
   border: 1px solid rgba(222, 197, 124, 0.4); border-radius: 999px; padding: 3px 10px;
   letter-spacing: 0.04em; white-space: nowrap; flex-shrink: 0;
 }
-.adv-text { font-size: 15px; line-height: 1.5; color: var(--ink-body); }
-@media (max-width: 1000px) { .adv-grid { grid-template-columns: 1fr 1fr; } }
-@media (max-width: 560px)  { .adv-grid { grid-template-columns: 1fr; } }
+/* the advantages are «perk-*», not «adv-*»: ad-block lists hide «.adv-text»
+   (EasyList/RuAdList generic rule) — the descriptions vanished under AdBlock */
+.perk-text { font-size: 15px; line-height: 1.5; color: var(--ink-body); }
+@media (max-width: 1000px) { .perk-grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 560px)  { .perk-grid { grid-template-columns: 1fr; } }
 
 /* ===== allies ("Союзники") — every ally visible at once, drawn as the app
    draws a participation level (shared/types/mark-look.ts, kind
@@ -406,7 +408,7 @@ a.brand-word:hover, a.brand:hover .brand-word { color: var(--accent-bright); }
      bottom gap) — balanced + tighter to reclaim vertical space */
   margin: clamp(16px, 3vh, 32px) 0;
 }
-.hero-inner .adv-grid { margin-bottom: clamp(12px, 2.2vh, 22px); }
+.hero-inner .perk-grid { margin-bottom: clamp(12px, 2.2vh, 22px); }
 .hero-headtext {
   display: flex; flex-direction: column; align-items: flex-start;
   gap: 4px; text-align: left; max-width: 720px;
@@ -415,14 +417,14 @@ a.brand-word:hover, a.brand:hover .brand-word { color: var(--accent-bright); }
   .hero-head { flex-direction: column; }
   .hero-headtext { align-items: center; text-align: center; }
 }
-.hero-advhead { margin: 0; }
-.hero-advhead .kicker { margin-bottom: 6px; }
-.hero-advhead h2 { font-size: clamp(20px, 2.6vw, 30px); margin: 0; }
+.hero-perkhead { margin: 0; }
+.hero-perkhead .kicker { margin-bottom: 6px; }
+.hero-perkhead h2 { font-size: clamp(20px, 2.6vw, 30px); margin: 0; }
 /* legibility: this content now sits directly on the video (no card fills) */
 .hero-inner h1,
-.hero-advhead .kicker,
-.hero-advhead h2,
-.adv-title, .adv-text,
+.hero-perkhead .kicker,
+.hero-perkhead h2,
+.perk-title, .perk-text,
 .partners-kicker {
   text-shadow: 0 1px 3px rgba(0,0,0,0.6), 0 2px 16px rgba(0,0,0,0.45);
 }
