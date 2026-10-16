@@ -11,6 +11,9 @@
     first time it is on screen, each press of a [data-goal] element. Batched
     and sent with navigator.sendBeacon (text/plain — no CORS preflight; the
     answer is not read), so a press that leaves the page is not lost.
+  - «Создать стол» asks «чистый стол или стол с подсказками» unless the
+    visitor already had the training table (cookie rb_trained, set by beta).
+    The question is on only while #start-choice carries data-training="on".
 */
 (function () {
   'use strict';
@@ -19,6 +22,7 @@
   var LOCAL = /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
   var ENDPOINT = (LOCAL ? '' : APP) + '/api/landing/events';
   var MARK = 'rb_lv';
+  var TRAINED = 'rb_trained';
   var MARK_DAYS = 90;
   var UTM = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'];
   /* magicorp-vtt shared/types/landing-funnel.ts LANDING_SECTIONS, by element id. */
@@ -113,11 +117,23 @@
     try { var u = new URL(href, location.href); return (u.host + u.pathname).slice(0, 100); } catch (e) { return null; }
   }
 
+  // «Создать стол»: the question, unless the training table was already had.
+  function askBeforeStart(link, e) {
+    var dialog = document.getElementById('start-choice');
+    if (!dialog || dialog.getAttribute('data-training') !== 'on' || typeof dialog.showModal !== 'function') return;
+    if (readCookie(TRAINED)) return;
+    e.preventDefault();
+    var clean = dialog.querySelector('[data-goal="start_clean"]');
+    if (clean) clean.setAttribute('href', link.getAttribute('href'));
+    dialog.showModal();
+  }
+
   document.addEventListener('click', function (e) {
     var el = e.target.closest && e.target.closest('[data-goal]');
     if (!el) return;
     var goal = el.getAttribute('data-goal');
     push({ name: 'landing_cta_clicked', goal: goal, target: targetOf(el) }, true);
+    if (goal === 'cta_play') askBeforeStart(el, e);
   }, true);
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', watchSections);

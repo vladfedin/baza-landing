@@ -934,6 +934,27 @@
 </main>
 
 <!-- ============ TEAM: a dialog, opened from the footer (js/dialogs.js) ============ -->
+<!-- «Создать стол» for a visitor who has not had the training table yet
+     (js/funnel.js). data-training="on" while the training table is published. -->
+<dialog class="team-dialog start-dialog" id="start-choice" data-training="on" aria-labelledby="start-choice-title">
+    <button class="team-dialog__close" type="button" data-dialog-close aria-label="Закрыть">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><use href="img/icons.svg#close"/></svg>
+    </button>
+    <div class="section-head">
+        <h2 id="start-choice-title">Какой стол открыть?</h2>
+    </div>
+    <div class="start-choice">
+        <a class="start-choice__option" href="https://beta.rolebaza.ru/?start=game&amp;utm_source=rolebaza.ru&amp;utm_medium=landing&amp;utm_content=start_choice" data-goal="start_clean">
+            <b>Чистый стол</b>
+            <span>Сразу к игре: пустой стол и все инструменты.</span>
+        </a>
+        <a class="start-choice__option start-choice__option--guided" href="https://beta.rolebaza.ru/?start=training&amp;utm_source=rolebaza.ru&amp;utm_medium=landing&amp;utm_content=start_choice" data-goal="start_guided">
+            <b>Стол с подсказками</b>
+            <span>Короткое приключение: стол сам покажет, что где, — а история останется вам, чтобы сыграть с друзьями.</span>
+        </a>
+    </div>
+</dialog>
+
 <dialog class="team-dialog" id="team-dialog" aria-labelledby="team-dialog-title">
     <button class="team-dialog__close" type="button" data-dialog-close aria-label="Закрыть">
         <svg viewBox="0 0 24 24" aria-hidden="true"><use href="img/icons.svg#close"/></svg>
