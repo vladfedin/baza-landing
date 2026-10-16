@@ -1185,8 +1185,9 @@ html { scroll-padding-top: 84px; }
    author's profile cover full-bleed, marks on top, the brightest lines in the
    middle, the author at the bottom; turned over — the whole text */
 .review-deck { max-width: 1160px; margin: 0 auto; }
-/* the view clips the row at its sides only, so the cards' shadows stay whole */
-.review-deck__view { clip-path: inset(-48px 0); }
+/* the view clips the row at its sides only (the cards off view must not widen
+   the page), so the cards' shadows above and below stay whole */
+.review-deck__view { overflow-x: clip; overflow-y: visible; }
 .review-deck__row {
   --deck-per: 3; --deck-gap: clamp(14px, 2vw, 22px);
   position: relative; display: flex; gap: var(--deck-gap);
