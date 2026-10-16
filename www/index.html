@@ -67,8 +67,11 @@
     <!-- characters at the blocks' sides, a line each in a speech bubble -->
     <script defer src="js/speech-bubble.js"></script>
 
-    <!-- the masters' reviews: a deck of cards, a click turns one over -->
-    <script defer src="js/review-deck.js"></script>
+    <!-- rows shown a page at a time: the reviews; games and tutorials on narrow screens -->
+    <script defer src="js/deck.js"></script>
+
+    <!-- a review card turns over to its whole text -->
+    <script defer src="js/review-card.js"></script>
 
     <!-- dialogs opened by [data-dialog-open] (the team) -->
     <script defer src="js/dialogs.js"></script>
@@ -511,8 +514,8 @@
              arrows, a swipe or the wheel slide the row to the next page; a click
              on a card turns it over to its whole text -->
         <div class="review-deck" data-deck>
-            <div class="review-deck__view">
-                <div class="review-deck__row" data-deck-row aria-live="polite">
+            <div class="deck-view">
+                <div class="review-deck__row deck-row" data-deck-row aria-live="polite">
                     <article class="review-card user-plaque" data-user="4amka">
                         <div class="review-card__inner">
                             <div class="review-card__face review-card__front">
@@ -665,7 +668,7 @@
                     </article>
                 </div>
             </div>
-            <div class="review-deck__bar">
+            <div class="deck-bar">
                 <button class="deck-nav" type="button" data-deck-prev aria-label="Предыдущие отзывы">
                     <svg viewBox="0 0 24 24" aria-hidden="true"><use href="img/icons.svg#lu-chevron-left"/></svg>
                 </button>
