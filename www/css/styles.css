@@ -1319,3 +1319,68 @@ html { scroll-padding-top: 84px; }
   pointer-events: none;
   background: linear-gradient(180deg, rgba(6, 5, 4, 0) 0%, rgba(6, 5, 4, 0.6) 50%, rgba(6, 5, 4, 0) 100%);
 }
+
+/* ============ speech bubbles ============
+   Reusable character speech bubble. Any .speaker[data-speech] element gets a
+   bubble injected by js/speech-bubble.js that pops in when scrolled into view
+   (and re-pops on each re-entry). It floats above the speaker's head with a
+   downward tail. Add more speakers by reusing the markup with a different
+   data-speech line — no CSS/JS changes needed. */
+.speaker { position: relative; }
+.speech-bubble {
+  position: absolute; left: 50%; top: 0;
+  transform: translateX(-50%) rotate(-3deg);   /* slight comic-panel tilt */
+  width: max-content; max-width: min(230px, 96%);
+  pointer-events: none; z-index: 3;
+}
+.speech-bubble__body {
+  position: relative;
+  padding: 11px 17px; border-radius: 18px;
+  background: #fdf3dc;                 /* bright comic cream — pops off the dark panel */
+  border: 3px solid #1c1610;          /* thick ink outline */
+  color: #1c1610;                     /* bold dark ink text */
+  font-weight: 800;
+  text-transform: uppercase; letter-spacing: 0.3px;
+  font-size: clamp(13px, 1.05vw, 16px); line-height: 1.2; text-align: center;
+  /* hard, un-blurred offset shadow — the classic comic drop */
+  box-shadow: 4px 4px 0 var(--accent), 4px 4px 0 3px #1c1610;
+  opacity: 0; transform: scale(0.4) translateY(8px);   /* hidden until in view */
+  transform-origin: 30% bottom;
+}
+/* tail: an ink-outlined diamond poking out the bottom, at the left third */
+.speech-bubble__body::after {
+  content: ""; position: absolute; left: 30%; bottom: -11px;
+  width: 18px; height: 18px; transform: translateX(-50%) rotate(45deg);
+  background: #fdf3dc;
+  border-right: 3px solid #1c1610;
+  border-bottom: 3px solid #1c1610;
+}
+.speech-bubble.is-visible .speech-bubble__body {
+  animation: speech-pop 0.45s cubic-bezier(0.34, 1.8, 0.64, 1) forwards;
+}
+@keyframes speech-pop {
+  0%   { opacity: 0; transform: scale(0.4) translateY(8px); }
+  60%  { opacity: 1; transform: scale(1.08) translateY(0); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .speech-bubble.is-visible .speech-bubble__body { animation: none; opacity: 1; transform: none; }
+}
+
+/* ============ characters at the blocks' sides (wide screens only) ============
+   A character stands outside the 1160 px column, at a block's left or right,
+   with a line in a speech bubble (js/speech-bubble.js). Below 1500 px there
+   is no room beside the column — they are not shown. */
+.side-char { display: none; }
+@media (min-width: 1500px) {
+  .side-char {
+    display: block; position: absolute; bottom: clamp(40px, 6vw, 80px); z-index: 1;
+    width: min(210px, calc((100vw - 1160px) / 2 - 28px));
+    padding-top: 84px;                  /* room for the bubble above the head */
+    pointer-events: none;
+  }
+  .side-char--left  { right: calc(100% + 14px); }
+  .side-char--right { left: calc(100% + 14px); }
+  .side-char--wide  { width: min(260px, calc((100vw - 1160px) / 2 - 28px)); }
+  .side-char img { display: block; width: 100%; height: auto; filter: drop-shadow(0 22px 44px rgba(0, 0, 0, 0.55)); }
+}
