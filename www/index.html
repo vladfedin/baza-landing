@@ -61,6 +61,9 @@
     <!-- the visitor's die throw answered with a roll card, as in the table's chat -->
     <script defer src="js/roll-card.js"></script>
 
+    <!-- the finale's campfire comes alive on hover -->
+    <script defer src="js/campfire.js"></script>
+
     <!-- FAQ: an answer slides open softly -->
     <script defer src="js/faq.js"></script>
 
@@ -903,8 +906,12 @@
         <div class="finale-cta">
             <a class="btn-create btn-create--big" href="https://beta.rolebaza.ru/tutorials?utm_source=rolebaza.ru&amp;utm_medium=landing&amp;utm_content=finale" data-goal="training_open"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="img/icons.svg#lu-graduation-cap"/></svg>Учебный стол</a>
         </div>
+        <!-- the campfire comes alive on hover (js/campfire.js): light, the fire's core, sparks -->
         <figure class="campfire">
-            <img src="img/campfire.avif" alt="Партия приключенцев отдыхает у костра" loading="lazy" width="960" height="600">
+            <span class="campfire__stage">
+                <img src="img/campfire.avif" alt="Партия приключенцев отдыхает у костра" loading="lazy" width="960" height="600">
+                <canvas class="campfire__fx" aria-hidden="true"></canvas>
+            </span>
         </figure>
     </section>
 
