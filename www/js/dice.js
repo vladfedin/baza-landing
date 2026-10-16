@@ -5,8 +5,12 @@
   click — from our own server (paths on #dice-overlay, versioned with the rest
   of the page's assets). Clicks made while they load are kept and played after.
 
-  A click throws one more d20, up to five on the table; the sixth clears them
-  all, and the count starts over (window.diceOverlay.press).
+  A click throws one more d20, up to five on the table; the sixth throws the
+  promo cube — the app's logo die (P, masks, scroll and three random glyphs on
+  the brand set's black and gold, faces from js/promo-die-glyphs.js, generated
+  by tools/promo-die-glyphs.mjs); the seventh clears them all, and the count
+  starts over (window.diceOverlay.press). Without the glyphs the sixth is one
+  more d20.
 */
 (function () {
   'use strict';
@@ -27,6 +31,11 @@
     state = 'loading';
     loadScript(host.getAttribute('data-three'))
       .then(function () { return loadScript(host.getAttribute('data-cannon')); })
+      // the promo cube's faces: optional — without them the sixth throw is a d20
+      .then(function () {
+        var glyphs = host.getAttribute('data-promo-glyphs');
+        return glyphs ? loadScript(glyphs).catch(function () {}) : null;
+      })
       .then(function () { return loadDiceFonts(host); })
       .then(function () {
         startDice();
@@ -358,7 +367,7 @@ function startDice() {
 
     // pull any die that ended up outside the new bounds back in
     for (const d of dice) {
-      const m = CONFIG.dieRadius;
+      const m = d.radius || CONFIG.dieRadius;
       if (Math.abs(d.body.position.x) > worldW / 2 - m) {
         d.body.position.x = THREE.MathUtils.clamp(d.body.position.x, -worldW / 2 + m, worldW / 2 - m);
         d.body.wakeUp();
@@ -465,7 +474,7 @@ function startDice() {
     if (drag) {
       pointerRay(e);
       if (raycaster.ray.intersectPlane(dragPlane, hitPoint)) {
-        const m = CONFIG.dieRadius;
+        const m = drag.die.radius || CONFIG.dieRadius;
         hitPoint.x = THREE.MathUtils.clamp(hitPoint.x, -worldW / 2 + m, worldW / 2 - m);
         hitPoint.y = THREE.MathUtils.clamp(hitPoint.y, floorY + m, ceilY - m);
         drag.target = hitPoint.clone();
@@ -643,9 +652,88 @@ function startDice() {
     d.thrown = true;                 // its face is announced like a visitor's throw
     return d;
   }
+
+  /* ---------- the promo cube: the app's logo die (the sixth throw) ---------- */
+  // Same faces as the app's easter-egg die (logo-die-glyphs.ts): P, masks and
+  // scroll plus three random glyphs, gold on the brand set's black with gold
+  // corner caps. A toy: its face is not announced as a roll.
+  const PROMO = window.RB_PROMO_DIE || null;
+  const PROMO_HALF = CONFIG.dieRadius * 0.9;
+  function promoFace(key) {
+    const S = 256;
+    const cv = document.createElement('canvas');
+    cv.width = cv.height = S;
+    const ctx = cv.getContext('2d');
+    ctx.fillStyle = CONFIG.dieColorNew;
+    ctx.fillRect(0, 0, S, S);
+    const c = S * 0.2;                                   // gold caps on the four corners
+    [[0, 0, 1, 1], [S, 0, -1, 1], [0, S, 1, -1], [S, S, -1, -1]].forEach(([x, y, sx, sy]) => {
+      ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x + sx * c, y); ctx.lineTo(x + sx * c / 2, y + sy * c / 2); ctx.closePath();
+      ctx.fillStyle = '#d6a63c'; ctx.fill();
+      ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x + sx * c / 2, y + sy * c / 2); ctx.lineTo(x, y + sy * c); ctx.closePath();
+      ctx.fillStyle = '#f0c962'; ctx.fill();
+      ctx.beginPath(); ctx.moveTo(x + sx * c, y); ctx.lineTo(x, y + sy * c);
+      ctx.strokeStyle = '#8a6418'; ctx.lineWidth = S * 0.014; ctx.stroke();
+    });
+    const gold = CONFIG.digitNew;
+    ctx.save();
+    if (key === 'p') {                                    // Gotfridus «P», tilted as on the logo
+      const k = (S * 0.44) / 1700;
+      ctx.translate(S / 2, S / 2); ctx.rotate(-32 * Math.PI / 180); ctx.scale(k, -k); ctx.translate(-700, -750);
+      ctx.fillStyle = gold; ctx.fill(new Path2D(PROMO.p));
+    } else if (key === 'drama') {                         // the masks: 96-grid fills, Y flipped
+      const k = (S * 0.5) / 96, pad = S * 0.25;
+      ctx.translate(pad, pad); ctx.scale(k, k); ctx.translate(0, 96); ctx.scale(0.1, -0.1);
+      ctx.fillStyle = gold;
+      PROMO.masks.forEach(d => ctx.fill(new Path2D(d)));
+    } else {                                              // Lucide-grid strokes: the scroll and the pool
+      const els = key === 'scroll' ? PROMO.scroll.map(d => ({ tag: 'path', d })) : PROMO.pool[key];
+      const k = (S * 0.45) / 24, pad = S * 0.275;
+      ctx.translate(pad, pad); ctx.scale(k, k);
+      ctx.strokeStyle = gold; ctx.lineWidth = 1.7; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+      els.forEach(el => {
+        if (el.tag === 'path') ctx.stroke(new Path2D(el.d));
+        else { ctx.beginPath(); ctx.arc(el.cx, el.cy, el.r, 0, Math.PI * 2); ctx.stroke(); }
+      });
+    }
+    ctx.restore();
+    const tex = new THREE.CanvasTexture(cv);
+    tex.anisotropy = 4;
+    return new THREE.MeshStandardMaterial({ map: tex, roughness: 0.42, metalness: 0.2 });
+  }
+  function promoKeys() {
+    const pool = Object.keys(PROMO.pool);
+    const keys = ['p', 'drama', 'scroll'];
+    while (keys.length < 6 && pool.length) keys.push(pool.splice(Math.floor(Math.random() * pool.length), 1)[0]);
+    for (let i = keys.length - 1; i > 0; i--) {           // the faces land in random places on the cube
+      const j = Math.floor(Math.random() * (i + 1)); const t = keys[i]; keys[i] = keys[j]; keys[j] = t;
+    }
+    return keys;
+  }
+  const promoGeo = PROMO ? new THREE.BoxGeometry(PROMO_HALF * 2, PROMO_HALF * 2, PROMO_HALF * 2) : null;
+  const promoShape = PROMO ? new CANNON.Box(new CANNON.Vec3(PROMO_HALF, PROMO_HALF, PROMO_HALF)) : null;
+  function throwPromoDie() {
+    const mesh = new THREE.Mesh(promoGeo, promoKeys().map(promoFace));
+    mesh.castShadow = CONFIG.shadows;
+    scene.add(mesh);
+    const body = new CANNON.Body({ mass: 1.6, material: diceMat, shape: promoShape });
+    body.angularDamping = 0.12;
+    body.linearDamping = 0.02;
+    body.allowSleep = true;
+    body.sleepSpeedLimit = 0.55;
+    body.sleepTimeLimit = 0.8;
+    world.addBody(body);
+    const d = { mesh, body, thrown: false, extra: true, promo: true, radius: PROMO_HALF * Math.sqrt(3) };
+    dice.push(d);
+    dropIn(d);
+    return d;
+  }
+
   function press() {
-    const out = dice.filter(d => d.mesh.visible && !d.shrinking).length;
-    if (out >= MAX_DICE) resetDice();
+    const out = dice.filter(d => d.mesh.visible && !d.shrinking);
+    if (out.length > MAX_DICE || out.some(d => d.promo)) resetDice();       // the seventh clears
+    else if (out.length === MAX_DICE && PROMO) throwPromoDie();             // the sixth: the promo cube
+    else if (out.length >= MAX_DICE) resetDice();
     else throwOneDie();
   }
 
