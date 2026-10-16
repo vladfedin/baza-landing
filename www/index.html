@@ -277,19 +277,23 @@
             </ul>
             <!-- a master's own words, drawn as the table draws a person
                  (js/marks.js refills it from the app's public profile) -->
-            <figure class="user-plaque" data-user="master-zloboust">
-                <a class="user-plaque__who" href="https://beta.rolebaza.ru/user/master-zloboust?utm_source=rolebaza.ru&amp;utm_medium=landing&amp;utm_content=testimonial" data-goal="testimonial_profile">
-                    <span class="user-plaque__avatar" aria-hidden="true">М</span>
-                    <span class="user-plaque__id">
-                        <span class="user-plaque__name">Мастер Злобоуст</span>
-                        <span class="user-plaque__alias">@master-zloboust</span>
-                    </span>
-                </a>
-                <div class="user-plaque__marks" data-marks-only="participation achievement" data-marks-max="3" hidden></div>
-                <blockquote class="user-plaque__said">
-                    <p>Ролебаза уникальна. Я смог провести кампейн бесплатно. Тут есть все чтобы я как мастер мог собрать пацанов и сыграть просто так.</p>
-                </blockquote>
-            </figure>
+            <!-- the same card as the masters' reviews, front only: nothing to turn over -->
+            <article class="review-card review-card--single user-plaque" data-user="master-zloboust">
+                <div class="review-card__inner">
+                    <div class="review-card__face review-card__front">
+                        <img class="review-card__cover user-plaque__cover" alt="" hidden>
+                        <blockquote class="review-card__gist"><p>Ролебаза уникальна. Я смог провести кампейн бесплатно. Тут есть все чтобы я как мастер мог собрать пацанов и сыграть просто так.</p></blockquote>
+                        <a class="user-plaque__who" href="https://beta.rolebaza.ru/user/master-zloboust?utm_source=rolebaza.ru&amp;utm_medium=landing&amp;utm_content=testimonial">
+                            <span class="user-plaque__avatar" aria-hidden="true">М</span>
+                            <span class="user-plaque__id">
+                                <span class="user-plaque__name">Мастер Злобоуст</span>
+                                <span class="user-plaque__alias">@master-zloboust</span>
+                            </span>
+                        </a>
+                        <div class="user-plaque__marks review-card__marks" data-marks-only="participation achievement" data-marks-max="3" hidden></div>
+                    </div>
+                </div>
+            </article>
         </div>
     </section>
 
