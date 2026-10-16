@@ -1355,7 +1355,7 @@ html { scroll-padding-top: 84px; }
   text-transform: uppercase; letter-spacing: 0.3px;
   font-size: clamp(13px, 1.05vw, 16px); line-height: 1.2; text-align: center;
   /* hard, un-blurred offset shadow — the classic comic drop */
-  box-shadow: 4px 4px 0 var(--accent), 4px 4px 0 3px #1c1610;
+  box-shadow: 4px 4px 0 var(--bubble-rim, var(--accent)), 4px 4px 0 3px #1c1610;
   opacity: 0; transform: scale(0.4) translateY(8px);   /* hidden until in view */
   transform-origin: 30% bottom;
 }
@@ -1388,11 +1388,25 @@ html { scroll-padding-top: 84px; }
   .side-char {
     display: block; position: absolute; bottom: clamp(40px, 6vw, 80px); z-index: 1;
     width: min(210px, calc((100vw - 1160px) / 2 - 28px));
-    padding-top: 84px;                  /* room for the bubble above the head */
     pointer-events: none;
   }
+  /* as in a comic: the bubble stands above the head and grows upward with its
+     text; the tail points down at the speaker */
+  .side-char .speech-bubble {
+    top: auto; bottom: calc(100% + 14px); left: 50%;
+    transform: translateX(-50%) rotate(-2deg);
+    max-width: none; width: min(240px, calc((100vw - 1160px) / 2 + 40px));
+  }
+  .side-char--left .speech-bubble { transform: translateX(-42%) rotate(-2deg); }
+  .side-char--right .speech-bubble { transform: translateX(-58%) rotate(2deg); }
+  .side-char .speech-bubble__body { transform-origin: 50% 100%; font-size: 14px; }
+  .side-char .speech-bubble__body::after { left: 50%; }
   .side-char--left  { right: calc(100% + 14px); }
   .side-char--right { left: calc(100% + 14px); }
   .side-char--wide  { width: min(260px, calc((100vw - 1160px) / 2 - 28px)); }
   .side-char img { display: block; width: 100%; height: auto; filter: drop-shadow(0 22px 44px rgba(0, 0, 0, 0.55)); }
 }
+/* a rare line is rimmed in the rare mark's blue, the rarest in its orange */
+.speech-bubble--rare { --bubble-rim: #0070dd; }
+.speech-bubble--legendary { --bubble-rim: #ff8000; }
+.speech-bubble--legendary .speech-bubble__body { box-shadow: 4px 4px 0 var(--bubble-rim), 4px 4px 0 3px #1c1610, 0 0 18px rgba(255, 128, 0, 0.45); }
