@@ -132,6 +132,9 @@ h1, h2, h3 { margin: 0; color: var(--ink-strong); font-weight: 800; }
 .brand-mark--logo { width: auto; height: auto; border: none; border-radius: 0; }
 .brand-logo { display: block; width: 40px; height: auto; }
 .brand-word { font-weight: 700; font-size: 20px; color: var(--ink-title); }   /* as the app writes its name */
+/* the name leads to the app (the cube beside it throws a die) */
+a.brand-word, a.brand { color: var(--ink-title); transition: color 160ms ease; }
+a.brand-word:hover, a.brand:hover .brand-word { color: var(--accent-bright); }
 .topnav { display: flex; align-items: center; gap: 26px; }  /* desktop breathing room (mobile drops to 12px below) */
 .nav-icon {
   display: inline-flex; width: 20px; height: 20px;
