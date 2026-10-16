@@ -867,7 +867,7 @@ html { scroll-padding-top: 84px; }
 .team-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(16px, 2.4vw, 32px); }
 .founder { margin: 0; text-align: center; }
 .founder__photo {
-  position: relative; aspect-ratio: 3 / 4; max-width: 240px; margin: 0 auto 16px;
+  position: relative; aspect-ratio: 3 / 4; max-width: 200px; margin: 0 auto 14px;
   border-radius: 16px; overflow: hidden;
   box-shadow: 0 0 0 1.5px color-mix(in srgb, var(--accent) 55%, transparent), 0 12px 30px rgba(0,0,0,0.35);
 }
@@ -877,8 +877,19 @@ html { scroll-padding-top: 84px; }
 .founder:hover .founder__fire, .founder:focus-within .founder__fire { opacity: 1; }
 .founder__role { font-size: 12px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); }
 .founder__name { font-size: 20px; font-weight: 800; color: var(--ink-title); margin: 4px 0 8px; }
-.founder__about { font-size: 14px; line-height: 1.5; color: var(--ink-body); }
-.founder__about a { text-decoration: underline; text-underline-offset: 2px; }
+/* the bio as on the old site: short lines, a gold diamond each */
+.founder__bio { list-style: none; margin: 4px 0 0; padding: 0; display: grid; gap: 5px; font-size: 13.5px; line-height: 1.45; color: var(--ink-body); text-align: left; }
+.founder__bio li { position: relative; padding-left: 14px; }
+.founder__bio li::before {
+  content: ""; position: absolute; left: 1px; top: 0.6em; width: 5px; height: 5px;
+  background: var(--accent); transform: rotate(45deg); opacity: 0.8;
+}
+.founder__channel {
+  display: inline-flex; align-items: center; gap: 7px; margin-top: 10px;
+  font-size: 13px; font-weight: 700; color: var(--accent);
+}
+.founder__channel svg { width: 15px; height: 15px; flex: 0 0 auto; }
+.founder__channel:hover { color: var(--accent-bright); }
 .founder__quote {
   margin: 12px auto 0; max-width: 34ch;
   font-size: 15px; line-height: 1.5; color: var(--ink-serif);
