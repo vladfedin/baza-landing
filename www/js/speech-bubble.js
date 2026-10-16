@@ -21,14 +21,14 @@
   under prefers-reduced-motion it shows without the pop.
 
   A click on the figure pokes it: it flinches and says another line. Poked
-  more than 12 times in one unbroken run (no pause over POKE_GAP) lasting over
+  more than 6 times in one unbroken run (no pause over POKE_GAP) lasting over
   5 seconds, it snaps back with an angry line on a red bubble, and the count
   starts over.
 */
 document.addEventListener('DOMContentLoaded', function () {
   'use strict';
   var WEIGHT = { common: 10, rare: 3, legendary: 1 };
-  var POKE_GAP = 1200, POKE_COUNT = 12, POKE_SPAN = 5000;
+  var POKE_GAP = 1200, POKE_COUNT = 6, POKE_SPAN = 5000;
   var speakers = [].slice.call(document.querySelectorAll('.speaker'));
   if (!speakers.length) return;
 
