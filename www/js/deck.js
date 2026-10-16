@@ -11,9 +11,9 @@
   The row's --deck-per (CSS) says how many cards a page holds; 0 or none turns
   the deck off at that width — the row keeps its own layout, every card is
   live, the bar hides. On, the arrows, a sideways swipe or the mouse wheel
-  over the deck slide the row a page left or right; it runs first to last (the
-  last page filled from the end) and at either end the wheel scrolls the page
-  again. Dots mark which cards are out; cards off view are inert. Cards may
+  over the deck slide the row by one card, unhurried, so the eye follows what
+  comes in; it runs first to last and at either end the wheel scrolls the page
+  again. A press during a slide retargets it at once; the wheel waits for it. Dots mark which cards are out; cards off view are inert. Cards may
   arrive later (js/live.js fills a row from the API) — the deck picks them up.
 
   Before a slide the deck fires "deck:move" on itself; a card that holds the
@@ -22,7 +22,7 @@
 */
 (function () {
   'use strict';
-  var SLIDE_MS = 520;
+  var SLIDE_MS = 820;   // the row's slide (css .deck-row): slow enough for the eye to follow
 
   function wire(deck) {
     var row = deck.querySelector('[data-deck-row]');
@@ -63,20 +63,22 @@
       prev.disabled = !canTurn(-1);
       next.disabled = !canTurn(1);
     }
-    function turnPage(dir) {
-      if (busy || !canTurn(dir)) return;
+    var busyTimer = null;
+    function step(dir) {
+      if (!canTurn(dir)) return;
       deck.dispatchEvent(new CustomEvent('deck:move'));
-      start = Math.max(0, Math.min(start + dir * perPage(), lastStart()));
+      start = Math.max(0, Math.min(start + dir, lastStart()));
       busy = true;
       place();
-      setTimeout(function () { busy = false; }, SLIDE_MS);
+      clearTimeout(busyTimer);
+      busyTimer = setTimeout(function () { busy = false; }, SLIDE_MS);
     }
-    prev.addEventListener('click', function () { turnPage(-1); });
-    next.addEventListener('click', function () { turnPage(1); });
+    prev.addEventListener('click', function () { step(-1); });
+    next.addEventListener('click', function () { step(1); });
 
-    // the wheel slides the pages; past either end it is the page's again. A
-    // slide swallows the wheel's tail for a moment, so a trackpad's inertia
-    // neither slides two pages nor scrolls away.
+    // the wheel slides card by card; past either end it is the page's again.
+    // A slide swallows the wheel's tail until it ends, so a trackpad's inertia
+    // neither slides on nor scrolls away.
     var acc = 0, quietUntil = 0;
     deck.addEventListener('wheel', function (e) {
       if (!perPage()) return;
@@ -89,7 +91,7 @@
       e.preventDefault();
       if (busy || now < quietUntil) return;
       acc += d;
-      if (Math.abs(acc) >= 40) { acc = 0; turnPage(dir); quietUntil = now + SLIDE_MS; }
+      if (Math.abs(acc) >= 40) { acc = 0; step(dir); quietUntil = now + SLIDE_MS; }
     }, { passive: false });
 
     // a sideways swipe on a touch screen slides it too
@@ -98,7 +100,7 @@
     row.addEventListener('pointerup', function (e) {
       if (sx === null) return;
       var dx = e.clientX - sx, dy = e.clientY - sy; sx = null;
-      if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) turnPage(dx < 0 ? 1 : -1);
+      if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) step(dx < 0 ? 1 : -1);
     });
     row.addEventListener('pointercancel', function () { sx = null; });
 
