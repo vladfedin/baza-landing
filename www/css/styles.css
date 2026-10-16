@@ -31,7 +31,8 @@
 /* the app's font (client/src/styles/global.css): the system UI face */
 :root {
   --font-app: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif,
+    'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji';
 }
 * { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; background: var(--bg); }
@@ -1326,6 +1327,8 @@ a.table-card__marks:focus-visible { outline: 2px solid var(--accent); outline-of
   color: var(--accent); text-shadow: none;
 }
 .review-card__gist p { margin: 0; font-size: 18px; line-height: 1.45; font-weight: 700; }
+/* Эмодзи картинкой (img/emoji/): в строку, по высоте буквы. */
+img.emoji { display: inline-block; width: 1.15em; height: 1.15em; vertical-align: -0.2em; margin: 0 0.05em; }
 .review-card .user-plaque__who { color: #fff; }
 .review-card .user-plaque__avatar { width: 40px; height: 40px; font-size: 16px; }
 .review-card .user-plaque__name { font-size: 15px; }
