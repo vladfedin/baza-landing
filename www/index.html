@@ -665,7 +665,39 @@
         <div class="faq-list">
             <details class="faq-item">
                 <summary>Сколько это стоит?</summary>
-                <div class="faq-answer">Целую кампанию можно провести бесплатно: 500 МБ для карт и музыки, комнаты и сеансы без ограничений, голосовая связь, музыка, бой, листы персонажей, кубики, туман войны, материалы сообщества. Уровни участия «Продвинутый», «Эксперт» и «Мастер» добавляют место, видеосвязь и инструменты для тех, кто водит много.</div>
+                <div class="faq-answer">
+                    <p>Целую кампанию можно провести бесплатно: 500 МБ для карт и музыки, комнаты и сеансы без ограничений, голосовая связь, музыка, бой, листы персонажей, кубики, туман войны, материалы сообщества. Уровни участия добавляют место, видеосвязь и инструменты для тех, кто водит много, — и оплачивают бесплатный доступ остальным.</p>
+                    <!-- a small copy of the app's /pricing; js/live.js refreshes the
+                         paid tiers from /api/billing/plans, these are the fallback -->
+                    <div class="price-mini" data-plans>
+                        <div class="price-tier price-tier--basic">
+                            <div class="price-tier__name">Базовый</div>
+                            <div class="price-tier__price">Бесплатно</div>
+                            <div class="price-tier__sub">навсегда</div>
+                            <ul><li>Хранилище 500 МБ</li><li>Файл до 20 МБ</li><li>5 сохранённых игр</li></ul>
+                        </div>
+                        <div class="price-tier price-tier--advanced" data-plan="advanced">
+                            <div class="price-tier__name">Продвинутый</div>
+                            <div class="price-tier__price" data-plan-year>2 700 ₽</div>
+                            <div class="price-tier__sub">в год · <span data-plan-month>270 ₽</span> в месяц</div>
+                            <ul><li data-plan-storage>Хранилище 3 ГБ</li><li data-plan-file>Файл до 50 МБ</li><li data-plan-saves>20 сохранённых игр</li></ul>
+                        </div>
+                        <div class="price-tier price-tier--expert" data-plan="expert">
+                            <div class="price-tier__flag">Рекомендуем</div>
+                            <div class="price-tier__name">Эксперт</div>
+                            <div class="price-tier__price" data-plan-year>4 200 ₽</div>
+                            <div class="price-tier__sub">в год · <span data-plan-month>470 ₽</span> в месяц</div>
+                            <ul><li data-plan-storage>Хранилище 6 ГБ</li><li data-plan-file>Файл до 100 МБ</li><li data-plan-saves>100 сохранённых игр</li></ul>
+                        </div>
+                        <div class="price-tier price-tier--master" data-plan="master">
+                            <div class="price-tier__name">Мастер</div>
+                            <div class="price-tier__price" data-plan-year>7 200 ₽</div>
+                            <div class="price-tier__sub">в год · <span data-plan-month>720 ₽</span> в месяц</div>
+                            <ul><li data-plan-storage>Хранилище 10 ГБ</li><li data-plan-file>Файл до 250 МБ</li><li data-plan-saves>Сохранённые игры без ограничений</li></ul>
+                        </div>
+                    </div>
+                    <a class="price-mini__more" href="https://beta.rolebaza.ru/pricing?utm_source=rolebaza.ru&amp;utm_medium=landing&amp;utm_content=faq_pricing" data-goal="pricing_open">Все возможности уровней</a>
+                </div>
             </details>
             <details class="faq-item">
                 <summary>Игрокам нужно регистрироваться?</summary>

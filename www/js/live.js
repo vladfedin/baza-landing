@@ -1,6 +1,6 @@
 /*
-  Live Rolebaza on the landing: upcoming games and the app's tutorials,
-  straight from its public API.
+  Live Rolebaza on the landing: upcoming games, the app's tutorials and the
+  prices of its participation tiers, straight from its public API.
   ---------------------------------------------------------------------------
   Same data the app's home page shows, drawn the way the app draws it: a game
   is a portrait card (ScheduledGameCard.tsx) — cover, type and system on top,
@@ -232,7 +232,43 @@
     }).catch(function () {});
   }
 
-  function start() { loadGames(); loadTutorials(); }
+  // «Сколько это стоит?» — the paid tiers, as the app's /pricing shows them
+  // (PricingPage.tsx: storage named in decimal units of binary sizes, so the
+  // label promises a little less than the account gets). The markup holds
+  // the same figures as a fallback.
+  function rub(v) { return new Intl.NumberFormat('ru-RU').format(Math.round(Number(v))) + '\u00a0₽'; }
+  function size(bytes) {
+    var mib = Math.round(bytes / 1048576);
+    return mib >= 1024 && mib % 1024 === 0 ? (mib / 1024) + ' ГБ' : mib + ' МБ';
+  }
+  function saves(n) {
+    if (n == null) return 'Сохранённые игры без ограничений';
+    var m10 = n % 10, m100 = n % 100;
+    var word = m10 === 1 && m100 !== 11 ? 'сохранённая игра'
+      : m10 >= 2 && m10 <= 4 && (m100 < 12 || m100 > 14) ? 'сохранённые игры' : 'сохранённых игр';
+    return n + ' ' + word;
+  }
+  function loadPlans() {
+    var box = document.querySelector('[data-plans]');
+    if (!box) return;
+    getJson('/api/billing/plans').then(function (res) {
+      (res.plans || []).forEach(function (p) {
+        var card = box.querySelector('[data-plan="' + p.id + '"]');
+        if (!card) return;
+        var offers = p.offers || [];
+        var year = offers.filter(function (o) { return o.cadence === 'year'; })[0];
+        var month = offers.filter(function (o) { return o.cadence === 'month'; })[0];
+        var set = function (sel, text) { var el = card.querySelector(sel); if (el && text) el.textContent = text; };
+        if (year) set('[data-plan-year]', rub(year.priceRub));
+        if (month) set('[data-plan-month]', rub(month.priceRub));
+        if (p.maxStorageBytes) set('[data-plan-storage]', 'Хранилище ' + size(p.maxStorageBytes));
+        if (p.maxFileSizeBytes) set('[data-plan-file]', 'Файл до ' + size(p.maxFileSizeBytes));
+        set('[data-plan-saves]', saves(p.maxGameSnapshots));
+      });
+    }).catch(function () { /* the figures in the markup stay */ });
+  }
+
+  function start() { loadGames(); loadTutorials(); loadPlans(); }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
   else start();
 })();
