@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Лендинг — первые буквы заголовков и вес: варианты</title>
+<style>
+@font-face { font-family: 'Init Cormorant'; src: url('fonts/cormorant-caps.woff') format('woff'); font-display: swap; }
+@font-face { font-family: 'Init Ruslan'; src: url('fonts/ruslan-caps.woff') format('woff'); font-display: swap; }
+@font-face { font-family: 'Init Yeseva'; src: url('fonts/yeseva-caps.woff') format('woff'); font-display: swap; }
+:root {
+  --accent: #dec57c; --accent-bright: #f2dc98; --bg: #191410; --ink: #e8e0d2; --ink-strong: #f7efdf; --ink-title: #f3ead9;
+  --ink-serif: #c9ba9a; --ink-faint: #a2957e; --card-bg: #241d14; --wash-bg: rgba(20,15,10,0.54);
+  --font-app: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+  --init: #D4AF60; --hw: 700; --init-scale: 1;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--font-app); }
+.panel { position: sticky; top: 0; z-index: 10; background: rgba(25,20,16,.94); backdrop-filter: blur(6px); border-bottom: 1px solid #3a2f22; padding: 12px 24px; display: grid; gap: 10px; }
+.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.row > .lbl { width: 150px; font-size: 12px; color: var(--ink-faint); text-transform: uppercase; letter-spacing: .12em; }
+.chip { border: 1px solid #4a3c2b; background: #221b13; color: var(--ink); border-radius: 999px; padding: 5px 12px; font: 13px var(--font-app); cursor: pointer; display: inline-flex; gap: 7px; align-items: center; transition: border-color 160ms, background 160ms; }
+.chip:hover { border-color: #7a6440; }
+.chip[aria-pressed="true"] { border-color: var(--accent); background: #3a2e1b; }
+.chip:focus-visible { outline: 2px solid var(--accent-bright); outline-offset: 2px; }
+.sw { width: 14px; height: 14px; border-radius: 50%; border: 1px solid rgba(255,255,255,.25); }
+.presets { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; padding: 18px 24px 0; max-width: 1240px; margin: 0 auto; }
+.preset { cursor: pointer; border: 1px solid #3a2f22; border-radius: 12px; background: var(--card-bg); padding: 12px; text-align: left; color: var(--ink); font: inherit; transition: border-color 160ms; }
+.preset:hover { border-color: #7a6440; }
+.preset[aria-pressed="true"] { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+.preset b { display: block; font-size: 12px; color: var(--ink-faint); letter-spacing: .12em; text-transform: uppercase; margin-bottom: 6px; font-weight: 600; }
+.preset .demo { font-size: 22px; line-height: 1.15; color: var(--ink-title); }
+
+.hero { position: relative; margin: 18px auto 0; max-width: 1240px; border-radius: 16px; overflow: hidden; min-height: 330px; display: grid; place-items: center; text-align: center; }
+.hero img.bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: brightness(.55); }
+.hero .in { position: relative; padding: 40px 24px; }
+h1, h2 { margin: 0; color: var(--ink-strong); font-weight: var(--hw); }
+h1 { font-size: clamp(28px, 4vw, 50px); line-height: 1.08; text-wrap: balance; }
+.asks { margin-top: 18px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+.ask { border: 1px solid rgba(222,197,124,.35); background: rgba(20,15,10,.5); color: var(--ink); border-radius: 999px; padding: 7px 14px; font-size: 14px; }
+.perks { position: relative; display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 22px; max-width: 980px; }
+.perk { background: var(--wash-bg); border-radius: 14px; padding: 12px; }
+.perk .t { font-size: 18px; font-weight: var(--hw); color: var(--ink-title); }
+.perk .x { font-size: 13px; color: var(--ink-serif); margin-top: 4px; }
+
+.sections { max-width: 1240px; margin: 0 auto; padding: 10px 24px 60px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 0 40px; }
+.sh { text-align: center; padding: 34px 0 10px; border-bottom: 1px solid #2c241a; }
+.kicker { font-size: 13px; font-weight: 700; letter-spacing: .22em; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; }
+.sh h2 { font-size: clamp(26px, 3vw, 40px); }
+.sh p { color: var(--ink-serif); margin: 10px 0 0; font-size: 17px; }
+
+/* первая буква */
+.ini { color: var(--init); display: inline-block; font-size: calc(1em * var(--init-scale)); line-height: 1; }
+body.shape-cormorant .ini { font-family: 'Init Cormorant', serif; font-weight: 700; font-size: 1.3em; transform: translateY(.06em); }
+body.shape-ruslan .ini { font-family: 'Init Ruslan', serif; font-weight: 400; font-size: 1.12em; }
+body.shape-yeseva .ini { font-family: 'Init Yeseva', serif; font-weight: 400; font-size: 1.12em; }
+body.shape-gradient .ini { background: linear-gradient(180deg, #fff3c4 0%, var(--init) 55%, #8a5a1c 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+body.no-h2 .sh h2 .ini, body.no-h2 .perk .ini, body.no-h2 .preset .ini2 { color: inherit; font-family: inherit; font-size: inherit; background: none; -webkit-text-fill-color: currentColor; transform: none; }
+body.no-perks .perk .ini { color: inherit; font-family: inherit; font-size: inherit; background: none; -webkit-text-fill-color: currentColor; transform: none; }
+.note { max-width: 1240px; margin: 0 auto; padding: 0 24px 40px; color: var(--ink-faint); font-size: 13px; }
+@media (max-width: 900px) { .sections, .perks { grid-template-columns: 1fr; } .presets { grid-template-columns: repeat(2, 1fr); } .row > .lbl { width: 100%; } }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body class="shape-color">
+<div class="panel">
+  <div class="row"><span class="lbl">Цвет первых букв</span><span id="colors"></span></div>
+  <div class="row"><span class="lbl">Форма первой буквы</span><span id="shapes"></span></div>
+  <div class="row"><span class="lbl">Вес заголовков</span><span id="weights"></span></div>
+  <div class="row"><span class="lbl">Где выделять</span><span id="where"></span></div>
+</div>
+
+<div class="presets" id="presets"></div>
+
+<div class="hero">
+  <img class="bg" src="../../www/img/hero-poster.webp" alt="">
+  <div class="in">
+    <h1>Виртуальный стол для<br><span class="ini">Н</span>астольных <span class="ini">Р</span>олевых <span class="ini">И</span>гр</h1>
+    <div class="asks"><span class="ask">Что такое НРИ?</span><span class="ask">Что такое виртуальный стол?</span></div>
+    <div class="perks" id="perks"></div>
+  </div>
+</div>
+
+<div class="sections" id="sections"></div>
+<p class="note">Мок лендинга: первые буквы заголовков и вес шрифта. Цвета — из тем стола (аркана, пергамент) и палитры сайта; буквицы — шрифты с кириллицей под OFL (Cormorant Garamond, Ruslan Display, Yeseva One), урезанные до заглавных букв: 5–9 КБ каждый. Тексты перков — новые.</p>
+
+<script>
+'use strict';
+const COLORS = [
+  ['#D4AF60', 'Золото стола (аркана)'], ['#f2dc98', 'Светлое золото сайта'], ['#c4873a', 'Янтарь (пергамент)'],
+  ['#af6c28', 'Медь'], ['#d98a4a', 'Огонь костра'], ['#b8402f', 'Кирпич — как сейчас'],
+];
+const SHAPES = [['color', 'Только цвет'], ['bigger', 'Цвет и крупнее'], ['cormorant', 'Буквица: Cormorant'], ['ruslan', 'Буквица: Руслан'], ['yeseva', 'Буквица: Есева'], ['gradient', 'Золотой градиент']];
+const SHAPE_CSS = { cormorant: "font-family:'Init Cormorant',serif;font-weight:700;font-size:1.3em", ruslan: "font-family:'Init Ruslan',serif;font-weight:400;font-size:1.12em", yeseva: "font-family:'Init Yeseva',serif;font-weight:400;font-size:1.12em", bigger: 'font-size:1.18em' };
+const WEIGHTS = [[800, '800 — как сейчас'], [700, '700'], [600, '600'], [500, '500']];
+const WHERE = [['all', 'H1, разделы и перки'], ['no-perks', 'H1 и разделы'], ['no-h2', 'Только НРИ в H1']];
+const PRESETS = [
+  { name: 'А · как сейчас', c: '#b8402f', s: 'color', w: 800, where: 'no-h2' },
+  { name: 'Б · золото, тише', c: '#D4AF60', s: 'color', w: 700, where: 'no-perks' },
+  { name: 'В · янтарь крупнее', c: '#c4873a', s: 'bigger', w: 600, where: 'no-perks' },
+  { name: 'Г · буквица Cormorant', c: '#D4AF60', s: 'cormorant', w: 600, where: 'no-perks' },
+  { name: 'Е · буквица Руслан', c: '#c4873a', s: 'ruslan', w: 600, where: 'no-perks' },
+  { name: 'Д · золотой градиент', c: '#e6c565', s: 'gradient', w: 700, where: 'all' },
+];
+const SECTIONS = [
+  ['Дары', 'Можно водить бесплатно', 'Целую кампанию — без подписки'], ['Возможности', 'Арсенал Мастера', 'Всё для игры в одном окне'],
+  ['Приключения', 'Готовые столы', 'Работы мастеров для конкурса «Готовое приключение»'], ['Первопроходцы', 'Что говорят мастера', ''],
+  ['Настоящее', 'Предстоящие игры', ''], ['Обучение', 'Учебные материалы и гайды', ''],
+  ['Откровения', 'Вопросы и ответы', ''], ['Приключения', 'Заходите и пробуйте!', ''],
+];
+const PERKS = [['Быстро', 'Игра открывается в один клик, игроки заходят по ссылке — без регистрации и установки.'],
+  ['В браузере', 'На компьютере и с телефона. Ничего не нужно настраивать.'],
+  ['Для России', '…и не только. На русском, сервера с низким пингом, без проблем с подключением.'],
+  ['Голос и видео', 'Связь прямо за столом, без сторонних программ.']];
+const st = { c: '#D4AF60', s: 'color', w: 700, where: 'no-perks' };
+const ini = (t) => `<span class="ini">${t[0]}</span>${t.slice(1)}`;
+
+document.getElementById('sections').innerHTML = SECTIONS.map(([k, h, p]) => `<div class="sh"><div class="kicker">${k}</div><h2>${ini(h)}</h2>${p ? `<p>${p}</p>` : ''}</div>`).join('');
+document.getElementById('perks').innerHTML = PERKS.map(([t, x]) => `<div class="perk"><div class="t">${ini(t)}</div><div class="x">${x}</div></div>`).join('');
+
+function chips(id, list, key, extra) {
+  document.getElementById(id).innerHTML = list.map(([v, n]) => `<button class="chip" data-k="${key}" data-v="${v}" aria-pressed="${String(st[key]) === String(v)}">${extra ? extra(v) : ''}${n}</button>`).join('');
+}
+function presetDemo(p) {
+  const col = p.s === 'gradient' ? `background:linear-gradient(180deg,#fff3c4,${p.c} 55%,#8a5a1c);-webkit-background-clip:text;background-clip:text;color:transparent` : `color:${p.c}`;
+  const font = SHAPE_CSS[p.s] || '';
+  const L = (x) => `<span style="${col};${font}">${x}</span>`;
+  return `<div class="demo" style="font-weight:${p.w}">${L('Н')}астольных ${L('Р')}олевых ${L('И')}гр</div>`;
+}
+function apply() {
+  document.documentElement.style.setProperty('--init', st.c);
+  document.documentElement.style.setProperty('--hw', st.w);
+  document.documentElement.style.setProperty('--init-scale', st.s === 'bigger' ? 1.18 : 1);
+  document.body.className = 'shape-' + st.s + (st.where === 'all' ? '' : ' ' + st.where) + (st.where === 'no-h2' ? ' no-perks' : '');
+  chips('colors', COLORS, 'c', (v) => `<span class="sw" style="background:${v}"></span>`);
+  chips('shapes', SHAPES, 's'); chips('weights', WEIGHTS, 'w'); chips('where', WHERE, 'where');
+  document.getElementById('presets').innerHTML = PRESETS.map((p, i) => `<button class="preset" data-p="${i}" aria-pressed="${p.c === st.c && p.s === st.s && p.w === st.w && p.where === st.where}"><b>${p.name}</b>${presetDemo(p)}</button>`).join('');
+}
+document.addEventListener('click', (e) => {
+  const c = e.target.closest('.chip'); if (c) { const k = c.dataset.k; st[k] = k === 'w' ? Number(c.dataset.v) : c.dataset.v; apply(); }
+  const p = e.target.closest('.preset'); if (p) { const x = PRESETS[Number(p.dataset.p)]; Object.assign(st, { c: x.c, s: x.s, w: x.w, where: x.where }); apply(); }
+});
+apply();
+</script>
+</body>
+</html>
