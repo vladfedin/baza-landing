@@ -919,7 +919,7 @@
              made yet (the next task) — until it is published in the vault, the
              button opens the app's tutorials -->
         <div class="finale-cta">
-            <a class="btn-create btn-create--big" href="https://beta.rolebaza.ru/tutorials?utm_source=rolebaza.ru&amp;utm_medium=landing&amp;utm_content=finale" data-goal="training_open"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="img/icons.svg#lu-graduation-cap"/></svg>Учебный стол</a>
+            <a class="btn-create btn-create--big" href="https://beta.rolebaza.ru/?start=training&amp;utm_source=rolebaza.ru&amp;utm_medium=landing&amp;utm_content=finale" data-goal="training_open"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="img/icons.svg#lu-graduation-cap"/></svg>Учебный стол</a>
         </div>
         <!-- the campfire comes alive on hover (js/campfire.js): light, the fire's core, sparks -->
         <figure class="campfire">
@@ -935,9 +935,9 @@
 
 <!-- ============ TEAM: a dialog, opened from the footer (js/dialogs.js) ============ -->
 <!-- «Создать стол» for a visitor who has not had the training table yet
-     (js/funnel.js). Off until the training table is published on prod: then
-     data-training="on" (TRAINING_PUBLICATION_SLUG set on the app). -->
-<dialog class="team-dialog start-dialog" id="start-choice" data-training="off" aria-labelledby="start-choice-title">
+     (js/funnel.js). data-training="on" while the app has the training table
+     (TRAINING_PUBLICATION_SLUG on the prod API); "off" hides the question. -->
+<dialog class="team-dialog start-dialog" id="start-choice" data-training="on" aria-labelledby="start-choice-title">
     <button class="team-dialog__close" type="button" data-dialog-close aria-label="Закрыть">
         <svg viewBox="0 0 24 24" aria-hidden="true"><use href="img/icons.svg#close"/></svg>
     </button>
