@@ -851,16 +851,12 @@ html { scroll-padding-top: 84px; }
 
 /* narrower screens: the games become a deck (js/deck.js), as the reviews */
 @media (max-width: 900px) {
-  .games-row {
-    /* start-aligned: centring a scroller pushes its first cards out of reach */
-    display: flex; flex-wrap: nowrap; justify-content: flex-start;
-    overflow-x: auto; scroll-snap-type: x mandatory;
-    scroll-padding-inline: clamp(20px, 5vw, 64px);   /* snap to the padded edge, not the screen edge */
-    margin: 0 calc(-1 * clamp(20px, 5vw, 64px)); padding: 4px clamp(20px, 5vw, 64px) 12px;
-    scrollbar-width: none;
-  }
-  .games-row::-webkit-scrollbar { display: none; }
-  .games-row > .game-card { flex: 0 0 min(62vw, 240px); max-width: none; scroll-snap-align: start; }
+  .games-row { --deck-per: 2; flex-wrap: nowrap; justify-content: flex-start; }
+  .games-row > .game-card { flex: 0 0 calc((100% - (var(--deck-per) - 1) * var(--deck-gap)) / var(--deck-per)); max-width: none; }
+}
+@media (max-width: 560px) {
+  .games-row { --deck-per: 1; }
+  #live .deck-view { max-width: 300px; margin: 0 auto; }   /* one portrait card, not a poster */
 }
 @media (prefers-reduced-motion: reduce) {
   .game-card { transition: none; }
@@ -1185,19 +1181,16 @@ a.table-card__marks:focus-visible { outline: 2px solid var(--accent); outline-of
 .tut-card__media.is-playing .tut-card__play { opacity: 0; }
 .tut-card__body { padding: 12px 14px 16px; display: flex; flex-direction: column; gap: 6px; }
 .tut-card__title { margin: 0; font-size: 16px; line-height: 1.3; color: var(--ink-title); }
-/* narrower screens: the tutorials become a deck (js/deck.js), as the reviews */
 .tut-card__text {
   margin: 0; font-size: 13.5px; line-height: 1.5;
   display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
 }
+/* narrower screens: the tutorials become a deck (js/deck.js), as the reviews */
 @media (max-width: 900px) {
-  .tutorials-row {
-    display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: clamp(20px, 5vw, 64px);
-    margin: 0 calc(-1 * clamp(20px, 5vw, 64px)); padding: 4px clamp(20px, 5vw, 64px) 12px; scrollbar-width: none;
-  }
-  .tutorials-row::-webkit-scrollbar { display: none; }
-  .tut-card { flex: 0 0 min(78vw, 300px); scroll-snap-align: start; }
+  .tutorials-row { --deck-per: 2; display: flex; align-items: stretch; }
+  .tutorials-row > .tut-card { flex: 0 0 calc((100% - (var(--deck-per) - 1) * var(--deck-gap)) / var(--deck-per)); }
 }
+@media (max-width: 560px) { .tutorials-row { --deck-per: 1; } }
 @media (prefers-reduced-motion: reduce) { .tut-card { transition: none; } .tut-card:hover { transform: none; } }
 
 /* ============ reviews: masters of the guild (js/marks.js) ============ */

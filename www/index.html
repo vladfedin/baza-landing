@@ -694,7 +694,19 @@
                 <h2>Предстоящие игры</h2>
                 <div class="serif section-sub">Мастера уже собирают партии</div>
             </div>
-            <div class="games-row" id="live-games"></div>
+            <!-- on a narrow screen the games are a deck (js/deck.js), like the reviews -->
+            <div data-deck>
+                <div class="deck-view"><div class="games-row deck-row" id="live-games" data-deck-row></div></div>
+                <div class="deck-bar" hidden>
+                    <button class="deck-nav" type="button" data-deck-prev aria-label="Предыдущие игры">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><use href="img/icons.svg#lu-chevron-left"/></svg>
+                    </button>
+                    <div class="deck-dots" data-deck-dots aria-hidden="true"></div>
+                    <button class="deck-nav" type="button" data-deck-next aria-label="Следующие игры">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><use href="img/icons.svg#lu-chevron-right"/></svg>
+                    </button>
+                </div>
+            </div>
             <a class="live-more" href="https://beta.rolebaza.ru/?utm_source=rolebaza.ru&amp;utm_medium=landing&amp;utm_content=live" data-goal="games_all">Все игры</a>
         </div>
     </section>
@@ -706,7 +718,19 @@
             <h2>Туторы: как устроен стол</h2>
             <div class="serif section-sub">Короткие видео и шаги — от сетки на карте до боя</div>
         </div>
-        <div class="tutorials-row" id="live-tutorials"></div>
+        <!-- on a narrow screen the tutorials are a deck (js/deck.js), like the reviews -->
+        <div data-deck>
+            <div class="deck-view"><div class="tutorials-row deck-row" id="live-tutorials" data-deck-row></div></div>
+            <div class="deck-bar" hidden>
+                <button class="deck-nav" type="button" data-deck-prev aria-label="Предыдущие туторы">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><use href="img/icons.svg#lu-chevron-left"/></svg>
+                </button>
+                <div class="deck-dots" data-deck-dots aria-hidden="true"></div>
+                <button class="deck-nav" type="button" data-deck-next aria-label="Следующие туторы">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><use href="img/icons.svg#lu-chevron-right"/></svg>
+                </button>
+            </div>
+        </div>
         <div class="live-more-row">
             <a class="live-more" href="guides/start-table/">Стол за две минуты</a>
             <a class="live-more" href="https://beta.rolebaza.ru/tutorials?utm_source=rolebaza.ru&amp;utm_medium=landing&amp;utm_content=tutorials" data-goal="tutorials_all">Все туторы</a>
