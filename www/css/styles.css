@@ -560,7 +560,7 @@ html { scroll-padding-top: 84px; }
 .footer-links a:hover, .footer-links .footer-link-btn:hover { color: var(--accent); }
 .legal {
   display: flex; flex-wrap: wrap; margin: 0;
-  font-size: 11.5px; line-height: 1.6; color: color-mix(in srgb, var(--ink-faint) 80%, transparent);
+  font-size: 11.5px; line-height: 1.6; color: color-mix(in srgb, var(--ink-faint) 55%, transparent);
 }
 .legal__love { color: var(--ink-soft); }
 .legal__love svg { width: 12px; height: 12px; vertical-align: -1px; color: var(--accent-red); fill: currentColor; }
@@ -1276,7 +1276,6 @@ html { scroll-padding-top: 84px; }
   color: var(--ink-title); background: none; font-weight: 600;
   box-shadow: inset 0 -0.45em 0 color-mix(in srgb, var(--accent) 22%, transparent);
 }
-.review-card__back .user-plaque__shots { margin-top: 0; }
 .review-card__foot {
   display: flex; align-items: center; justify-content: space-between; gap: 10px;
   padding-top: 12px; border-top: 1px solid color-mix(in srgb, var(--accent) 20%, transparent);
@@ -1306,8 +1305,6 @@ html { scroll-padding-top: 84px; }
 .reviews-join a:hover { color: var(--accent-bright); }
 .user-plaque__text p { margin: 0; font-size: 15.5px; line-height: 1.55; color: var(--ink-title); }
 .user-plaque__text p + p { margin-top: 8px; }
-.user-plaque__shots { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; }
-.user-plaque__shots img { width: 100%; height: auto; aspect-ratio: 2 / 1; object-fit: cover; border-radius: 8px; display: block; }
 
 .kicker-link { color: inherit; text-decoration: none; border-bottom: 1px solid color-mix(in srgb, var(--accent) 45%, transparent); transition: border-color .16s ease, color .16s ease; }
 .kicker-link:hover { color: var(--accent-bright); border-color: var(--accent-bright); }
