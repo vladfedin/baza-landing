@@ -935,8 +935,9 @@
 
 <!-- ============ TEAM: a dialog, opened from the footer (js/dialogs.js) ============ -->
 <!-- «Создать стол» for a visitor who has not had the training table yet
-     (js/funnel.js). data-training="on" while the training table is published. -->
-<dialog class="team-dialog start-dialog" id="start-choice" data-training="on" aria-labelledby="start-choice-title">
+     (js/funnel.js). Off until the training table is published on prod: then
+     data-training="on" (TRAINING_PUBLICATION_SLUG set on the app). -->
+<dialog class="team-dialog start-dialog" id="start-choice" data-training="off" aria-labelledby="start-choice-title">
     <button class="team-dialog__close" type="button" data-dialog-close aria-label="Закрыть">
         <svg viewBox="0 0 24 24" aria-hidden="true"><use href="img/icons.svg#close"/></svg>
     </button>
