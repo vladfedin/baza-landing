@@ -562,10 +562,12 @@ html { scroll-padding-top: 84px; }
   display: flex; flex-wrap: wrap; margin: 0;
   font-size: 11.5px; line-height: 1.6; color: color-mix(in srgb, var(--ink-faint) 80%, transparent);
 }
+.legal__love { color: var(--ink-soft); }
+.legal__love svg { width: 12px; height: 12px; vertical-align: -1px; color: var(--accent-red); fill: currentColor; }
 /* the dot trails its item, so a wrapped line never starts with one */
-.legal > :not(:last-child)::after { content: "·"; margin: 0 7px; color: color-mix(in srgb, var(--ink-faint) 50%, transparent); }
+.legal > :not(:last-child)::after { content: "·"; margin: 0 7px; color: color-mix(in srgb, var(--ink-faint) 35%, transparent); }
 .legal a { color: inherit; text-decoration: none; }
-.legal a:hover { color: var(--ink-soft); text-decoration: underline; text-underline-offset: 2px; }
+.legal a:hover { color: var(--ink-faint); text-decoration: underline; text-underline-offset: 2px; }
 .legal-links { margin-top: 2px; }
 
 /* ============ dice overlay ============ */
