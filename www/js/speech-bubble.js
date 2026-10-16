@@ -20,14 +20,17 @@
   orange. The bubble's place and look live in css/styles.css (.speech-bubble);
   under prefers-reduced-motion it shows without the pop.
 
-  A click on the figure pokes it: it flinches and says another line. Poked
-  more than 6 times in one unbroken run (no pause over POKE_GAP), it snaps
-  back with an angry line on a red bubble, and the count starts over.
+  A click on the figure pokes it: it flinches and says another line. So does
+  rubbing it — every turn of the pointer back and forth over the figure (a
+  swing of RUB_SWING px or more) counts as a poke. Poked more than 6 times in
+  one unbroken run (no pause over POKE_GAP), it gets angry: from then on every
+  line is an angry one on a red bubble, also when it scrolls back into view,
+  until it is left alone for CALM_MS.
 */
 document.addEventListener('DOMContentLoaded', function () {
   'use strict';
   var WEIGHT = { common: 10, rare: 3, legendary: 1 };
-  var POKE_GAP = 1200, POKE_COUNT = 6;
+  var POKE_GAP = 1200, POKE_COUNT = 6, CALM_MS = 5000, RUB_SWING = 24;
   var speakers = [].slice.call(document.querySelectorAll('.speaker'));
   if (!speakers.length) return;
 
@@ -61,10 +64,26 @@ document.addEventListener('DOMContentLoaded', function () {
     bubble.appendChild(body);
     el.appendChild(bubble);
     var s = { el: el, lines: lines, angry: angry, bubble: bubble, body: body, last: null,
-              lastPoke: 0, pokes: 0 };
+              lastPoke: 0, pokes: 0, angryUntil: 0 };
     state.push(s);
     var figure = el.querySelector('img');
-    if (figure) figure.addEventListener('click', function () { poke(s, figure); });
+    if (!figure) return;
+    figure.addEventListener('click', function () { poke(s, figure); });
+    // Rubbing: a poke on every turn of the pointer's horizontal travel.
+    var rub = { x: null, dir: 0, from: 0 };
+    figure.addEventListener('pointermove', function (e) {
+      if (rub.x === null) { rub.x = rub.from = e.clientX; return; }
+      var dx = e.clientX - rub.x;
+      rub.x = e.clientX;
+      if (!dx) return;
+      var dir = dx > 0 ? 1 : -1;
+      if (dir !== rub.dir) {
+        if (rub.dir && Math.abs(e.clientX - rub.from) >= RUB_SWING) poke(s, figure);
+        rub.dir = dir;
+        rub.from = e.clientX - dx;
+      }
+    });
+    figure.addEventListener('pointerleave', function () { rub.x = null; rub.dir = 0; });
   });
   function show(s, line) {
     s.last = line;
@@ -74,21 +93,19 @@ document.addEventListener('DOMContentLoaded', function () {
     void s.bubble.offsetWidth;                    // replay the pop
     s.bubble.classList.add('is-visible');
   }
-  function say(s) { show(s, pick(s.lines, s.last)); }
+  function isAngry(s) { return s.angry.length > 0 && performance.now() < s.angryUntil; }
+  function say(s) { show(s, pick(isAngry(s) ? s.angry : s.lines, s.last)); }
   function poke(s, figure) {
     var now = performance.now();
     if (now - s.lastPoke > POKE_GAP) s.pokes = 0;
     s.lastPoke = now;
     s.pokes++;
+    // Angry stays angry while it is still being poked.
+    if (isAngry(s) || s.pokes > POKE_COUNT) s.angryUntil = now + CALM_MS;
     figure.classList.remove('is-poked');
     void figure.offsetWidth;
     figure.classList.add('is-poked');
-    if (s.angry.length && s.pokes > POKE_COUNT) {
-      show(s, pick(s.angry, s.last));
-      s.pokes = 0;
-    } else {
-      say(s);
-    }
+    say(s);
   }
 
   if (!('IntersectionObserver' in window)) { state.forEach(say); return; }
