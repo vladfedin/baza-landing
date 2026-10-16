@@ -182,6 +182,17 @@
   // Tutorials of the app (/api/tutorials): cover, title, summary; on a pointer
   // that hovers, the tutorial's preview clip plays over the cover.
   var MAX_TUTORIALS = 6;
+  // Copies of the covers kept with the page (#tutorial-cover-copies): a cover
+  // deleted in the app still shows; the app's one replaces the copy once it
+  // has really loaded.
+  function coverCopies() {
+    var map = {};
+    document.querySelectorAll('#tutorial-cover-copies [data-slug]').forEach(function (li) {
+      map[li.getAttribute('data-slug')] = li.getAttribute('data-copy');
+    });
+    return map;
+  }
+  var COPIES = null;
   var canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches &&
     !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   function tutorialCard(t) {
@@ -190,8 +201,15 @@
     a.setAttribute('data-goal', 'tutorial_open');
     var media = el('div', 'tut-card__media');
     var cover = ownImage(t.coverImageUrl);
-    if (cover) {
-      var img = el('img'); img.src = cover; img.alt = ''; img.loading = 'lazy';
+    var copy = (COPIES || (COPIES = coverCopies()))[t.slug];
+    if (cover || copy) {
+      var img = el('img'); img.alt = ''; img.loading = 'lazy';
+      if (copy) img.src = copy;
+      if (cover) {
+        var probe = new Image();
+        probe.addEventListener('load', function () { img.src = cover; });
+        if (!copy) img.src = cover; else probe.src = cover;
+      }
       media.appendChild(img);
     }
     var clip = ownImage(t.previewVideoUrl);

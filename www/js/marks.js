@@ -18,6 +18,9 @@
   Avatars load only from the app's own storage; a VK / Telegram avatar would
   send the visitor's address to a third party, so such a person's avatar is a
   copy kept in the markup (img/reviews/avatar-*.webp) and stays as it is.
+  Every avatar and cover the app serves also has a copy in the markup: the
+  person may delete or replace the picture, so the app's one takes the copy's
+  place only once it has really loaded.
 */
 (function () {
   'use strict';
@@ -165,11 +168,15 @@
     var coverSrc = ownImage(p.backgroundImageUrl);
     if (cover && coverSrc) {
       var bc = p.backgroundCrop;
-      if (bc && typeof bc.x === 'number' && typeof bc.y === 'number') {
-        cover.style.objectPosition = (bc.x * 100).toFixed(1) + '% ' + (bc.y * 100).toFixed(1) + '%';
-      }
-      cover.addEventListener('load', function () { cover.hidden = false; });
-      cover.src = coverSrc;
+      var probe = new Image();
+      probe.addEventListener('load', function () {
+        if (bc && typeof bc.x === 'number' && typeof bc.y === 'number') {
+          cover.style.objectPosition = (bc.x * 100).toFixed(1) + '% ' + (bc.y * 100).toFixed(1) + '%';
+        }
+        cover.src = coverSrc;
+        cover.hidden = false;
+      });
+      probe.src = coverSrc;
     }
     plaque.querySelectorAll('.user-plaque__name').forEach(function (name) { if (p.displayName) name.textContent = p.displayName; });
     plaque.querySelectorAll('.user-plaque__alias').forEach(function (alias) { if (p.username) alias.textContent = '@' + p.username; });

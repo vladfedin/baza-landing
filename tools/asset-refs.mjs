@@ -13,7 +13,7 @@
 /** Атрибуты, значение которых — путь к файлу. */
 export const FILE_ATTRS = [
   'href', 'src', 'poster',
-  'data-av1', 'data-hevc', 'data-avatar', 'data-three', 'data-cannon',
+  'data-av1', 'data-hevc', 'data-avatar', 'data-three', 'data-cannon', 'data-copy',
   'data-font-digits', 'data-font-brand',
 ];
 
