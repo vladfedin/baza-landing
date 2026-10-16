@@ -434,7 +434,9 @@
             <h2>Готовые столы: открыл — и играй</h2>
             <div class="serif section-sub">Лучшие работы мастеров сообщества — бесплатно в Сокровищнице</div>
         </div>
-        <div class="tables-row">
+        <!-- the contest's seven tables as a deck (js/deck.js): three on view -->
+        <div data-deck>
+            <div class="deck-view"><div class="tables-row deck-row" data-deck-row>
             <article class="table-card">
                 <a class="table-card__img" href="https://beta.rolebaza.ru/vault/rooms/lunnye-yazvy-kompaniya-3?utm_source=rolebaza.ru&amp;utm_medium=landing&amp;utm_content=tables" data-goal="table_open" tabindex="-1" aria-hidden="true">
                     <img src="img/tables/lunnye-yazvy.webp" alt="" loading="lazy" width="800" height="500">
@@ -491,6 +493,55 @@
                     <p class="table-card__story">Трактирщик просит найти шкатулку с древним рецептом эля. Поиски уводят в лес, к разбойникам и следам культа — а из тени за героями кто-то наблюдает.</p>
                 </div>
             </article>
+            <article class="table-card">
+                <a class="table-card__img" href="https://beta.rolebaza.ru/vault/rooms/smert-na-zakate?utm_source=rolebaza.ru&amp;utm_medium=landing&amp;utm_content=tables" data-goal="table_open" tabindex="-1" aria-hidden="true">
+                    <img src="img/tables/smert-na-zakate.webp" alt="" loading="lazy" width="800" height="500">
+                </a>
+                <div class="table-card__body">
+                    <a class="table-card__marks" href="tables-contest/#p-smert-na-zakate" title="Итоги конкурса: почему этот стол">
+                        <span class="tmark tmark--fin"><svg aria-hidden="true"><use href="img/icons.svg#lu-drafting-compass"/></svg>Финалист</span>
+                    </a>
+                    <h3 class="table-card__title"><a href="https://beta.rolebaza.ru/vault/rooms/smert-na-zakate?utm_source=rolebaza.ru&amp;utm_medium=landing&amp;utm_content=tables" data-goal="table_open">Смерть на Закате</a></h3>
+                    <div class="table-card__meta">D&amp;D 5e, ваншот · <a href="https://beta.rolebaza.ru/user/c8013f91-2745-408c-94f5-1d5375dd1c63?utm_source=rolebaza.ru&amp;utm_medium=landing&amp;utm_content=tables">Игорь Апарин</a></div>
+                    <p class="table-card__story">У поселения Дозор Секвой увядают деревья и пропадают люди — там, где когда-то жила зелёная драконица Смерть-на-Закате. Дозор зовёт героев.</p>
+                </div>
+            </article>
+            <article class="table-card">
+                <a class="table-card__img" href="https://beta.rolebaza.ru/vault/rooms/predvestniki?utm_source=rolebaza.ru&amp;utm_medium=landing&amp;utm_content=tables" data-goal="table_open" tabindex="-1" aria-hidden="true">
+                    <img src="img/tables/predvestniki.webp" alt="" loading="lazy" width="800" height="500">
+                </a>
+                <div class="table-card__body">
+                    <a class="table-card__marks" href="tables-contest/#p-predvestniki" title="Итоги конкурса: почему этот стол">
+                        <span class="tmark tmark--fin"><svg aria-hidden="true"><use href="img/icons.svg#lu-drafting-compass"/></svg>Финалист</span>
+                    </a>
+                    <h3 class="table-card__title"><a href="https://beta.rolebaza.ru/vault/rooms/predvestniki?utm_source=rolebaza.ru&amp;utm_medium=landing&amp;utm_content=tables" data-goal="table_open">Предвестники</a></h3>
+                    <div class="table-card__meta">D&amp;D 5e, ваншот · <a href="https://beta.rolebaza.ru/user/5ce726a0-4999-49de-ae09-6987b6d08a8c?utm_source=rolebaza.ru&amp;utm_medium=landing&amp;utm_content=tables">Чуя Морковкин</a></div>
+                    <p class="table-card__story">Магия стала стихией, что превращает живое в чудовищ. В Малых Копях буря разрушила дом кузнеца — разбираться едут агенты Гильдии Упокоения.</p>
+                </div>
+            </article>
+            <article class="table-card">
+                <a class="table-card__img" href="https://beta.rolebaza.ru/vault/rooms/goblinskoe-pivo-2-reliz?utm_source=rolebaza.ru&amp;utm_medium=landing&amp;utm_content=tables" data-goal="table_open" tabindex="-1" aria-hidden="true">
+                    <img src="img/tables/goblinskoe-pivo.webp" alt="" loading="lazy" width="800" height="500">
+                </a>
+                <div class="table-card__body">
+                    <a class="table-card__marks" href="tables-contest/#p-goblinskoe-pivo-2-reliz" title="Итоги конкурса: почему этот стол">
+                        <span class="tmark tmark--fin"><svg aria-hidden="true"><use href="img/icons.svg#lu-drafting-compass"/></svg>Финалист</span>
+                    </a>
+                    <h3 class="table-card__title"><a href="https://beta.rolebaza.ru/vault/rooms/goblinskoe-pivo-2-reliz?utm_source=rolebaza.ru&amp;utm_medium=landing&amp;utm_content=tables" data-goal="table_open">Гоблинское пиво 2</a></h3>
+                    <div class="table-card__meta">D&amp;D 5e · <a href="https://beta.rolebaza.ru/user/a203851a-cd68-4f27-be2b-f9780057ff5c?utm_source=rolebaza.ru&amp;utm_medium=landing&amp;utm_content=tables">Жорж Феанор</a></div>
+                    <p class="table-card__story">На годовщине гоблинской пивоварни «Зелёный котёл» закваска обретает разум и решает подарить городу всеобщее согласие — отняв у всех волю.</p>
+                </div>
+            </article>
+            </div></div>
+            <div class="deck-bar" hidden>
+                <button class="deck-nav" type="button" data-deck-prev aria-label="Предыдущие столы">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><use href="img/icons.svg#lu-chevron-left"/></svg>
+                </button>
+                <div class="deck-dots" data-deck-dots aria-hidden="true"></div>
+                <button class="deck-nav" type="button" data-deck-next aria-label="Следующие столы">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><use href="img/icons.svg#lu-chevron-right"/></svg>
+                </button>
+            </div>
         </div>
         <div class="live-more-row">
             <a class="live-more" href="tables-contest/">Итоги конкурса</a>

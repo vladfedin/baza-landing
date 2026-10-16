@@ -1123,7 +1123,9 @@ html { scroll-padding-top: 84px; }
    Status pills in the app's rarity colours (as on the contest page:
    winners legendary, Чамка epic, editors' choice rare); the nomination in
    its own pastel. Both drawn as translucent level marks. */
-.tables-row { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(12px, 1.6vw, 20px); }
+/* the contest's tables: a deck (js/deck.js), three cards on view */
+.tables-row { --deck-per: 3; display: flex; align-items: stretch; }
+.tables-row > .table-card { flex: 0 0 calc((100% - (var(--deck-per) - 1) * var(--deck-gap)) / var(--deck-per)); }
 .table-card {
   display: flex; flex-direction: column; border-radius: 16px; overflow: hidden;
   background: var(--card-bg); border: 1px solid color-mix(in srgb, var(--accent) 22%, transparent);
@@ -1152,6 +1154,7 @@ a.table-card__marks:focus-visible { outline: 2px solid var(--accent); outline-of
 .tmark--legendary { --hue: #e67300; }
 .tmark--epic { --hue: #9330d6; }
 .tmark--rare { --hue: #0065c7; }
+.tmark--fin { --hue: #2f9e2a; }   /* a finalist: the uncommon green */
 .tmark--nom-chronicle { --hue: #c4705a; }
 .tmark--nom-light { --hue: #b8923e; }
 .tmark--nom-voyage { --hue: #3a9a92; }
@@ -1167,8 +1170,8 @@ a.table-card__marks:focus-visible { outline: 2px solid var(--accent); outline-of
 }
 .live-more-row { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
 .live-more-row .live-more { margin: 0; }
-@media (max-width: 1100px) { .tables-row { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (max-width: 560px) { .tables-row { grid-template-columns: 1fr; } }
+@media (max-width: 1000px) { .tables-row { --deck-per: 2; } }
+@media (max-width: 640px) { .tables-row { --deck-per: 1; } }
 @media (prefers-reduced-motion: reduce) {
   .table-card, .table-card__img img { transition: none; }
   .table-card:hover, .table-card:hover .table-card__img img { transform: none; }
