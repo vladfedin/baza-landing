@@ -680,9 +680,11 @@ function startDice() {
     // (0.14 margins), the scroll is mirrored and carries a small «×».
     const FILL = 0.72, PAD = (1 - FILL) / 2;
     ctx.save();
-    if (key === 'p') {                                    // Gotfridus «P», tilted as on the logo
+    if (key === 'p') {                                    // Gotfridus «P», upright seen from the corner
+      // The top face's texture «up» points at −z; the corner it is seen
+      // from is +x+z, so its far corner −x−z lies 45° counter-clockwise.
       const k = (S * 0.6) / 1700;
-      ctx.translate(S / 2, S / 2); ctx.rotate(-32 * Math.PI / 180); ctx.scale(k, -k); ctx.translate(-700, -750);
+      ctx.translate(S / 2, S / 2); ctx.rotate(-45 * Math.PI / 180); ctx.scale(k, -k); ctx.translate(-700, -750);
       ctx.fillStyle = gold; ctx.fill(new Path2D(PROMO.p));
     } else if (key === 'drama') {                         // the masks: 96-grid fills, Y flipped
       const k = (S * FILL) / 96;
@@ -718,14 +720,14 @@ function startDice() {
     tex.anisotropy = 4;
     return new THREE.MeshStandardMaterial({ map: tex, roughness: 0.42, metalness: 0.2 });
   }
+  // The logo's three faces meet at one corner, as on img/logo-v2.svg: «P» on
+  // top, the masks on the left, the scroll on the right, seen from +x+y+z.
+  // BoxGeometry's material order is +x, −x, +y, −y, +z, −z; the random
+  // glyphs take the three hidden faces.
   function promoKeys() {
     const pool = Object.keys(PROMO.pool);
-    const keys = ['p', 'drama', 'scroll'];
-    while (keys.length < 6 && pool.length) keys.push(pool.splice(Math.floor(Math.random() * pool.length), 1)[0]);
-    for (let i = keys.length - 1; i > 0; i--) {           // the faces land in random places on the cube
-      const j = Math.floor(Math.random() * (i + 1)); const t = keys[i]; keys[i] = keys[j]; keys[j] = t;
-    }
-    return keys;
+    const pick = () => (pool.length ? pool.splice(Math.floor(Math.random() * pool.length), 1)[0] : 'p');
+    return ['scroll', pick(), 'p', pick(), 'drama', pick()];
   }
   const promoGeo = PROMO ? new THREE.BoxGeometry(PROMO_HALF * 2, PROMO_HALF * 2, PROMO_HALF * 2) : null;
   const promoShape = PROMO ? new CANNON.Box(new CANNON.Vec3(PROMO_HALF, PROMO_HALF, PROMO_HALF)) : null;
