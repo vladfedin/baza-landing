@@ -676,27 +676,44 @@ function startDice() {
       ctx.strokeStyle = '#8a6418'; ctx.lineWidth = S * 0.014; ctx.stroke();
     });
     const gold = CONFIG.digitNew;
+    // As on the logo (img/logo-v2.svg): a glyph fills 72 % of its face
+    // (0.14 margins), the scroll is mirrored and carries a small «×».
+    const FILL = 0.72, PAD = (1 - FILL) / 2;
     ctx.save();
     if (key === 'p') {                                    // Gotfridus «P», tilted as on the logo
-      const k = (S * 0.44) / 1700;
+      const k = (S * 0.6) / 1700;
       ctx.translate(S / 2, S / 2); ctx.rotate(-32 * Math.PI / 180); ctx.scale(k, -k); ctx.translate(-700, -750);
       ctx.fillStyle = gold; ctx.fill(new Path2D(PROMO.p));
     } else if (key === 'drama') {                         // the masks: 96-grid fills, Y flipped
-      const k = (S * 0.5) / 96, pad = S * 0.25;
-      ctx.translate(pad, pad); ctx.scale(k, k); ctx.translate(0, 96); ctx.scale(0.1, -0.1);
+      const k = (S * FILL) / 96;
+      ctx.translate(S * PAD, S * PAD); ctx.scale(k, k); ctx.translate(0, 96); ctx.scale(0.1, -0.1);
       ctx.fillStyle = gold;
       PROMO.masks.forEach(d => ctx.fill(new Path2D(d)));
     } else {                                              // Lucide-grid strokes: the scroll and the pool
-      const els = key === 'scroll' ? PROMO.scroll.map(d => ({ tag: 'path', d })) : PROMO.pool[key];
-      const k = (S * 0.45) / 24, pad = S * 0.275;
-      ctx.translate(pad, pad); ctx.scale(k, k);
-      ctx.strokeStyle = gold; ctx.lineWidth = 1.7; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+      const scroll = key === 'scroll';
+      const els = scroll ? PROMO.scroll.map(d => ({ tag: 'path', d })) : PROMO.pool[key];
+      const k = (S * FILL) / 24;
+      ctx.translate(S * PAD, S * PAD); ctx.scale(k, k);
+      if (scroll) { ctx.translate(24, 0); ctx.scale(-1, 1); }
+      ctx.strokeStyle = gold; ctx.lineWidth = scroll ? 1.5 : 1.6; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
       els.forEach(el => {
         if (el.tag === 'path') ctx.stroke(new Path2D(el.d));
         else { ctx.beginPath(); ctx.arc(el.cx, el.cy, el.r, 0, Math.PI * 2); ctx.stroke(); }
       });
     }
     ctx.restore();
+    if (key === 'scroll') {                               // the logo's «×» in the middle of the scroll
+      const arm = S * 0.12, thick = S * 0.042;
+      ctx.save();
+      ctx.translate(S / 2, S / 2); ctx.rotate(Math.PI / 4);
+      ctx.fillStyle = gold;
+      [[arm, thick], [thick, arm]].forEach(([w, h]) => {
+        ctx.beginPath();
+        if (ctx.roundRect) ctx.roundRect(-w / 2, -h / 2, w, h, thick / 2); else ctx.rect(-w / 2, -h / 2, w, h);
+        ctx.fill();
+      });
+      ctx.restore();
+    }
     const tex = new THREE.CanvasTexture(cv);
     tex.anisotropy = 4;
     return new THREE.MeshStandardMaterial({ map: tex, roughness: 0.42, metalness: 0.2 });
