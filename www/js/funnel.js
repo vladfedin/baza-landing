@@ -11,6 +11,10 @@
     first time it is on screen, each press of a [data-goal] element. Batched
     and sent with navigator.sendBeacon (text/plain — no CORS preflight; the
     answer is not read), so a press that leaves the page is not lost.
+  - Toys: the figures by the sections and the logos that throw dice
+    ([data-toy]). Hovers (a mouse or pen coming on) and presses are counted
+    per toy and sent as one landing_toy_played row of the counts since the
+    last sending — with every sending and every 20 s.
   - «Создать стол» asks «чистый стол или стол с подсказками» unless the
     visitor already had the training table (cookie rb_trained, set by beta).
     The question is on only while #start-choice carries data-training="on".
@@ -30,6 +34,10 @@
   var UTM = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'];
   /* magicorp-vtt shared/types/landing-funnel.ts LANDING_SECTIONS, by element id. */
   var SECTIONS = ['hero', 'free', 'arsenal', 'tables', 'reviews', 'live', 'tutorials', 'faq', 'finale'];
+  /* LANDING_TOYS there; LANDING_TOY_MAX_COUNT caps a row. */
+  var TOYS = ['logo', 'elf', 'survivor', 'cyber', 'chest', 'detective'];
+  var TOY_MAX = 5000;
+  var TOY_EVERY_MS = 20000;
 
   function readCookie(name) {
     var m = document.cookie.match(new RegExp('(?:^|; )' + name + '=([^;]*)'));
@@ -58,9 +66,19 @@
 
   var queue = [];
   var timer = 0;
+  var played = {};            // toy → { hovers, presses } since the last sending
+  function takeToys() {
+    Object.keys(played).forEach(function (toy) {
+      var c = played[toy];
+      queue.push({ name: 'landing_toy_played', toy: toy,
+                   hovers: Math.min(c.hovers, TOY_MAX), presses: Math.min(c.presses, TOY_MAX) });
+    });
+    played = {};
+  }
   function flush() {
     clearTimeout(timer);
     timer = 0;
+    takeToys();
     if (!queue.length) return;
     if (!SENDS) { queue.length = 0; return; }
     var body = JSON.stringify({ visitor: visitor, events: queue.splice(0, 20) });
@@ -149,6 +167,24 @@
     if (e.persisted && dialog && dialog.open) dialog.close();
   });
 
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', watchSections);
-  else watchSections();
+  // Toys: on the figure itself (a speaker's picture), or on the logo button.
+  function watchToys() {
+    [].forEach.call(document.querySelectorAll('[data-toy]'), function (el) {
+      var toy = el.getAttribute('data-toy');
+      if (TOYS.indexOf(toy) < 0) return;
+      var target = el.matches('button, a') ? el : el.querySelector('img');
+      if (!target) return;
+      function count(kind) {
+        var c = played[toy] || (played[toy] = { hovers: 0, presses: 0 });
+        c[kind]++;
+      }
+      target.addEventListener('pointerenter', function (e) { if (e.pointerType !== 'touch') count('hovers'); });
+      target.addEventListener('click', function () { count('presses'); });
+    });
+    setInterval(function () { if (Object.keys(played).length) flush(); }, TOY_EVERY_MS);
+  }
+
+  function ready() { watchSections(); watchToys(); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', ready);
+  else ready();
 })();
