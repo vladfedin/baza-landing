@@ -1,0 +1,167 @@
+<!doctype html>
+<!-- 2026-10-17 · мок буквиц лендинга v2: первые буквы заголовков, «НРИ» героя и
+     «Ролебаза» в шапке — цвет легендарного уровня участия (#ff8000, палитра
+     редкостей приложения) литым металлом, с лёгкой тенью и бликом. Варианты
+     цвета, шрифта буквиц и блика; «Скопировать выбор» — для решения. -->
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Буквицы лендинга — варианты v2</title>
+<style>
+  @font-face { font-family: 'Init Cormorant'; src: url('../headings/fonts/cormorant-caps.woff') format('woff'); font-display: block; }
+  @font-face { font-family: 'Init Ruslan'; src: url('../headings/fonts/ruslan-caps.woff') format('woff'); font-display: block; }
+  @font-face { font-family: 'Init Yeseva'; src: url('../headings/fonts/yeseva-caps.woff') format('woff'); font-display: block; }
+  :root {
+    --bg: #191410; --ink-title: #f3ead9; --ink-soft: #b9ad99; --accent: #d9b36a;
+    --font-app: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    /* буквица: задаётся переключателями ниже */
+    --init-font: inherit; --init-weight: 800; --init-scale: 1;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink-title); font-family: var(--font-app); }
+
+  .panel { position: sticky; top: 0; z-index: 10; display: flex; flex-wrap: wrap; gap: 10px 22px; align-items: center;
+    padding: 12px 24px; background: rgba(16, 12, 9, 0.92); border-bottom: 1px solid rgba(217, 179, 106, 0.25); font-size: 13px; }
+  .panel b { color: var(--accent); font-weight: 600; letter-spacing: .06em; text-transform: uppercase; font-size: 11px; margin-right: 6px; }
+  .pills { display: inline-flex; gap: 4px; flex-wrap: wrap; }
+  .pills button { font: inherit; padding: 5px 10px; border-radius: 6px; border: 1px solid rgba(217,179,106,.25); background: transparent; color: var(--ink-soft); cursor: pointer; }
+  .pills button.on { color: var(--accent); border-color: var(--accent); background: rgba(217,179,106,.1); }
+  .copy { margin-left: auto; font: inherit; padding: 6px 14px; border-radius: 8px; border: 0; background: var(--accent); color: #1c1610; font-weight: 700; cursor: pointer; }
+
+  header.top { display: flex; align-items: center; gap: 12px; padding: 18px 56px; }
+  header.top img { width: 44px; height: 50px; }
+  .brand-word { font-weight: 700; font-size: 22px; color: var(--ink-title); }
+  .hero { position: relative; padding: 70px 56px 90px; background: linear-gradient(rgba(14,10,8,.55), rgba(14,10,8,.75)), url('../../www/img/hero-poster.webp') center/cover; }
+  .hero-inner { display: flex; align-items: center; gap: 40px; max-width: 1160px; margin: 0 auto; }
+  .hero img { width: 200px; height: 230px; flex: none; }
+  h1 { margin: 0; font-size: clamp(40px, 4.4vw, 64px); line-height: 1.12; font-weight: 800; text-shadow: 0 2px 12px rgba(0,0,0,.5); }
+  section { max-width: 1160px; margin: 0 auto; padding: 48px 56px 8px; }
+  .kicker { color: var(--accent); font-size: 12px; letter-spacing: .28em; text-transform: uppercase; font-weight: 700; margin-bottom: 8px; }
+  h2 { margin: 0 0 6px; font-size: clamp(30px, 3vw, 44px); font-weight: 800; }
+  .sub { color: var(--ink-soft); font-size: 17px; }
+  .note { max-width: 1160px; margin: 40px auto 60px; padding: 0 56px; color: var(--ink-soft); font-size: 13px; line-height: 1.6; }
+
+  /* ───────── буквица ───────── */
+  .init { font-family: var(--init-font); font-weight: var(--init-weight); display: inline-block; font-size: calc(1em * var(--init-scale)); line-height: 1; }
+
+  /* нынешнее: красные буквы — для сравнения */
+  body[data-color="red"] .init { color: #b8402f; }
+
+  /* легенда плоская: цвет уровня без металла */
+  body[data-color="legend-flat"] .init { color: #ff8000; text-shadow: 0 2px 6px rgba(0,0,0,.45); }
+
+  /* легенда литьём: светлый верх, глубокий низ (как литые знаки приложения),
+     тень — лёгкая, наружу; блик — полоса, проходящая по букве раз в 7 с */
+  body[data-color^="legend-metal"] .init,
+  body[data-color="artifact"] .init {
+    --c-hi: #ffd9a3; --c-mid: #ff8000; --c-lo: #b34f00;
+    background-image:
+      linear-gradient(105deg, transparent 38%, rgba(255,255,255,.85) 48%, transparent 58%),
+      linear-gradient(180deg, var(--c-hi) 0%, var(--c-mid) 46%, var(--c-lo) 78%, var(--c-mid) 100%);
+    background-size: 260% 100%, 100% 100%;
+    background-position: 160% 0, 0 0;
+    background-repeat: no-repeat;
+    -webkit-background-clip: text; background-clip: text;
+    color: transparent; -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 1px 0 rgba(60, 22, 0, .9)) drop-shadow(0 3px 5px rgba(0,0,0,.45));
+  }
+  body[data-color="legend-metal-rim"] .init { -webkit-text-stroke: 1.2px #e6c565; }
+  body[data-color="artifact"] .init { --c-hi: #fff4cf; --c-mid: #e6cc80; --c-lo: #9c7a2c; }
+  body[data-glint="on"][data-color^="legend-metal"] .init,
+  body[data-glint="on"][data-color="artifact"] .init { animation: init-glint 7s ease-in-out infinite; }
+  @keyframes init-glint {
+    0%, 78% { background-position: 160% 0, 0 0; }
+    92%, 100% { background-position: -60% 0, 0 0; }
+  }
+  @media (prefers-reduced-motion: reduce) { .init { animation: none !important; } }
+</style>
+</head>
+<body data-color="legend-metal" data-font="app" data-glint="on">
+  <div class="panel">
+    <span><b>Цвет</b><span class="pills" data-set="color">
+      <button data-v="legend-metal">Легенда, литьё</button>
+      <button data-v="legend-metal-rim">Легенда, литьё + золотой кант</button>
+      <button data-v="legend-flat">Легенда без металла</button>
+      <button data-v="artifact">Артефакт (золото)</button>
+      <button data-v="red">Сейчас: красные</button>
+    </span></span>
+    <span><b>Шрифт буквиц</b><span class="pills" data-set="font">
+      <button data-v="app">Как текст</button>
+      <button data-v="yeseva">Yeseva One</button>
+      <button data-v="cormorant">Cormorant</button>
+      <button data-v="ruslan">Ruslan Display</button>
+    </span></span>
+    <span><b>Блик</b><span class="pills" data-set="glint">
+      <button data-v="on">Раз в 7 с</button>
+      <button data-v="off">Нет</button>
+    </span></span>
+    <button class="copy" type="button">Скопировать выбор</button>
+  </div>
+
+  <header class="top">
+    <img src="../../www/img/logo-v2.svg" alt="">
+    <span class="brand-word"><span class="init">Р</span>олебаза</span>
+  </header>
+
+  <div class="hero"><div class="hero-inner">
+    <img src="../../www/img/logo-v2.svg" alt="">
+    <h1>Виртуальный стол для<br><span class="init">Н</span>астольных <span class="init">Р</span>олевых <span class="init">И</span>гр</h1>
+  </div></div>
+
+  <section>
+    <div class="kicker">Почему Ролебаза</div>
+    <h2><span class="init">Ч</span>етыре причины начать сегодня</h2>
+    <div class="sub">Игра открывается в один клик, игроки заходят по ссылке.</div>
+  </section>
+  <section>
+    <div class="kicker">Дары</div>
+    <h2><span class="init">М</span>ожно водить бесплатно</h2>
+    <div class="sub">Комнаты без счёта, сеансы без лимита.</div>
+  </section>
+  <section>
+    <div class="kicker">Арсенал</div>
+    <h2><span class="init">А</span>рсенал <span class="init">М</span>астера</h2>
+    <div class="sub">Вариант: буквица у каждого значимого слова, как «НРИ» в герое.</div>
+  </section>
+  <section>
+    <div class="kicker">Приглашение</div>
+    <h2><span class="init">З</span>аходите и пробуйте!</h2>
+  </section>
+
+  <p class="note">
+    Легенда — цвет высшего уровня участия приложения (#ff8000, палитра редкостей WoW, как знак «Гроссмейстер»).
+    «Литьё» — светлый верх, глубокий низ и тонкая тёмная кромка снизу, как у литых знаков приложения; блик пробегает по буквам
+    раз в 7 секунд — тем же темпом, что блик по рёбрам логотипа. «Артефакт» — золото палитры (#e6cc80), ближе к логотипу.
+    Шрифты буквиц — только заглавные буквы, вырезка (≈10 КБ каждый).
+  </p>
+<script>
+  // переключатели: значение в атрибуте body; шрифт — в переменных буквицы
+  const FONTS = {
+    app: ['inherit', 800, 1], yeseva: ["'Init Yeseva', serif", 400, 1.08],
+    cormorant: ["'Init Cormorant', serif", 700, 1.18], ruslan: ["'Init Ruslan', serif", 400, 1.1],
+  };
+  function apply() {
+    const f = FONTS[document.body.dataset.font];
+    document.documentElement.style.setProperty('--init-font', f[0]);
+    document.documentElement.style.setProperty('--init-weight', f[1]);
+    document.documentElement.style.setProperty('--init-scale', f[2]);
+    document.querySelectorAll('.pills').forEach((p) => p.querySelectorAll('button').forEach((b) =>
+      b.classList.toggle('on', document.body.dataset[p.dataset.set] === b.dataset.v)));
+  }
+  document.querySelectorAll('.pills').forEach((p) => p.addEventListener('click', (e) => {
+    const b = e.target.closest('button'); if (!b) return;
+    document.body.dataset[p.dataset.set] = b.dataset.v; apply();
+  }));
+  document.querySelector('.copy').addEventListener('click', () => {
+    const t = [...document.querySelectorAll('.pills')].map((p) => {
+      const on = p.querySelector('button.on'); return on ? on.textContent : '';
+    }).join(' · ');
+    navigator.clipboard?.writeText(`Буквицы: ${t}`);
+    document.querySelector('.copy').textContent = 'Скопировано';
+    setTimeout(() => { document.querySelector('.copy').textContent = 'Скопировать выбор'; }, 1500);
+  });
+  apply();
+</script>
+</body>
+</html>
