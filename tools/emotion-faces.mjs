@@ -9,7 +9,9 @@
  * Сундук: его набор нарисован в разных масштабах кадра, поэтому каждый вид
  * выравнивается по корпусу — ширина и центр нижней полосы сундука (10–20 %
  * высоты над низом) и линия низа одинаковы во всех видах. `widthFix` —
- * поправка для фронтального вида, где полосу расширяют боковые ручки.
+ * поправка для фронтального вида, где полосу расширяют боковые ручки;
+ * `flop` — зеркало: закрытые виды нарисованы в другую сторону, чем пасть, и
+ * без зеркала сундук разворачивался бы, открываясь.
  *
  *   node tools/emotion-faces.mjs [путь к magicorp-vtt]
  *
@@ -23,19 +25,22 @@ const sharp = createRequire(join(APP, 'package.json'))('sharp');
 const WWW = new URL('../www/img/', import.meta.url).pathname;
 const ART = join(APP, 'images/characters');
 
-/** Люди: фигурка лендинга → исходник и эмоции. Атака — attack2: у attack остатки фона у ног. */
+/** Люди: обычная поза (основная картинка лендинга) → радостная (curious2) →
+ *  спокойная (calm2) → раздражение (angry2). Поз с наведённым оружием нет
+ *  (решение 2026-10-17). */
+const PEOPLE_MOODS = { joyful: 'curious2', still: 'calm2', angry: 'angry2' };
 const PEOPLE = {
-  '1_elf': { src: '1_elf', moods: { curious: 'curious', angry: 'angry', attack: 'attack2' } },
-  '2_machete': { src: '2_machete', moods: { curious: 'curious', angry: 'angry', attack: 'attack2' } },
-  '3_cyber_woman': { src: '3_cyber_woman', moods: { curious: 'curious', angry: 'angry', attack: 'attack2' } },
-  '5_detective': { src: '4_detective', moods: { curious: 'curious', angry: 'angry', attack: 'attack2' } },
+  '1_elf': { src: '1_elf', moods: PEOPLE_MOODS },
+  '2_machete': { src: '2_machete', moods: PEOPLE_MOODS },
+  '3_cyber_woman': { src: '3_cyber_woman', moods: PEOPLE_MOODS },
+  '5_detective': { src: '4_detective', moods: PEOPLE_MOODS },
 };
 
 /** Сундук: закрыт → глаза → язык → пасть → смотрит на тебя (решение 2026-10-17). */
 const CHEST = {
   name: '4_chest', src: '0_chest', canvas: { w: 1024, h: 759 }, bandWidth: 600, bottomPad: 24,
   moods: {
-    calm: { dir: 'calm2' }, curious: { dir: 'curious2' }, sly: { dir: 'sly' },
+    calm: { dir: 'calm2', flop: true }, curious: { dir: 'curious2', flop: true }, sly: { dir: 'sly', flop: true },
     angry: { dir: 'attack' }, attack: { dir: 'attack2', widthFix: 0.9 },
   },
 };
@@ -52,8 +57,8 @@ for (const [name, fig] of Object.entries(PEOPLE)) {
 }
 
 /** Низ, ширина и центр нижней полосы корпуса по альфе. */
-async function bodyBand(file) {
-  const { data, info } = await sharp(file).ensureAlpha().raw().toBuffer({ resolveWithObject: true });
+async function bodyBand(input) {
+  const { data, info } = await sharp(input).ensureAlpha().raw().toBuffer({ resolveWithObject: true });
   const W = info.width, H = info.height, on = (x, y) => data[(y * W + x) * 4 + 3] > 128;
   let top = H, bot = -1;
   for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) if (on(x, y)) { if (y < top) top = y; bot = Math.max(bot, y); }
@@ -64,8 +69,9 @@ async function bodyBand(file) {
 }
 
 const { w: CW, h: CH } = CHEST.canvas;
-for (const [mood, { dir, widthFix = 1 }] of Object.entries(CHEST.moods)) {
-  const file = join(ART, dir, `${CHEST.src}.png`);
+for (const [mood, { dir, widthFix = 1, flop = false }] of Object.entries(CHEST.moods)) {
+  const raw = join(ART, dir, `${CHEST.src}.png`);
+  const file = flop ? await sharp(raw).flop().png().toBuffer() : raw;
   const b = await bodyBand(file);
   const k = CHEST.bandWidth / (b.width * widthFix);
   const w = Math.round(b.W * k), h = Math.round(b.H * k);
