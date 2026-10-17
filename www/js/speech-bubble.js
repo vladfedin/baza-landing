@@ -26,6 +26,9 @@
   one unbroken run (no pause over POKE_GAP), it gets angry: from then on every
   line is an angry one on a red bubble, also when it scrolls back into view,
   until it is left alone for CALM_MS.
+
+  Every line said is told to the speaker as an `rb:said` event — { rarity,
+  angry, poked, pokes } — for js/emotions.js, which changes the figure's face.
 */
 document.addEventListener('DOMContentLoaded', function () {
   'use strict';
@@ -94,7 +97,14 @@ document.addEventListener('DOMContentLoaded', function () {
     s.bubble.classList.add('is-visible');
   }
   function isAngry(s) { return s.angry.length > 0 && performance.now() < s.angryUntil; }
-  function say(s) { show(s, pick(isAngry(s) ? s.angry : s.lines, s.last)); }
+  function say(s, poked) {
+    var angry = isAngry(s);
+    var line = pick(angry ? s.angry : s.lines, s.last);
+    show(s, line);
+    s.el.dispatchEvent(new CustomEvent('rb:said', {
+      detail: { rarity: line.rarity, angry: angry, poked: !!poked, pokes: s.pokes }
+    }));
+  }
   function poke(s, figure) {
     var now = performance.now();
     if (now - s.lastPoke > POKE_GAP) s.pokes = 0;
@@ -102,10 +112,12 @@ document.addEventListener('DOMContentLoaded', function () {
     s.pokes++;
     // Angry stays angry while it is still being poked.
     if (isAngry(s) || s.pokes > POKE_COUNT) s.angryUntil = now + CALM_MS;
-    figure.classList.remove('is-poked');
-    void figure.offsetWidth;
-    figure.classList.add('is-poked');
-    say(s);
+    // the figure flinches with its face (js/emotions.js wraps them in one box)
+    var flinch = figure.closest('.side-char__figure') || figure;
+    flinch.classList.remove('is-poked');
+    void flinch.offsetWidth;
+    flinch.classList.add('is-poked');
+    say(s, true);
   }
 
   if (!('IntersectionObserver' in window)) { state.forEach(say); return; }

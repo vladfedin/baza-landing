@@ -1484,6 +1484,13 @@ img.emoji { display: inline-block; width: 1.15em; height: 1.15em; vertical-align
   .side-char--wide  { width: min(260px, calc((100vw - 1160px) / 2 - 28px)); }
   .side-char img { display: block; width: 100%; height: auto; filter: drop-shadow(0 22px 44px rgba(0, 0, 0, 0.55)); pointer-events: auto; cursor: pointer; transform-origin: 50% 100%; }
   .side-char img.is-poked { animation: char-flinch 260ms ease-out; }
+  /* the face over the figure (js/emotions.js): the same box, a 160 ms crossfade */
+  .side-char__figure { display: block; position: relative; transform-origin: 50% 100%; }
+  .side-char__figure.is-poked { animation: char-flinch 260ms ease-out; }
+  .side-char__figure > img { transition: opacity 160ms ease; }
+  .side-char__face { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; pointer-events: none !important; }
+  .side-char__figure.has-face > img:first-child { opacity: 0; }
+  .side-char__figure.has-face > .side-char__face { opacity: 1; }
 }
 /* a rare line is rimmed in the rare mark's blue, the rarest in its orange */
 .speech-bubble--rare { --bubble-rim: #0070dd; }
@@ -1496,4 +1503,7 @@ img.emoji { display: inline-block; width: 1.15em; height: 1.15em; vertical-align
   0% { transform: rotate(0); } 25% { transform: rotate(-3deg) translateY(-3px); }
   60% { transform: rotate(2deg); } 100% { transform: rotate(0); }
 }
-@media (prefers-reduced-motion: reduce) { .side-char img.is-poked { animation: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .side-char img.is-poked, .side-char__figure.is-poked { animation: none; }
+  .side-char__figure > img { transition: none; }
+}
