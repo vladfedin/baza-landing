@@ -15,7 +15,7 @@ export const FILE_ATTRS = [
   'href', 'src', 'poster',
   'data-av1', 'data-hevc', 'data-avatar', 'data-three', 'data-cannon', 'data-copy',
   'data-font-digits', 'data-font-brand', 'data-promo-glyphs',
-  'data-face-curious', 'data-face-angry', 'data-face-attack',
+  'data-face-curious', 'data-face-sly', 'data-face-angry', 'data-face-attack',
 ];
 
 /** Схемы и якоря, за которые сайт не отвечает. */
