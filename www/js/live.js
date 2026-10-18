@@ -113,6 +113,29 @@
     return t;
   }
 
+  // Video covers play only while their card is on screen; with reduced
+  // motion the still frame stays.
+  var STILL = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var coverIo = !STILL && 'IntersectionObserver' in window ? new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      var v = e.target;
+      if (e.isIntersecting) { var p = v.play(); if (p && p.catch) p.catch(function () {}); } else v.pause();
+    });
+  }, { threshold: 0.25 }) : null;
+  function coverVideo(src, poster) {
+    var v = el('video', 'game-card__video');
+    v.muted = true; v.loop = true; v.playsInline = true; v.preload = 'none';
+    v.setAttribute('aria-hidden', 'true');
+    if (poster) v.poster = poster;
+    // A clip that does not load leaves the still frame, not a black box.
+    v.addEventListener('error', function () { v.remove(); });
+    if (!STILL) {
+      v.src = src;
+      if (coverIo) coverIo.observe(v); else { v.autoplay = true; }
+    }
+    return v;
+  }
+
   function gameCard(g) {
     var a = el('a', 'game-card');
     a.href = appUrl('/game/' + encodeURIComponent(g.slug));
@@ -120,11 +143,14 @@
 
     var cover = el('div', 'game-card__cover');
     var src = ownImage(g.coverImageUrl);
-    if (src && !/\.(mp4|webm|mov)(\?|$)/i.test(src)) {
-      cover.style.backgroundImage = 'url("' + src.replace(/"/g, '%22') + '")';
-    } else {
-      cover.style.backgroundImage = GRADIENTS[Math.floor(hash01(g.id) * GRADIENTS.length) % GRADIENTS.length];
-    }
+    var isVideo = !!src && /\.(mp4|webm|mov)(\?|$)/i.test(src);
+    // A video cover, as the app's card shows it (ScheduledGameCard): its
+    // still frame (coverMedia.posterUrl) first, the clip over it on screen.
+    var still = isVideo ? ownImage(g.coverMedia && g.coverMedia.posterUrl) : src;
+    cover.style.backgroundImage = still
+      ? 'url("' + still.replace(/"/g, '%22') + '")'
+      : GRADIENTS[Math.floor(hash01(g.id) * GRADIENTS.length) % GRADIENTS.length];
+    if (isVideo) cover.appendChild(coverVideo(src, still));
     a.appendChild(cover);
 
     var top = el('div', 'game-card__top');
