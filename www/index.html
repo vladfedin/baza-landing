@@ -300,23 +300,12 @@
                 </div>
             </article>
         </div>
-        <!-- the first call after the gifts: take the gift (register — the
-             Keeper cohort, shared/types/user.ts ARRIVAL_COHORTS — then the
-             app's home), or come in and try without signing up: the heading's
-             two halves stand over their buttons -->
+        <!-- the first call after the gifts: take the gift — register (the
+             Keeper cohort, shared/types/user.ts ARRIVAL_COHORTS), then the
+             app's home. The rank is the table's own mark (js/marks.js TAG.keeper) -->
         <div class="gift-cta">
-            <div class="gift-cta__claim">
-                <p class="gift-cta__lead">Начните сейчас и получите ранг <b>Хранителя</b></p>
-                <a class="btn-create btn-create--big" href="https://beta.rolebaza.ru/register?utm_source=rolebaza.ru&amp;utm_medium=landing&amp;utm_content=gift" data-goal="gift_claim"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="img/icons.svg#lu-gift"/></svg>Принять дар</a>
-            </div>
-            <div class="gift-cta__try">
-                <h3 class="gift-cta__head"><span>Заходите</span> <span>и пробуйте!</span></h3>
-                <div class="gift-cta__pair">
-                    <a class="gift-cta__btn" href="https://beta.rolebaza.ru/?utm_source=rolebaza.ru&amp;utm_medium=landing&amp;utm_content=gift" data-goal="app_open"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="img/icons.svg#lu-house"/></svg>На главную</a>
-                    <a class="gift-cta__btn" href="https://beta.rolebaza.ru/?start=training&amp;utm_source=rolebaza.ru&amp;utm_medium=landing&amp;utm_content=gift" data-goal="training_open"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="img/icons.svg#lu-graduation-cap"/></svg>Учебный стол</a>
-                </div>
-                <p class="gift-cta__free">Без регистрации</p>
-            </div>
+            <p class="gift-cta__lead">Начните сейчас и получите ранг <span class="mark mark--cohort mark--rounded" style="--hue:#a95fa8" title="Ранг тех, кто пришёл на Ролебазу с сентября 2026"><svg aria-hidden="true"><use href="img/icons.svg#lu-shield-half"/></svg>Хранитель</span></p>
+            <a class="btn-create btn-create--big" href="https://beta.rolebaza.ru/register?utm_source=rolebaza.ru&amp;utm_medium=landing&amp;utm_content=gift" data-goal="gift_claim"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="img/icons.svg#lu-gift"/></svg>Принять дар</a>
         </div>
     </section>
 
@@ -934,12 +923,13 @@
             <div class="kicker">Приглашение</div>
             <h2><span class="ini">З</span>аходите и пробуйте!</h2>
         </div>
-        <!-- the app's «Создать игру» look, large. TODO: the training table is not
-             made yet (the next task) — until it is published in the vault, the
-             button opens the app's tutorials -->
+        <!-- the app's «Создать игру» look, large: the app's home or the
+             training table, both without signing up -->
         <div class="finale-cta">
+            <a class="btn-create btn-create--big" href="https://beta.rolebaza.ru/?utm_source=rolebaza.ru&amp;utm_medium=landing&amp;utm_content=finale" data-goal="app_open"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="img/icons.svg#lu-house"/></svg>На главную</a>
             <a class="btn-create btn-create--big" href="https://beta.rolebaza.ru/?start=training&amp;utm_source=rolebaza.ru&amp;utm_medium=landing&amp;utm_content=finale" data-goal="training_open"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="img/icons.svg#lu-graduation-cap"/></svg>Учебный стол</a>
         </div>
+        <p class="finale-free">Без регистрации</p>
         <!-- the campfire comes alive on hover (js/campfire.js): light, the fire's core, sparks -->
         <figure class="campfire">
             <span class="campfire__stage">
