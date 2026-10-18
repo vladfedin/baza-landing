@@ -217,6 +217,42 @@ a.brand-word:hover, a.brand:hover .brand-word { color: var(--accent-bright); }
 .btn-create--big { gap: 10px; padding: 14px 30px; border-radius: 8px; font-size: 18px; font-weight: 600; }
 .btn-create--big svg { width: 21px; height: 21px; }
 .finale-cta { display: flex; justify-content: center; margin: 8px 0 32px; }
+/* the first call after «Дары»: take the gift, or come in and try — the
+   heading's halves stand over their two buttons */
+.gift-cta {
+  display: flex; flex-direction: column; align-items: center; gap: 28px;
+  margin: 40px auto 8px; max-width: 640px; text-align: center;
+}
+.gift-cta__claim { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+.gift-cta__lead { margin: 0; font-size: 18px; color: var(--ink-serif); }
+.gift-cta__lead b { color: var(--gold); }
+.gift-cta__try { display: grid; grid-template-columns: 1fr 1fr; column-gap: 16px; row-gap: 10px; width: 100%; max-width: 460px; }
+.gift-cta__head { display: contents; }
+.gift-cta__head span {
+  font-size: 24px; font-weight: 700;
+  color: var(--gold); align-self: end;
+}
+.gift-cta__head span:first-child { grid-column: 1; grid-row: 1; }
+.gift-cta__head span:last-child { grid-column: 2; grid-row: 1; }
+.gift-cta__pair { display: contents; }
+.gift-cta__btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 11px 18px; border-radius: 8px; font-size: 16px; font-weight: 600;
+  color: var(--gold); border: 1px solid color-mix(in srgb, var(--gold) 55%, transparent);
+  background: color-mix(in srgb, var(--gold) 8%, transparent);
+  transition: background-color 160ms ease, border-color 160ms ease;
+}
+.gift-cta__btn:hover { color: var(--gold); background: color-mix(in srgb, var(--gold) 18%, transparent); border-color: var(--gold); }
+.gift-cta__btn:focus-visible { outline: 2px solid var(--accent-bright); outline-offset: 3px; }
+.gift-cta__btn svg { width: 18px; height: 18px; }
+.gift-cta__pair a:first-child { grid-column: 1; grid-row: 2; }
+.gift-cta__pair a:last-child { grid-column: 2; grid-row: 2; }
+.gift-cta__free { grid-column: 1 / -1; grid-row: 3; margin: 2px 0 0; font-size: 14px; opacity: .75; }
+@media (max-width: 420px) {
+  .gift-cta__head span { font-size: 20px; }
+  .gift-cta__btn { padding: 10px 12px; font-size: 15px; }
+}
+@media (prefers-reduced-motion: reduce) { .gift-cta__btn { transition: none; } }
 
 .hero-inner {
   position: relative; flex: 1; display: flex; flex-direction: column;
