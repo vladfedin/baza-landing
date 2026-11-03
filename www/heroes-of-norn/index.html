@@ -1,0 +1,660 @@
+<!doctype html>
+<html lang="ru" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+<meta name="googlebot" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<title>Герои Норна на Ролебазе</title>
+<meta name="description" content="Как мы переносим систему «Герои Норна» на стол Ролебазы: что поняли, как идём, как может выглядеть лист и что нам нужно от вас.">
+<link rel="icon" href="/favicon.ico">
+<style>
+:root{--bg:#16171a;--panel:#1d1f23;--panel2:#23262b;--line:#2d3036;--text:#ebe6dc;--muted:#a19b8f;--dim:#7d786e;
+--gold:#e0a63a;--gold-soft:rgba(224,166,58,.14);--ok:#7bc98a;--bad:#e07a6a;
+--serif:"Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;--sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+--mono:ui-monospace,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 var(--sans)}
+a{color:var(--gold);text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:1180px;margin:0 auto;padding:0 22px}
+.dim{color:var(--dim)}.muted{color:var(--muted)}.small{font-size:14px}.mono{font-family:var(--mono)}
+nav.top{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+nav.top .wrap{display:flex;gap:18px;align-items:center;height:48px;overflow-x:auto;white-space:nowrap;font-size:14px}
+nav.top b{font:600 15px/1 var(--serif);color:var(--gold);margin-right:6px}
+nav.top a{color:var(--muted)}nav.top a:hover{color:var(--text);text-decoration:none}
+header.hero{padding:64px 0 34px;background:radial-gradient(1200px 400px at 20% -10%,rgba(224,166,58,.16),transparent 60%),radial-gradient(900px 380px at 100% 0,rgba(120,90,200,.10),transparent 60%)}
+.kicker{font:600 12px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--gold)}
+h1{font:600 54px/1.06 var(--serif);margin:16px 0 14px;letter-spacing:-.01em}
+h1 em{font-style:normal;color:var(--gold)}
+.lead{font-size:19px;line-height:1.55;color:var(--text);max-width:820px;margin:0}
+.lead2{color:var(--muted);max-width:820px;margin:12px 0 0}
+section{padding:46px 0 10px}
+h2{font:600 32px/1.2 var(--serif);margin:0 0 8px}
+h2+.sub{color:var(--muted);margin:0 0 22px;max-width:860px}
+h3{font:600 20px/1.3 var(--serif);margin:0 0 6px}
+.goals{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:28px}
+.goal{background:var(--panel);border:1px solid var(--line);border-top:3px solid var(--gold);border-radius:12px;padding:16px 18px}
+.goal .k{font:600 12px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+.goal q{display:block;font:italic 16px/1.5 var(--serif);color:var(--text);quotes:"«" "»"}
+.principle{margin-top:18px;display:flex;gap:14px;align-items:center;padding:14px 18px;border-radius:12px;background:var(--gold-soft);border:1px solid rgba(224,166,58,.35)}
+.principle b{font:600 20px/1.2 var(--serif);color:var(--gold);white-space:nowrap}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
+.card .k{font:600 11.5px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+.card p{margin:8px 0 0;color:var(--muted);font-size:14.5px}
+.card .ex{margin-top:10px;padding:8px 10px;border-radius:8px;background:var(--panel2);font:13.5px/1.5 var(--mono);color:var(--text)}
+.verified{display:inline-flex;align-items:center;gap:6px;margin-top:10px;font-size:13px;color:var(--ok)}
+.ladder{display:flex;gap:6px;align-items:flex-end;margin-top:6px}
+.ladder span{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:12px;color:var(--muted)}
+.ladder i{font-style:normal;display:inline-flex;align-items:center;justify-content:center;width:44px;border-radius:7px;background:var(--panel2);border:1px solid var(--line);color:var(--text);font:600 13px/1 var(--mono)}
+.bands{display:flex;border-radius:9px;overflow:hidden;margin-top:8px;font-size:11.5px;line-height:1.25;text-align:center}
+.bands div{padding:7px 4px}
+.b1{background:#8e1f24;color:#fff;flex:1.1}.b2{background:#d9898b;color:#2a0b0c;flex:1.2}.b3{background:#8ccaa3;color:#0d2b1a;flex:1.2}.b4{background:#2f8a57;color:#fff;flex:1}.b5{background:#144d30;color:#fff;flex:1}
+.stages{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;counter-reset:st}
+.stage{position:relative;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 18px 16px 62px}
+.stage:before{counter-increment:st;content:counter(st);position:absolute;left:16px;top:16px;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font:600 16px/1 var(--serif);background:var(--gold-soft);color:var(--gold);border:1px solid rgba(224,166,58,.4)}
+.stage p{margin:6px 0 0;color:var(--muted);font-size:14.5px}
+.stage .tag{display:inline-block;margin-top:8px;font-size:12px;padding:1px 8px;border-radius:99px;border:1px solid rgba(224,166,58,.4);color:var(--gold)}
+.stage .tag.wait{border-color:var(--line);color:var(--muted)}
+.note-line{margin-top:16px;color:var(--muted);font-size:15px}
+.note-line b{color:var(--text)}
+
+/* ── Таблица: темы стола (как в продукте) ── */
+.vtt{--bg-primary:#1c1815;--bg-card:#2e2822;--bg-card-alt:#36302a;--bg-hover:rgba(212,175,96,.12);--text-primary:#F5E6CA;--text-secondary:#dcd0bc;--text-muted:#a69b8d;--border-color:#594d3f;--border-color-light:#4a4238;--input-bg:#26211c;--input-border:#594d3f;--error-text:#D63A3A;--success-text:#7BC98A;--info-bg:#2e2822;--info-text:#EAD090;--btn-primary-bg:#7A5520;--btn-primary-text:#fff;--link-color:#D4AF60;--shadow-color:rgba(0,0,0,.4);--warning:#E0A63A;color:var(--text-primary);font:13px/1.4 var(--sans)}
+.vtt[data-theme=dark]{--bg-primary:#1a1a2e;--bg-card:#16213e;--bg-card-alt:#1a2744;--bg-hover:rgba(255,255,255,.07);--text-primary:#e0e0e0;--text-secondary:#aaa;--text-muted:#888;--border-color:#2a3a5c;--border-color-light:#253050;--input-bg:#111827;--input-border:#2a3a5c;--error-text:#f88;--success-text:#6bdb86;--info-bg:#162744;--info-text:#5dade2;--btn-primary-bg:#3b5bdb;--btn-primary-text:#fff;--link-color:#748ffc;--shadow-color:rgba(0,0,0,.3);--warning:#f59e0b}
+.vtt[data-theme=light]{--bg-primary:#f5f5f5;--bg-card:#fff;--bg-card-alt:#f8f9fa;--bg-hover:rgba(0,0,0,.05);--text-primary:#333;--text-secondary:#666;--text-muted:#888;--border-color:#ddd;--border-color-light:#eee;--input-bg:#fff;--input-border:#ddd;--error-text:#c00;--success-text:#2e7d32;--info-bg:#e7f3ff;--info-text:#0066cc;--btn-primary-bg:#0069d9;--btn-primary-text:#fff;--link-color:#4263eb;--shadow-color:rgba(0,0,0,.1);--warning:#c24100}
+.vtt[data-theme=parchment]{--bg-primary:#e8dcc8;--bg-card:#faf5ec;--bg-card-alt:#f3ebdd;--bg-hover:rgba(80,47,16,.08);--text-primary:#20150b;--text-secondary:rgba(32,21,11,.74);--text-muted:rgba(32,21,11,.54);--border-color:rgba(80,47,16,.18);--border-color-light:rgba(80,47,16,.10);--input-bg:rgba(255,251,244,.86);--input-border:rgba(80,47,16,.2);--error-text:#8F2020;--success-text:#2e7d32;--info-bg:#f3ebdd;--info-text:#7e4c19;--btn-primary-bg:#c4873a;--btn-primary-text:#20150b;--link-color:#af6c28;--shadow-color:rgba(66,36,9,.10);--warning:#7c4d17}
+.stage-area{background:var(--bg-primary);border-radius:14px;border:1px solid var(--line);padding:16px}
+.switches{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;margin:0 0 14px;font-size:13px;color:var(--muted)}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:7px;overflow:hidden;background:var(--panel)}
+.seg button{border:0;background:transparent;color:var(--muted);font:inherit;font-size:13px;padding:5px 11px;cursor:pointer;transition:background-color 160ms ease,color 160ms ease}
+.seg button+button{border-left:1px solid var(--line)}
+.seg button:hover{color:var(--text)}
+.seg button[aria-pressed=true]{background:var(--gold-soft);color:var(--gold);font-weight:600}
+.variants{display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start}
+.variant{margin:0;display:flex;flex-direction:column;gap:8px}
+.variant figcaption{display:flex;flex-direction:column;gap:1px;color:var(--text-primary)}
+.variant figcaption b{font-size:15px}
+.variant figcaption span{color:var(--text-muted);font-size:12.5px;max-width:350px}
+.variant[data-mine] figcaption b{color:var(--link-color)}
+
+/* Инспектор */
+.insp{width:var(--mock-w,350px);border-radius:10px;background:var(--bg-card);border:1px solid var(--border-color);box-shadow:0 8px 28px var(--shadow-color);overflow:hidden;color:var(--text-primary)}
+.insp-head{display:flex;align-items:center;gap:10px;padding:10px 12px 8px}
+.ava{flex:none;width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#6b8f3a,#2f4a1d);box-shadow:0 0 0 2px var(--link-color);display:flex;align-items:center;justify-content:center;color:#e9f3d5;font:700 15px/1 var(--serif)}
+.insp-name{font-weight:700;font-size:14.5px}
+.insp-sub{font-size:11.5px;color:var(--text-muted)}
+.hpbar{margin:0 12px 8px;height:16px;border-radius:5px;background:var(--input-bg);border:1px solid var(--border-color);position:relative;overflow:hidden;font-size:11px;line-height:14px;text-align:center;color:var(--text-primary)}
+.hpbar>i{position:absolute;inset:0 auto 0 0;background:color-mix(in srgb,var(--success-text) 55%,transparent)}
+.hpbar>span{position:relative}
+.tabs{display:flex;gap:13px;padding:0 12px;border-bottom:1px solid var(--border-color);font-size:12px;color:var(--text-muted)}
+.tabs span{padding:6px 0;border-bottom:2px solid transparent}
+.tabs [data-on]{color:var(--text-primary);font-weight:600;border-bottom-color:var(--link-color)}
+.insp-body{padding:9px 12px 12px;display:flex;flex-direction:column;gap:9px}
+.derived{display:flex;flex-wrap:wrap;gap:5px}
+.derived span{display:inline-flex;gap:5px;align-items:baseline;padding:2px 8px;border-radius:6px;background:var(--bg-card-alt);border:1px solid var(--border-color-light);font-size:11.5px;color:var(--text-muted)}
+.derived b{color:var(--text-primary);font-variant-numeric:tabular-nums}
+.grp{font-size:10.5px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:var(--text-secondary);margin-top:2px}
+.statrow{display:flex;align-items:center;gap:7px;padding:3px 0;border-bottom:1px solid var(--border-color-light)}
+.statrow .nm{font-weight:600;flex:1}
+.chk{font-size:10.5px;padding:0 5px;border-radius:4px;color:var(--text-muted);border:1px solid var(--border-color)}
+.chk[data-sign="+"]{color:var(--success-text);border-color:color-mix(in srgb,var(--success-text) 40%,transparent)}
+.chk[data-sign="-"]{color:var(--error-text);border-color:color-mix(in srgb,var(--error-text) 40%,transparent)}
+.skill{display:flex;align-items:center;gap:6px;padding:2px 0 2px 12px;font-size:12.5px}
+.skill .nm{flex:1;color:var(--text-secondary)}
+.skill .cat{color:var(--text-muted);font-size:11px}
+.skill .fx{font:11.5px/1 var(--mono);color:var(--text-muted)}
+.extra{font-size:10.5px;color:var(--text-muted)}
+.die{display:inline-flex;align-items:center;justify-content:center;min-width:30px;height:20px;padding:0 5px;border-radius:5px;font:700 11.5px/1 var(--mono);color:var(--link-color);background:color-mix(in srgb,var(--link-color) 13%,transparent);border:1px solid color-mix(in srgb,var(--link-color) 40%,transparent)}
+.val{min-width:14px;text-align:right;font-weight:700;font-variant-numeric:tabular-nums}
+.dots{letter-spacing:1px;color:var(--link-color);font-size:11px}
+.dots s{text-decoration:none;color:var(--border-color)}
+.rollbtn{flex:none;display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:6px;border:1px solid var(--border-color);color:var(--text-secondary);background:var(--input-bg)}
+.vtt svg{width:14px;height:14px;flex:none}
+.rollbtn svg{width:13px;height:13px}
+.more{font-size:11.5px;color:var(--link-color);padding-left:12px}
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.tile{display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 4px;border-radius:8px;background:var(--bg-card-alt);border:1px solid var(--border-color-light)}
+.tile small{font-size:10.5px;color:var(--text-muted);text-align:center;line-height:1.15}
+.tile .row{display:flex;align-items:center;gap:5px}
+.chips{display:flex;flex-wrap:wrap;gap:4px}
+.chips span{font-size:11px;padding:1px 8px;border-radius:6px;border:1px solid var(--border-color);color:var(--text-muted)}
+.chips [data-on]{border-color:var(--link-color);color:var(--text-primary);background:color-mix(in srgb,var(--link-color) 12%,transparent)}
+.res{display:flex;align-items:center;gap:8px;font-size:12px}
+.res .lbl{flex:1;color:var(--text-secondary)}
+.pips{display:inline-flex;gap:3px}
+.pips i{width:10px;height:10px;border-radius:50%;border:1.5px solid var(--link-color)}
+.pips i[data-on]{background:var(--link-color)}
+.pips.bad i{border-color:var(--error-text)}.pips.bad i[data-on]{background:var(--error-text)}
+.pips.good i{border-color:var(--success-text)}.pips.good i[data-on]{background:var(--success-text)}
+.budget{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-secondary)}
+.budget .bar{flex:1;height:6px;border-radius:4px;background:var(--input-bg);overflow:hidden;border:1px solid var(--border-color-light)}
+.budget .bar i{display:block;height:100%;background:var(--link-color)}
+.mdtext{font:11.5px/1.45 var(--mono);color:var(--text-secondary);white-space:pre-wrap;background:var(--input-bg);border:1px solid var(--border-color-light);border-radius:6px;padding:8px}
+.flag{font-size:11.5px;color:var(--warning)}
+
+/* Окно проверки и блок здоровья */
+.dlg{width:330px;border-radius:10px;background:var(--bg-card);border:1px solid var(--border-color);box-shadow:0 10px 32px var(--shadow-color);overflow:hidden}
+.dlg-title{display:flex;align-items:center;gap:8px;padding:9px 12px;border-bottom:1px solid var(--border-color-light);font-weight:700;font-size:13.5px}
+.dlg-body{padding:10px 12px 12px;display:flex;flex-direction:column;gap:9px}
+.parts{display:flex;flex-wrap:wrap;gap:5px;align-items:center;font-size:12px;color:var(--text-secondary)}
+.parts .pl{color:var(--text-muted)}
+.step{display:flex;align-items:center;gap:8px;font-size:12.5px}
+.step .lbl{flex:1}
+.stepper{display:inline-flex;align-items:center;border:1px solid var(--input-border);border-radius:6px;background:var(--input-bg);overflow:hidden}
+.stepper span{width:24px;text-align:center;color:var(--text-muted);font-size:14px;line-height:22px}
+.stepper b{min-width:28px;text-align:center;font-variant-numeric:tabular-nums;border-left:1px solid var(--input-border);border-right:1px solid var(--input-border);line-height:22px}
+.stepper[data-on] b{color:var(--link-color)}
+.preview{font:12px/1.4 var(--mono);padding:6px 8px;border-radius:6px;background:var(--bg-card-alt);border:1px solid var(--border-color-light);color:var(--text-primary)}
+.go{align-self:flex-end;display:inline-flex;align-items:center;gap:6px;padding:5px 14px;border-radius:7px;font-weight:600;font-size:12.5px;background:var(--success-text);color:var(--bg-card)}
+.chat{width:330px;border-radius:10px;background:var(--bg-card);border:1px solid var(--border-color);padding:9px 12px;display:flex;flex-direction:column;gap:5px;box-shadow:0 6px 18px var(--shadow-color)}
+.chat .who{font-size:11.5px;color:var(--text-muted)}
+.chat .line{display:flex;align-items:center;gap:5px;flex-wrap:wrap;font-size:12.5px}
+.face{display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:22px;border-radius:5px;background:var(--input-bg);border:1px solid var(--border-color);font:700 12px/1 var(--mono)}
+.face[data-max]{border-color:var(--link-color);color:var(--link-color)}
+.total{margin-left:auto;font:700 18px/1 var(--mono);color:var(--text-primary)}
+.why{font-size:11.5px;color:var(--text-muted)}
+.body-map{display:grid;grid-template-columns:auto 1fr;gap:4px 10px;align-items:center;font-size:12px}
+.body-map .part{color:var(--text-secondary)}
+.wchip{display:inline-flex;align-items:center;gap:4px;font-size:11px;padding:1px 7px;border-radius:6px;border:1px solid var(--border-color);color:var(--text-muted)}
+.wchip[data-l]{border-color:color-mix(in srgb,var(--warning) 50%,transparent);color:var(--warning)}
+.wchip[data-h]{border-color:color-mix(in srgb,var(--error-text) 50%,transparent);color:var(--error-text)}
+.thr{display:flex;gap:5px;flex-wrap:wrap}
+.thr span{font-size:11px;padding:1px 7px;border-radius:6px;background:var(--bg-card-alt);border:1px solid var(--border-color-light);color:var(--text-muted)}
+.thr b{color:var(--text-primary)}
+
+/* ── Вопросы ── */
+.qgroup{margin:30px 0 8px;display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.qgroup h3{margin:0}
+.qgroup .muted{font-size:14px}
+.q{margin:0 0 16px;padding:16px 18px;border-radius:12px;background:var(--panel);border:1px solid var(--line)}
+.q[data-done]{border-color:rgba(224,166,58,.45)}
+.q-h{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.q-n{flex:none;display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;font:600 14px/1 var(--serif);background:var(--gold-soft);color:var(--gold)}
+.q-h h4{margin:0;font:600 18px/1.3 var(--serif)}
+.key{font-size:11.5px;padding:1px 8px;border-radius:99px;background:rgba(224,122,106,.14);color:var(--bad);border:1px solid rgba(224,122,106,.35)}
+.q-ask{margin:6px 0 12px 38px;color:var(--muted);font-size:15px}
+.opts{display:flex;flex-wrap:wrap;gap:12px;margin-left:38px}
+.opt{display:flex;flex-direction:column;gap:6px;padding:10px 12px 12px;width:280px;border-radius:10px;cursor:pointer;border:1.5px solid var(--line);background:var(--bg);color:var(--text);text-align:left;font:inherit;transition:border-color 160ms ease,background-color 160ms ease,box-shadow 160ms ease}
+.opt:hover{border-color:var(--dim)}
+.opt:focus-visible{outline:none;box-shadow:0 0 0 2px rgba(224,166,58,.55)}
+.opt[aria-pressed=true]{border-color:var(--gold);background:color-mix(in srgb,var(--gold) 8%,var(--bg));box-shadow:0 0 0 1px var(--gold)}
+.opt-top{display:flex;align-items:center;gap:8px;min-height:22px}
+.opt-h{font-weight:600;font-size:14.5px;line-height:1.3}
+.opt-id{flex:none;display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:6px;font:700 12px/1 var(--mono);background:var(--panel2);color:var(--muted)}
+.opt[aria-pressed=true] .opt-id{background:var(--gold);color:#1a1205}
+.opt-note{font-size:13px;color:var(--muted);line-height:1.4}
+.opt-vis{margin-top:4px;padding:8px 10px;border-radius:8px;background:var(--panel2);font:13px/1.45 var(--mono);color:var(--text)}
+.opt-vis .hl{color:var(--gold)}.opt-vis .ok{color:var(--ok)}.opt-vis .bad{color:var(--bad)}
+.rec{font:600 10.5px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--gold);padding:3px 6px;border-radius:5px;border:1px solid rgba(224,166,58,.45);margin-left:auto}
+.other{margin:12px 0 0 38px;display:flex;gap:10px;align-items:flex-start}
+.other label{flex:none;padding-top:7px;font-size:14px;color:var(--muted)}
+textarea,.other input{flex:1;width:100%;min-height:38px;resize:vertical;padding:8px 10px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--text);font:14px/1.45 var(--sans)}
+textarea:focus{outline:none;border-color:var(--gold)}
+.mini{transform-origin:top left}
+.thumb{width:260px;height:190px;overflow:hidden;border-radius:8px;border:1px solid var(--line);background:var(--bg-primary)}
+.thumb .insp{transform:scale(.72);transform-origin:top left}
+.checks{display:flex;flex-direction:column;gap:8px;margin-left:38px}
+.checks label{display:flex;gap:10px;align-items:flex-start;cursor:pointer;font-size:15px}
+.checks input{margin-top:5px;accent-color:var(--gold);width:16px;height:16px}
+.acceptall{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:9px;border:1px solid rgba(224,166,58,.45);background:var(--gold-soft);color:var(--gold);font:600 14px/1 var(--sans);cursor:pointer}
+.acceptall:hover{background:rgba(224,166,58,.22)}
+
+/* ── Ответы ── */
+.summary{background:var(--panel);border:1px solid rgba(224,166,58,.45);border-radius:14px;padding:18px 20px}
+.summary pre{margin:12px 0 0;white-space:pre-wrap;font:14px/1.55 var(--mono);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:12px 14px;max-height:520px;overflow:auto}
+.summary textarea.copybox{position:absolute;left:-9999px;top:0;width:10px;height:10px}
+.copy{display:inline-flex;align-items:center;gap:8px;padding:9px 18px;border-radius:9px;border:0;background:var(--gold);color:#1a1205;font:700 15px/1 var(--sans);cursor:pointer}
+.copy:hover{filter:brightness(1.08)}
+.howto{margin-top:12px;color:var(--muted);font-size:14.5px}
+.bar{position:fixed;left:0;right:0;bottom:0;z-index:30;background:color-mix(in srgb,var(--panel) 94%,transparent);backdrop-filter:blur(8px);border-top:1px solid var(--line)}
+.bar .wrap{display:flex;align-items:center;gap:14px;height:56px}
+.bar .cnt{font-size:14px;color:var(--muted);white-space:nowrap}
+.bar .cnt b{color:var(--text)}
+.bar .nums{display:flex;gap:4px;overflow-x:auto;flex:1}
+.bar .nums a{flex:none;min-width:26px;padding:2px 6px;border-radius:6px;text-align:center;font:12px/1.4 var(--mono);color:var(--dim);border:1px solid var(--line)}
+.bar .nums a[data-on]{color:var(--gold);border-color:rgba(224,166,58,.6);background:var(--gold-soft)}
+.toast{font-size:13.5px;color:var(--ok);white-space:nowrap}
+.legend{font-size:11px;color:var(--text-muted)}
+.mini-stat{padding:6px 10px;border-radius:8px;background:var(--bg-card);border:1px solid var(--border-color);margin-top:4px}
+.mini-stat .statrow{border-bottom:0}
+footer{padding:40px 0 100px;color:var(--dim);font-size:13.5px}
+@media (max-width:980px){.goals,.cards,.stages{grid-template-columns:1fr 1fr}h1{font-size:42px}}
+@media (max-width:640px){.goals,.cards,.stages{grid-template-columns:1fr}h1{font-size:34px}.lead{font-size:17px}h2{font-size:26px}
+.q-ask,.opts,.other,.checks{margin-left:0}.opt{width:100%}.bar .nums{display:none}.stage-area{padding:10px}.insp,.dlg,.chat{max-width:100%}
+.switches{gap:8px}.principle{flex-direction:column;align-items:flex-start}
+.bar .copy{padding:8px 12px;font-size:14px;white-space:nowrap}.bar .cnt{font-size:13px}}
+@media (prefers-reduced-motion:reduce){*{transition-duration:1ms!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<nav class="top"><div class="wrap">
+  <b>Герои Норна</b>
+  <a href="#understood">Что мы поняли</a>
+  <a href="#plan">Как идём</a>
+  <a href="#sheet">Лист</a>
+  <a href="#roll">Бросок</a>
+  <a href="#questions">Вопросы</a>
+  <a href="#answers">Ваши ответы</a>
+</div></nav>
+
+<header class="hero"><div class="wrap">
+  <div class="kicker">Ролебаза · Легенда · ноябрь 2026</div>
+  <h1>«Герои Норна» <em>на Ролебазе</em></h1>
+  <p class="lead">Мы прочитали правила целиком и посмотрели, как вы сейчас играете на наших столах. Хотим, чтобы на Ролебазе Норн играл <b>так же, как за вашим столом</b>, только кубы, Здоровье, раны и очки стол считал сам.</p>
+  <p class="lead2">Ниже — что мы поняли, как будем двигаться, как может выглядеть лист персонажа и несколько вопросов. Ответы собираются внизу страницы одной кнопкой: скопируйте их и пришлите нам в личные сообщения.</p>
+  <div class="goals">
+    <div class="goal"><div class="k">Баланс проверок</div><q>персонаж всегда слаб в одних проверках и силён в других, нельзя просто взять и получить критуспех или критпровал</q></div>
+    <div class="goal"><div class="k">Гибкость</div><q>работает в любом сеттинге</q></div>
+    <div class="goal"><div class="k">Вариативность</div><q>каждый персонаж получается уникальным</q></div>
+  </div>
+  <div class="principle"><b>Стол считает, а не запрещает</b><span class="muted">Кости, пороги, раны и очки — на столе. Способности, этапы магии, последствия крит-провала и всё, что решает мастер, остаётся за вами и игроками.</span></div>
+</div></header>
+
+<section id="understood"><div class="wrap">
+  <h2>Что мы поняли</h2>
+  <p class="sub">Ядро системы в пяти карточках. Если где-то поняли не так, поправьте в вопросах ниже.</p>
+  <div class="cards">
+    <div class="card"><div class="k">Лестница костей</div>
+      <div class="ladder"><span><i style="height:26px">d4</i>1</span><span><i style="height:32px">d6</i>2</span><span><i style="height:38px">d8</i>3</span><span><i style="height:44px">d10</i>4</span><span><i style="height:50px">d12</i>5</span></div>
+      <p>Значение характеристики — это куб. Девять характеристик в трёх группах.</p></div>
+    <div class="card"><div class="k">Проверка</div>
+      <div class="ex">Скрытность = куб Сноровки + навык<br>Сноровка 4 → <span style="color:var(--gold)">d10</span> + 2</div>
+      <p>Плюс бонусы и штрафы, «хорош / плох в проверках» и, с разрешения мастера, куб профессии.</p></div>
+    <div class="card"><div class="k">Преимущество и помеха</div>
+      <div class="ex">преимущество: <span style="color:var(--gold)">2d10</span> + 2<br>помеха: (d10 + 2) <span style="color:var(--gold)">÷ 2</span>, вниз</div>
+      <p>Каждое преимущество — ещё кость в сумму, каждая помеха — делитель больше на единицу. Это <b style="color:var(--text)">первое, чему мы учим стол</b>: ваше правило преимущества и помехи — для проверок, атак и спасбросков.</p></div>
+    <div class="card"><div class="k">Исход по разнице с защитой</div>
+      <div class="bands"><div class="b1">−10<br>крит-<br>промах</div><div class="b2">промах<br><small>ничья — защите</small></div><div class="b3">попадание</div><div class="b4">+10<br>крит ×2</div><div class="b5">+15<br>смерт. ×3</div></div>
+      <p>Крит зависит не от грани куба, а от того, насколько удар превзошёл ПЗ цели.</p></div>
+    <div class="card"><div class="k">Здоровье · ПЗ · ПВ</div>
+      <div class="ex">Здоровье = макс. ФФ + макс. СВ<br>ПЗ = Скорость + Реакция<br>ПВ = Восприятие + Внимательность</div>
+      <div class="verified">✓ сверили с листами ваших игроков — сошлось у четырёх из пяти</div></div>
+    <div class="card"><div class="k">Раны и порог смерти</div>
+      <div class="ex">лёгкое &gt; ФФ + Выживание<br>тяжёлое &gt; вдвое · травма &gt; 2 × (макс. ФФ + Выж.)<br>0 Здоровья → d100, 51+ · три успеха / три провала</div>
+      <p>Ранения по частям тела, со своими штрафами в бою и вне боя.</p></div>
+  </div>
+</div></section>
+
+<section id="plan"><div class="wrap">
+  <h2>Как идём</h2>
+  <p class="sub">Переносим систему <b style="color:var(--text)">целиком</b>, но по шагам: каждый этап можно сразу брать в игру, не дожидаясь следующего.</p>
+  <div class="stages">
+    <div class="stage"><h3>Лист и проверки</h3><p>Характеристики с кубами, навыки, Здоровье, ПЗ, ПВ, ячейки и пороги ран считаются сами. Раса подставляет бонусы, очки прокачки — «всего / потрачено / осталось». Статусы, порог смерти, инициатива через Реакцию. И норнские преимущество с помехой прямо в кубах стола.</p><span class="tag">начинаем сейчас</span></div>
+    <div class="stage"><h3>Система — ваша</h3><p>Делаем копию системы на вашем аккаунте: владелец — вы. Правите её сами, подключаете к своим столам и даёте доступ своим людям. Новые версии с нашей стороны — как договоримся ниже.</p><span class="tag">после листа</span></div>
+    <div class="stage"><h3>Ближний бой</h3><p>Атака с выбором части тела или случайной, исход по разнице с ПЗ, крит и смертельное попадание, урон минус броня, ранения и травмы — без ручного счёта.</p><span class="tag wait">после ответов</span></div>
+    <div class="stage"><h3>Дальний бой и броня</h3><p>Луки, арбалеты, метательное, огнестрел, очереди и подавление — по <b style="color:var(--text)">вашей новой редакции</b>. Пока вы её дорабатываете, этот раздел не трогаем.</p><span class="tag wait">после вашей переделки</span></div>
+    <div class="stage"><h3>Магия и ремёсла</h3><p>Помощник для Арканы: элементы → время, кости, дальность. Концентрация при уроне, ритуалы и алхимия как калькуляторы, лечение ран. Свобода магии остаётся за мастером.</p><span class="tag wait">дальше</span></div>
+    <div class="stage"><h3>Оформление и видео</h3><p>Доводим вид листа по вашим ответам и снимаем короткое обучающее видео для ваших игроков: как бросить проверку с преимуществом в Норне.</p><span class="tag wait">в конце</span></div>
+  </div>
+</div></section>
+
+<section id="sheet"><div class="wrap">
+  <h2>Каким может быть лист</h2>
+  <p class="sub">Три варианта раскладки на одном персонаже: Шнырь, гоблин, Физ. форма 3 и Сила воли 2 — Здоровье 14, ПЗ 8, ПВ 6. Слева — как лист выглядит у ваших игроков сейчас. Последняя карточка собирается из ваших ответов на вопросы 13 и 14.</p>
+  <div class="switches">
+    <span>Тема стола</span>
+    <span class="seg" id="sw-theme"><button data-v="arcane">Тайная</button><button data-v="dark">Тёмная</button><button data-v="light">Светлая</button><button data-v="parchment">Пергамент</button></span>
+    <span>Ширина</span>
+    <span class="seg" id="sw-width"><button data-v="card">Панель</button><button data-v="phone">Телефон</button></span>
+  </div>
+  <div class="vtt stage-area" id="mock-area"><div class="variants" id="variants"></div></div>
+</div></section>
+
+<section id="roll"><div class="wrap">
+  <h2>Как будет выглядеть бросок и раны</h2>
+  <p class="sub">Окно проверки перед броском и итог в чате: видно, какие кости брошены и что поделено. Рядом блок Здоровья с ранами по частям тела и порогом смерти.</p>
+  <div class="vtt stage-area" id="roll-area"><div class="variants" id="rolls"></div></div>
+</div></section>
+
+<section id="questions"><div class="wrap">
+  <h2>Вопросы</h2>
+  <p class="sub">В каждом вопросе мы отметили, что предлагаем сами, — можно согласиться одним нажатием или написать по-своему в поле «Иначе». Вопросы с красной меткой нужны, чтобы начать, остальные можно оставить на потом.</p>
+  <button class="acceptall" id="accept-all" type="button">Согласен со всеми предложениями там, где ещё не ответил</button>
+  <div id="qs"></div>
+</div></section>
+
+<section id="answers"><div class="wrap">
+  <h2>Ваши ответы</h2>
+  <div class="summary">
+    <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap">
+      <button class="copy" id="copy-main" type="button">Скопировать ответы</button>
+      <span class="toast" id="toast-main" aria-live="polite"></span>
+      <span class="muted small" id="count-main"></span>
+    </div>
+    <p class="howto">Вставьте скопированный текст в личные сообщения Ролебазе — мы прочитаем и вернёмся с листом. Ответы сохраняются в этом браузере: можно закрыть страницу и продолжить позже.</p>
+    <pre id="summary-text" tabindex="0"></pre>
+    <textarea class="copybox" id="copybox" aria-hidden="true" tabindex="-1"></textarea>
+  </div>
+</div></section>
+
+<footer><div class="wrap">Ролебаза · материал для автора системы «Герои Норна». Страница не индексируется, ссылку получили только вы.</div></footer>
+
+<div class="bar"><div class="wrap">
+  <span class="cnt" id="count-bar"></span>
+  <span class="nums" id="nums"></span>
+  <span class="toast" id="toast-bar" aria-live="polite"></span>
+  <button class="copy" id="copy-bar" type="button">Скопировать ответы</button>
+</div></div>
+
+<script>
+(() => {
+const STORE = 'rolebaza-heroes-of-norn-answers-v1';
+const DIE = `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="12" height="12" rx="3"/><circle cx="5.5" cy="5.5" r="1" fill="currentColor"/><circle cx="10.5" cy="10.5" r="1" fill="currentColor"/><circle cx="8" cy="8" r="1" fill="currentColor"/></svg>`;
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+/* ── Персонаж-пример ── */
+const STATS = [
+  { g: 'Физические', k: 'ff', n: 'Физ. форма', v: 3, chk: -1, skills: [['Атлетика', 1, '−1 рост'], ['Выживание', 1, '−1 рост'], ['Ратное дело', null], ['Рукопашный бой', 0], ['Блокирование', 0]] },
+  { g: 'Физические', k: 'snor', n: 'Сноровка', v: 4, skills: [['Скрытность', 2, '+2 рост'], ['Проворство', 1, '+2 рост'], ['Уклонение', 1], ['Фехтование › Ножевой бой', 3], ['Боевое искусство', 0]] },
+  { g: 'Физические', k: 'vospr', n: 'Восприятие', v: 4, skills: [['Реакция', 3], ['Внимательность', 2], ['Метание', 1], ['Стрелковое › Арбалет', 2], ['Огнестрельное', null]] },
+  { g: 'Ментальные', k: 'mudr', n: 'Мудрость', v: 3, chk: 1, skills: [['Эрудиция', 0], ['Тактика', 0]] },
+  { g: 'Ментальные', k: 'int', n: 'Интеллект', v: 2, chk: -1, skills: [['Анализ', 1], ['Артефакторика', 0]] },
+  { g: 'Ментальные', k: 'intu', n: 'Интуиция', v: 3, skills: [['Чутьё', 1], ['Смекалка', 0]] },
+  { g: 'Социальные', k: 'har', n: 'Харизма', v: 3, skills: [['Обман', 2], ['Торг', 1]] },
+  { g: 'Социальные', k: 'sv', n: 'Сила воли', v: 2, skills: [['Концентрация', 0], ['Превозмогание', 0]] },
+  { g: 'Социальные', k: 'emp', n: 'Эмпатия', v: 2, chk: 1, skills: [['Влияние', 0], ['Проницательность', 0]] },
+];
+const faces = (v) => 2 * v + 2;
+const extraNum = (x) => x ? Number(x.replace('−', '-').match(/[-+]\d+/)[0]) : 0;
+const statView = (s, view) => {
+  const d = `<span class="die">d${faces(s.v)}</span>`;
+  if (view === 'die') return d;
+  if (view === 'dots') return `<span class="dots">${'●'.repeat(s.v)}<s>${'●'.repeat(5 - s.v)}</s></span>${d}`;
+  return `<span class="val">${s.v}</span>${d}`;
+};
+const chkChip = (s) => s.chk ? `<span class="chk" data-sign="${s.chk > 0 ? '+' : '-'}" title="${s.chk > 0 ? 'хорош' : 'плох'} в проверках">${s.chk > 0 ? '+' : '−'}${Math.abs(s.chk)} к проверкам</span>` : '';
+const skillFx = (s, sk) => { const b = sk[1] + extraNum(sk[2]) + (s.chk || 0); return `d${faces(s.v)}${b ? (b > 0 ? '+' + b : '−' + Math.abs(b)) : ''}`; };
+const skillRow = (s, sk) => sk[1] === null
+  ? `<div class="skill"><span class="nm cat">${esc(sk[0])} — каталог</span></div>`
+  : `<div class="skill"><span class="nm">${esc(sk[0])}${sk[2] ? ` <span class="extra">${esc(sk[2])}</span>` : ''}</span><span class="val">${sk[1]}</span><span class="fx">${skillFx(s, sk)}</span><span class="rollbtn" title="Бросить">${DIE}</span></div>`;
+const head = () => `<div class="insp-head"><div class="ava">Ш</div><div><div class="insp-name">Шнырь</div><div class="insp-sub">Гоблин · маленький · скорость 5</div></div></div>
+  <div class="hpbar"><i style="width:${10 / 14 * 100}%"></i><span>Здоровье 10 / 14</span></div>`;
+const derived = () => `<div class="derived"><span>ПЗ <b>8</b></span><span>ПВ <b>6</b></span><span>Ячейки <b>6</b></span><span>Броня <b>2</b></span><span>Жетоны <b>1</b></span></div>`;
+
+function sheetA(view) {
+  let html = '', g = '';
+  for (const s of STATS) {
+    if (s.g !== g) { g = s.g; html += `<div class="grp">${g}</div>`; }
+    const shown = s.skills.filter((sk) => sk[1] === null || sk[1] > 0);
+    html += `<div class="statrow"><span class="nm">${s.n}</span>${chkChip(s)}${statView(s, view)}<span class="rollbtn" title="Бросить характеристику">${DIE}</span></div>${shown.map((sk) => skillRow(s, sk)).join('')}`;
+  }
+  return `<div class="insp">${head()}<div class="tabs"><span data-on>Лист</span><span>Записи</span><span>Предметы</span></div><div class="insp-body">${derived()}${html}<div class="more">+ показать навыки с нулём (38)</div></div></div>`;
+}
+function sheetB(view) {
+  const tiles = STATS.map((s) => `<div class="tile"><small>${s.n}</small><div class="row">${statView(s, view)}${s.chk ? `<span class="chk" data-sign="${s.chk > 0 ? '+' : '-'}" title="${s.chk > 0 ? 'хорош' : 'плох'} в проверках">${s.chk > 0 ? '+' : '−'}${Math.abs(s.chk)}</span>` : ''}</div></div>`).join('');
+  const all = STATS.flatMap((s) => s.skills.filter((sk) => sk[1] > 0).map((sk) => [s, sk])).sort((a, b) => a[1][0].localeCompare(b[1][0], 'ru'));
+  return `<div class="insp">${head()}<div class="tabs"><span data-on>Лист</span><span>Записи</span><span>Предметы</span></div><div class="insp-body">${derived()}<div class="tiles">${tiles}</div><div class="legend">±1 у характеристики — «хорош / плох в проверках»</div>
+    <div class="chips"><span data-on>Мои навыки</span><span>Все</span><span>Боевые</span><span>Социальные</span><span>Магия</span></div>
+    ${all.map(([s, sk]) => skillRow(s, sk)).join('')}</div></div>`;
+}
+function sheetC(view) {
+  const tiles = STATS.map((s) => `<div class="tile"><small>${s.n}</small><div class="row">${statView(s, view)}</div></div>`).join('');
+  return `<div class="insp">${head()}<div class="tabs"><span data-on>Основное</span><span>Навыки</span><span>Бой</span><span>Магия</span><span>Вещи</span></div><div class="insp-body">${derived()}<div class="tiles">${tiles}</div>
+    <div class="grp">Ресурсы</div>
+    <div class="res"><span class="lbl">Жетоны мастерства</span><span class="pips"><i data-on></i><i></i><i></i></span></div>
+    <div class="res"><span class="lbl">Ячейки умений</span><span>2 / 6</span></div>
+    <div class="budget"><span>Очки прокачки</span><span class="bar"><i style="width:${58 / 62 * 100}%"></i></span><span>осталось <b>4</b> из 62</span></div>
+    <div class="grp">Раны</div>
+    <div class="thr"><span>лёгкое &gt; <b>4</b></span><span>тяжёлое &gt; <b>8</b></span><span>травма &gt; <b>18</b></span></div>
+    <div class="body-map"><span class="part">Рука</span><span><span class="wchip" data-l>Лёгкое · кровотечение</span></span></div>
+    <div class="more">навыки, бой и магия — на своих вкладках</div></div></div>`;
+}
+function sheetNow() {
+  return `<div class="insp">${head()}<div class="tabs"><span data-on>Описание</span><span>Записи</span></div><div class="insp-body"><div class="mdtext">**Раса**: Гоблин
+**ПЗ**: 8   **ПВ**: 6
+**ХП**: 10/14
+
+**Физические**:
+    Физ Форма 3 (-1 к проверкам)
+    Сноровка 4
+    Восприятие 4
+**Навыки**:
+    Скрытность 2(+2)
+    Реакция 3
+    …</div><div class="flag">Всё считается в уме, кубы набираются руками</div></div></div>`;
+}
+const LAYOUTS = { A: sheetA, B: sheetB, C: sheetC };
+
+/* ── Вопросы ── */
+const Q = [
+  { grp: 'Правила: кости и проверки' },
+  { id: 'q1', n: 1, key: true, t: 'Куб для значений 6 и 7', ask: 'Раса поднимает предел: у гоблина Сноровка 5 + 2 = 7. Лестница кончается на d12 — что бросать?', o: [
+    { id: 'A', rec: true, l: 'd12 и +1 за каждую ступень выше 5', note: 'Физических костей больше d12 нет; прибавка сохраняет разницу.', v: 'Сноровка 6 → <span class="hl">d12 + 1</span><br>Сноровка 7 → <span class="hl">d12 + 2</span>' },
+    { id: 'B', l: 'Следующие кости лестницы: d14, d16', note: 'На столе такие кости показываются числом, без 3D-кубика.', v: 'Сноровка 6 → <span class="hl">d14</span><br>Сноровка 7 → <span class="hl">d16</span>' },
+    { id: 'C', l: 'Сразу d20', note: 'Большой скачок силы на одной ступени.', v: 'Сноровка 6–7 → <span class="hl">d20</span>' } ] },
+  { id: 'q2', n: 2, key: true, t: 'Преимущество и помеха вместе', ask: 'У персонажа одновременно есть и преимущество, и помеха. Проверка d8 + 3.', o: [
+    { id: 'A', rec: true, l: 'Действуют обе', note: 'Сначала добавляем кости, потом делим.', v: '1 преим. + 1 помеха →<br><span class="hl">(2d8 + 3) ÷ 2</span>, вниз' },
+    { id: 'B', l: 'Гасят друг друга одна к одной', note: 'Остаток работает как обычно.', v: '1 + 1 → <span class="hl">d8 + 3</span><br>2 преим. + 1 помеха → <span class="hl">2d8 + 3</span>' },
+    { id: 'C', l: 'Любые вместе — обычный бросок', note: 'Как в D&D: сколько бы ни было.', v: '2 преим. + 1 помеха → <span class="hl">d8 + 3</span>' } ] },
+  { id: 'q3', n: 3, key: true, t: 'Что делит помеха', ask: 'Проверка d8 + 3 с одной помехой, на кубе выпало 5.', o: [
+    { id: 'A', rec: true, l: 'Весь итог, округление вниз', note: 'Куб, навык и бонусы вместе.', v: '(5 + 3) ÷ 2 = <span class="hl">4</span>' },
+    { id: 'B', l: 'Только куб, навык потом', note: 'Навык помехой не режется.', v: '5 ÷ 2 = 2, + 3 = <span class="hl">5</span>' } ] },
+  { id: 'q4', n: 4, t: 'Ничья вне боя', ask: 'Мастер назначил сложность 8, игрок выкинул ровно 8. В бою ничья — за защитником, а вне боя?', o: [
+    { id: 'A', rec: true, l: 'Равенство — успех', v: 'сложность 8, итог 8 → <span class="ok">успех</span>' },
+    { id: 'B', l: 'Равенство — провал, как в бою', v: 'сложность 8, итог 8 → <span class="bad">провал</span>' } ] },
+  { id: 'q5', n: 5, t: '«Хорош / плох в проверках»', ask: 'Гоблин «хорош в Мудрости (+1)». На какие броски действует +1?', o: [
+    { id: 'A', rec: true, l: 'На все броски этой характеристики', note: 'Навыки, атаки, инициатива, магия.', v: 'Тактика: d8 + 0 <span class="hl">+ 1</span><br>Аркана от Мудрости: <span class="hl">+ 1</span>' },
+    { id: 'B', l: 'Только на навыки этой характеристики', v: 'Тактика <span class="hl">+ 1</span>, магия — без' } ] },
+  { grp: 'Правила: бой, раны, прокачка' },
+  { id: 'q6', n: 6, t: 'Пороги исхода в бою', ask: 'Атака на 10 больше ПЗ цели — это уже крит?', o: [
+    { id: 'A', rec: true, l: '«Больше на 10» — значит +10 и выше', note: 'Смертельное — с +15, крит-промах — с −10.', v: '+10 → <span class="hl">крит</span><br>+15 → <span class="hl">смертельное</span>' },
+    { id: 'B', l: 'Строго больше: +11 и +16', v: '+10 → попадание<br>+11 → <span class="hl">крит</span>' } ] },
+  { id: 'q7', n: 7, t: 'Голиаф и «не на 5»', ask: 'У голиафа написано: крит по нему нужен «не на 5, а на максимальное значение кости Физ. формы». Основное правило сейчас +10.', o: [
+    { id: 'A', rec: true, l: 'Макс. кость ФФ, но не меньше 10', note: '«На 5» — след прежней редакции.', v: 'ФФ 3 → крит с <span class="hl">+10</span><br>ФФ 5 → крит с <span class="hl">+12</span>' },
+    { id: 'B', l: 'Ровно макс. кость ФФ', note: 'Слабому голиафу это вредит.', v: 'ФФ 3 → крит уже с <span class="bad">+8</span>' } ] },
+  { id: 'q8', n: 8, t: 'Рана — от урона до или после брони', ask: 'Удар на 9, броня цели 3. С порогами ран сравниваем…', o: [
+    { id: 'A', rec: true, l: 'То, что дошло до Здоровья', note: 'После брони, без множителя части тела.', v: '9 − 3 = <span class="hl">6</span> → сравниваем 6' },
+    { id: 'B', l: 'Удар целиком, до брони', v: 'сравниваем <span class="hl">9</span>' } ] },
+  { id: 'q9', n: 9, key: true, t: 'Профессия и репутация: «2 очка» и таблица', ask: 'В тексте: «потратив определённое количество… получает 2 очка для профессии и специализации либо репутации». В таблице — пороги 20 / 50 / 90 / 140 / 200 и 40 / 100 / 180 / 280 / 400. Как это связано?', o: [
+    { id: 'A', l: 'Каждый порог даёт 2 очка', note: 'Их распределяют между профессией, специализацией и репутацией.', v: 'потрачено 20 → <span class="hl">+2 очка</span><br>потрачено 50 → ещё <span class="hl">+2</span>' },
+    { id: 'B', l: 'Порог сам поднимает уровень', note: '«2 очка» — устаревшая фраза.', v: 'потрачено 50 → профессия <span class="hl">2</span><br>потрачено 100 → репутация <span class="hl">2</span>' } ] },
+  { id: 'q10', n: 10, t: 'Здоровье драконорождённого', ask: 'У вашего игрока ФФ 4, СВ 3, Здоровье 19. Формула даёт 10 + 8 = 18, а с «Прочной чешуёй» (+1 за уровень ФФ сверх первого) — 21.', o: [
+    { id: 'A', rec: true, l: '+1 за уровень сверх расовой базы', note: 'База ФФ у расы — 3, четвёртый уровень даёт +1.', v: '18 + 1 = <span class="hl">19</span>' },
+    { id: 'B', l: 'Как в книге: +3', note: 'Значит, на листе ошибка.', v: '18 + 3 = <span class="hl">21</span>' },
+    { id: 'C', l: 'Это купленное здоровье', v: '18 + 1 купленное = <span class="hl">19</span>' } ] },
+  { id: 'q11', n: 11, t: 'Сколько здоровья можно купить', ask: '«Нельзя повысить больше, чем вдвое от базовых хп». Базовое Здоровье 14.', o: [
+    { id: 'A', rec: true, l: 'Итог не больше двух баз', v: 'купить до <span class="hl">+14</span> → максимум 28' },
+    { id: 'B', l: 'Купить можно до двух баз', v: 'купить до <span class="hl">+28</span> → максимум 42' } ] },
+  { id: 'q12', n: 12, t: '«ПУ» в Аркане', ask: 'Заклинание проходит проверку Арканы «против сложности противника — его ПУ при атаке». Что такое ПУ?', o: [
+    { id: 'A', rec: true, l: 'Это ПЗ цели', v: 'Аркана против <span class="hl">ПЗ</span>' } ] },
+  { grp: 'Лист персонажа' },
+  { id: 'q13', n: 13, t: 'Какая раскладка ближе', ask: 'Три варианта выше — на одном и том же персонаже.', o: [
+    { id: 'A', l: 'По характеристикам', note: 'Как Таблица 1: под каждой характеристикой её навыки.', thumb: 'A' },
+    { id: 'B', l: 'Плитки + список навыков', note: 'Девять плиток сверху, навыки одним списком с фильтром.', thumb: 'B' },
+    { id: 'C', l: 'Вкладки', note: 'Основное, навыки, бой, магия, вещи — по вкладкам.', thumb: 'C' } ] },
+  { id: 'q14', n: 14, t: 'Как показывать характеристику', ask: 'Игрокам важнее видеть значение или сразу куб?', o: [
+    { id: 'A', rec: true, l: 'Число и куб', v: 'Сноровка <b>4</b> <span class="hl">d10</span>', view: 'num' },
+    { id: 'B', l: 'Только куб', note: 'Число — во всплывающей подсказке.', v: 'Сноровка <span class="hl">d10</span>', view: 'die' },
+    { id: 'C', l: 'Точки и куб', v: 'Сноровка <span class="hl">●●●●</span>○ d10', view: 'dots' } ] },
+  { id: 'q15', n: 15, t: 'Преимущество — до броска или в окне', ask: 'Как игрок говорит столу «у меня преимущество»?', o: [
+    { id: 'A', rec: true, l: 'Заранее на панели кубов, бросок сразу', note: 'Одно нажатие по навыку. Окно — только когда нужно что-то добавить.', v: 'панель: <span class="hl">преимущество ×1</span><br>клик по «Скрытности» → бросок' },
+    { id: 'B', l: 'Окно перед каждой проверкой', note: 'Надёжнее не забыть, но каждый раз лишний шаг.', v: 'клик → окно: преим. / помеха / бонус → «Бросить»' } ] },
+  { grp: 'Как работаем дальше' },
+  { id: 'q16', n: 16, t: 'Что автоматизировать первым', ask: 'Порядок внутри первого этапа.', o: [
+    { id: 'A', rec: true, l: 'Листы игроков', note: 'Проверки, Здоровье, очки. Лист существа — следом.', v: 'игроки → NPC' },
+    { id: 'B', l: 'Сразу и листы NPC', note: 'Упрощённый лист существа одновременно с игроками.', v: 'игроки + NPC' },
+    { id: 'C', l: 'Сначала бой', v: 'атаки и раны → лист' } ] },
+  { id: 'q17', n: 17, t: 'Перенос листов ваших игроков', ask: 'Сейчас листы — текст в описании персонажа. Перенести числа в поля нового листа?', o: [
+    { id: 'A', rec: true, l: 'Да, описание сохранить как есть', note: 'Числа уезжают в поля, текст остаётся целиком.', v: 'Сноровка 4 → поле · текст на месте' },
+    { id: 'B', l: 'Сначала на одном персонаже', v: 'покажите на одном — решу' },
+    { id: 'C', l: 'Нет, игроки заполнят сами', v: 'пустой лист' } ] },
+  { id: 'q18', n: 18, t: 'Новые версии системы, когда она ваша', ask: 'Система будет на вашем аккаунте, правите её вы. Как получать наши улучшения?', o: [
+    { id: 'A', rec: true, l: 'Присылайте новую версию — решу сам', note: 'Вы сравниваете и ставите, когда удобно.', v: 'новая версия → ваше «да»' },
+    { id: 'B', l: 'Правлю сам, обновления не нужны', v: 'дальше система живёт у вас' } ] },
+  { id: 'q19', n: 19, t: 'Жажда, Кредиты, магическая броня', ask: 'В ваших играх есть Жажда у вампира, Кредиты и броня «от магии и аномалий». В книге их нет.', o: [
+    { id: 'A', l: 'Это часть системы', note: 'Нужны в листе всем.', v: 'поля в общем листе' },
+    { id: 'B', rec: true, l: 'Это моя кампания', note: 'Сделаем личными ресурсами отдельных персонажей.', v: 'у вампира — своя «Жажда»' } ] },
+];
+const DATA = [
+  ['xlsx', 'Таблица 1 и таблицы оружия файлом Excel (особенно холодное оружие со свойствами)'],
+  ['chars', '2–3 заполненных персонажа с итоговыми числами — проверим на них все формулы'],
+  ['races', 'Приложение 2 (расы)'],
+  ['dmg', 'Список типов урона и какой статус даёт лёгкое ранение каждого'],
+  ['skills', 'Недостающие навыки: Ловкость рук, Предчувствие, Маскировка, Манипуляция — к какой характеристике'],
+];
+const QS = Q.filter((q) => q.id);
+
+/* ── Состояние ── */
+let st = { a: {}, data: {}, dataNote: '', more: '', theme: 'arcane', width: 'card' };
+try { st = { ...st, ...JSON.parse(localStorage.getItem(STORE) || '{}') }; } catch (e) { /* пусто */ }
+const save = () => { try { localStorage.setItem(STORE, JSON.stringify(st)); } catch (e) { /* приватный режим */ } };
+
+/* ── Моки ── */
+function renderMocks() {
+  const area = document.getElementById('mock-area');
+  area.dataset.theme = st.theme;
+  document.getElementById('roll-area').dataset.theme = st.theme;
+  area.style.setProperty('--mock-w', st.width === 'phone' ? '360px' : '350px');
+  const mineLayout = st.a.q13?.o && LAYOUTS[st.a.q13.o] ? st.a.q13.o : 'A';
+  const mineView = (Q.find((q) => q.id === 'q14').o.find((o) => o.id === st.a.q14?.o) || {}).view || 'num';
+  const cards = [
+    ['Сейчас', 'Текст в описании персонажа', sheetNow()],
+    ['А · По характеристикам', 'Как Таблица 1: навыки под своей характеристикой, нулевые свёрнуты', sheetA('num')],
+    ['Б · Плитки + список', 'Девять плиток, ниже — только ваши навыки с фильтром', sheetB('num')],
+    ['В · Вкладки', 'Основное отдельно, навыки и бой — на своих вкладках', sheetC('num')],
+    ['Ваш выбор', `Раскладка ${{ A: 'А', B: 'Б', C: 'В' }[mineLayout]}${st.a.q13?.o ? '' : ' (пока не выбрана)'}, характеристика — ${{ num: 'число и куб', die: 'только куб', dots: 'точки и куб' }[mineView]}`, LAYOUTS[mineLayout](mineView), true],
+  ];
+  document.getElementById('variants').innerHTML = cards.map(([t, s, h, mine]) => `<figure class="variant"${mine ? ' data-mine' : ''}><figcaption><b>${t}</b><span>${s}</span></figcaption>${h}</figure>`).join('');
+  document.querySelectorAll('#sw-theme button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.v === st.theme)));
+  document.querySelectorAll('#sw-width button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.v === st.width)));
+}
+function renderRolls() {
+  const dlg = (adv, dis, title) => `<div class="dlg"><div class="dlg-title">${DIE}Скрытность <span class="muted" style="margin-left:auto;font-weight:400;font-size:12px">${title}</span></div><div class="dlg-body">
+    <div class="parts"><span class="die">d10</span><span class="pl">Сноровка 4</span>+<b>2</b><span class="pl">навык</span>+<b>2</b><span class="pl">маленький рост</span></div>
+    <div class="step"><span class="lbl">Преимущество</span><span class="stepper"${adv ? ' data-on' : ''}><span>−</span><b>×${adv}</b><span>+</span></span></div>
+    <div class="step"><span class="lbl">Помеха</span><span class="stepper"${dis ? ' data-on' : ''}><span>−</span><b>×${dis}</b><span>+</span></span></div>
+    <div class="step"><span class="lbl">Бонус / штраф</span><span class="stepper"><span>−</span><b>0</b><span>+</span></span></div>
+    <div class="preview">${dis ? `(${adv + 1 > 1 ? (adv + 1) + 'd10' : 'd10'} + 4) ÷ ${dis + 1}, вниз` : `${adv + 1}d10 + 4`}</div>
+    <span class="go">${DIE}Бросить</span></div></div>`;
+  const chatAdv = `<div class="chat"><div class="who">Шнырь · Скрытность · преимущество ×1</div><div class="line"><span class="face">7</span><span class="face">3</span>+ 4<span class="total">14</span></div><div class="why">2d10 + 4: обе кости в сумму</div></div>`;
+  const chatDis = `<div class="chat"><div class="who">Шнырь · Скрытность · помеха ×1</div><div class="line"><span class="face">6</span>+ 4 = 10 ÷ 2<span class="total">5</span></div><div class="why">(d10 + 4) ÷ 2, округление вниз</div></div>`;
+  const health = `<div class="insp" style="width:340px"><div class="insp-head"><div class="ava">Ш</div><div><div class="insp-name">Здоровье и раны</div><div class="insp-sub">Шнырь · ФФ 3 (d8) · СВ 2 (d6) · Выживание 1</div></div></div>
+    <div class="hpbar"><i style="width:${10 / 14 * 100}%"></i><span>Здоровье 10 / 14 = 8 + 6</span></div><div class="insp-body">
+    <div class="thr"><span>лёгкое &gt; <b>4</b></span><span>тяжёлое &gt; <b>8</b></span><span>травма &gt; <b>18</b></span></div>
+    <div class="body-map"><span class="part">Голова</span><span class="muted">—</span>
+    <span class="part">Тело</span><span><span class="wchip" data-h>Тяжёлое · −1 вне боя / −2 в бою</span></span>
+    <span class="part">Руки</span><span><span class="wchip" data-l>Лёгкое · кровотечение 1к4</span></span>
+    <span class="part">Ноги</span><span class="muted">—</span></div>
+    <div class="grp">Порог смерти · d100, успех 51+</div>
+    <div class="res"><span class="lbl">Успехи</span><span class="pips good"><i data-on></i><i></i><i></i></span></div>
+    <div class="res"><span class="lbl">Провалы</span><span class="pips bad"><i data-on></i><i data-on></i><i></i></span></div>
+    <span class="go" style="background:var(--btn-primary-bg);color:var(--btn-primary-text)">${DIE}Бросок от смерти</span></div></div>`;
+  document.getElementById('rolls').innerHTML = [
+    ['Преимущество', 'Ещё одна кость Сноровки — в сумму', `<div style="display:flex;flex-direction:column;gap:10px">${dlg(1, 0, 'с преимуществом')}${chatAdv}</div>`],
+    ['Помеха', 'Итог делится, округление вниз', `<div style="display:flex;flex-direction:column;gap:10px">${dlg(0, 1, 'с помехой')}${chatDis}</div>`],
+    ['Здоровье · раны · смерть', 'Пороги считаются сами, раны — по частям тела', health],
+  ].map(([t, s, h]) => `<figure class="variant"><figcaption><b>${t}</b><span>${s}</span></figcaption>${h}</figure>`).join('');
+}
+
+/* ── Вопросы ── */
+function optHtml(q, o) {
+  const on = st.a[q.id]?.o === o.id;
+  const vis = o.thumb ? `<div class="thumb vtt" data-theme="${st.theme}">${LAYOUTS[o.thumb]('num')}</div>`
+    : o.view ? `<div class="vtt mini-stat" data-theme="${st.theme}"><div class="statrow"><span class="nm">Сноровка</span>${statView(STATS[1], o.view)}<span class="rollbtn">${DIE}</span></div></div>`
+    : (o.v ? `<div class="opt-vis">${o.v}</div>` : '');
+  return `<button type="button" class="opt" data-q="${q.id}" data-o="${o.id}" aria-pressed="${on}"><span class="opt-top"><span class="opt-id">${{ A: 'А', B: 'Б', C: 'В' }[o.id] || o.id}</span>${o.rec ? '<span class="rec">предлагаем</span>' : ''}</span><span class="opt-h">${esc(o.l)}</span>${o.note ? `<span class="opt-note">${esc(o.note)}</span>` : ''}${vis}</button>`;
+}
+function renderQuestions() {
+  let html = '';
+  for (const q of Q) {
+    if (q.grp) { html += `<div class="qgroup"><h3>${q.grp}</h3></div>`; continue; }
+    const a = st.a[q.id] || {};
+    html += `<div class="q" id="${q.id}"${a.o ? ' data-done' : ''}><div class="q-h"><span class="q-n">${q.n}</span><h4>${esc(q.t)}</h4>${q.key ? '<span class="key">нужно для старта</span>' : ''}</div>
+      <p class="q-ask">${esc(q.ask)}</p><div class="opts">${q.o.map((o) => optHtml(q, o)).join('')}</div>
+      <div class="other"><label for="${q.id}-x">Иначе:</label><textarea id="${q.id}-x" data-q="${q.id}" rows="1" placeholder="Напишите, как у вас">${esc(a.o === 'X' ? (a.x || '') : '')}</textarea></div></div>`;
+  }
+  html += `<div class="qgroup"><h3>Что пришлёте файлом в личку</h3><span class="muted">отметьте, что сможете прислать</span></div>
+    <div class="q" id="q20"><div class="checks">${DATA.map(([k, l]) => `<label><input type="checkbox" data-d="${k}"${st.data[k] ? ' checked' : ''}><span>${esc(l)}${k === 'xlsx' || k === 'chars' ? ' <span class="key">нужно для старта</span>' : ''}</span></label>`).join('')}</div>
+    <div class="other"><label for="data-note">Ещё:</label><textarea id="data-note" rows="1" placeholder="Что ещё пришлёте или о чём важно знать">${esc(st.dataNote)}</textarea></div></div>
+    <div class="qgroup"><h3>Что ещё нам важно знать</h3></div>
+    <div class="q" id="q21"><textarea id="more" rows="3" placeholder="Любые пожелания: что для вас главное в переносе, чего точно не делать, что болит за столом">${esc(st.more)}</textarea></div>`;
+  document.getElementById('qs').innerHTML = html;
+}
+
+/* ── Ответы ── */
+function summaryText() {
+  const L = ['Герои Норна — ответы мастера', ''];
+  for (const q of QS) {
+    const a = st.a[q.id];
+    if (!a?.o) continue;
+    if (a.o === 'X') { L.push(`${q.n}. ${q.t} — иначе: ${(a.x || '').trim()}`); continue; }
+    const o = q.o.find((x) => x.id === a.o);
+    L.push(`${q.n}. ${q.t} — ${{ A: 'А', B: 'Б', C: 'В' }[o.id]}: ${o.l}`);
+  }
+  const d = DATA.filter(([k]) => st.data[k]).map(([, l]) => `- ${l}`);
+  if (d.length || st.dataNote.trim()) { L.push('', 'Пришлю файлом:', ...d); if (st.dataNote.trim()) L.push(`- ${st.dataNote.trim()}`); }
+  if (st.more.trim()) L.push('', 'Ещё:', st.more.trim());
+  const answered = QS.filter((q) => st.a[q.id]?.o).length;
+  if (!answered && d.length === 0 && !st.more.trim()) return 'Пока нет ответов — выберите варианты в вопросах выше.';
+  return L.join('\n');
+}
+function renderSummary() {
+  const answered = QS.filter((q) => st.a[q.id]?.o).length;
+  const txt = `Отвечено <b>${answered}</b> из ${QS.length}`;
+  document.getElementById('count-bar').innerHTML = txt;
+  document.getElementById('count-main').innerHTML = txt.replace(/<\/?b>/g, '');
+  document.getElementById('summary-text').textContent = summaryText();
+  document.getElementById('nums').innerHTML = QS.map((q) => `<a href="#${q.id}"${st.a[q.id]?.o ? ' data-on' : ''} title="${esc(q.t)}">${q.n}${st.a[q.id]?.o ? ({ A: 'А', B: 'Б', C: 'В', X: '…' }[st.a[q.id].o]) : ''}</a>`).join('');
+  QS.forEach((q) => { const el = document.getElementById(q.id); if (el) el.toggleAttribute('data-done', !!st.a[q.id]?.o); });
+}
+function refreshQuestion(qid) {
+  document.querySelectorAll(`.opt[data-q="${qid}"]`).forEach((b) => b.setAttribute('aria-pressed', String(st.a[qid]?.o === b.dataset.o)));
+}
+function update(qid) { save(); if (qid) refreshQuestion(qid); renderSummary(); if (!qid || qid === 'q13' || qid === 'q14') renderMocks(); }
+
+document.addEventListener('click', (e) => {
+  const opt = e.target.closest('.opt');
+  if (opt) {
+    const { q, o } = opt.dataset;
+    st.a[q] = st.a[q]?.o === o ? {} : { o };
+    const ta = document.getElementById(`${q}-x`); if (ta && st.a[q].o) ta.value = '';
+    update(q); return;
+  }
+  const sw = e.target.closest('.seg button');
+  if (sw) { if (sw.closest('#sw-theme')) st.theme = sw.dataset.v; else st.width = sw.dataset.v; save(); renderMocks(); renderRolls(); renderQuestions(); renderSummary(); }
+});
+document.addEventListener('input', (e) => {
+  const t = e.target;
+  if (t.matches('.other textarea[data-q]')) {
+    const q = t.dataset.q;
+    st.a[q] = t.value.trim() ? { o: 'X', x: t.value } : {};
+    update(q);
+  } else if (t.matches('input[data-d]')) { st.data[t.dataset.d] = t.checked; update(); }
+  else if (t.id === 'data-note') { st.dataNote = t.value; save(); renderSummary(); }
+  else if (t.id === 'more') { st.more = t.value; save(); renderSummary(); }
+});
+document.getElementById('accept-all').addEventListener('click', () => {
+  for (const q of QS) { if (st.a[q.id]?.o) continue; const rec = q.o.find((o) => o.rec); if (rec) st.a[q.id] = { o: rec.id }; }
+  save(); renderQuestions(); renderSummary(); renderMocks();
+});
+async function copyAnswers(toastId) {
+  const text = summaryText();
+  const toast = document.getElementById(toastId);
+  let ok = false;
+  try { if (navigator.clipboard && window.isSecureContext) { await navigator.clipboard.writeText(text); ok = true; } } catch (e) { ok = false; }
+  if (!ok) {
+    const box = document.getElementById('copybox');
+    box.value = text; box.select();
+    try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+  }
+  if (!ok) {
+    const pre = document.getElementById('summary-text');
+    const r = document.createRange(); r.selectNodeContents(pre);
+    const s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+    pre.scrollIntoView({ block: 'center' });
+  }
+  toast.textContent = ok ? 'Скопировано — вставьте в личные сообщения Ролебазе' : 'Текст выделен — нажмите Ctrl+C';
+  clearTimeout(toast._t); toast._t = setTimeout(() => { toast.textContent = ''; }, 4000);
+}
+document.getElementById('copy-main').addEventListener('click', () => copyAnswers('toast-main'));
+document.getElementById('copy-bar').addEventListener('click', () => copyAnswers('toast-bar'));
+window.__norn = { summaryText };
+
+renderMocks(); renderRolls(); renderQuestions(); renderSummary();
+})();
+</script>
+</body>
+</html>
