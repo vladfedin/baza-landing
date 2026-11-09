@@ -1594,11 +1594,13 @@ img.emoji { display: inline-block; width: 1.15em; height: 1.15em; vertical-align
 @media (prefers-reduced-motion: reduce) { .cbd-stars i, .cbd-fires i { animation: none; } .cbd-sparks { display: none; } }
 
 /* The frame: two thin rules on the strips above and below, a gem in the middle. */
-.contest-band::before, .contest-band::after { content: ''; position: absolute; left: 0; right: 0; height: var(--cbd-strip); z-index: 2; pointer-events: none;
+/* Stronger than the page's section seam (.page-main > section::before), which
+   would otherwise move this rule 110px up and under the band. */
+.page-main > section.contest-band::before, .contest-band::before, .contest-band::after { content: ''; position: absolute; left: 0; right: 0; width: auto; height: var(--cbd-strip); z-index: 2; pointer-events: none;
   background:
     linear-gradient(90deg, transparent, var(--cbd-rule) 12%, var(--cbd-rule) 88%, transparent) 0 2px / 100% 1px no-repeat,
     linear-gradient(90deg, transparent, var(--cbd-rule-soft) 20%, var(--cbd-rule-soft) 80%, transparent) 0 6px / 100% 1px no-repeat; }
-.contest-band::before { top: 0; }
+.page-main > section.contest-band::before, .contest-band::before { top: 0; }
 .contest-band::after { bottom: 0; transform: scaleY(-1); }
 .cbd-gem { position: absolute; left: 50%; width: 9px; height: 9px; z-index: 3; pointer-events: none;
   transform: translate(-50%, -50%) rotate(45deg); background: var(--cbd-rule); box-shadow: 0 0 0 3px var(--bg); }
