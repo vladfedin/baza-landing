@@ -78,6 +78,7 @@
 
   function gameCard(g) {
     var a = el('a', 'cbd-game');
+    a.setAttribute('data-goal', 'game_open');   // the funnel's existing goal for a game card (js/funnel.js)
     a.href = APP + '/game/' + encodeURIComponent(g.slug) + '?' + UTM;
     var cover = (g.coverMedia && g.coverMedia.posterUrl) || g.coverImageUrl;
     var pic = el('span', 'cbd-game__cover');
