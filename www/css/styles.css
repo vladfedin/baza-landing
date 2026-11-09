@@ -1554,3 +1554,41 @@ img.emoji { display: inline-block; width: 1.15em; height: 1.15em; vertical-align
   .side-char img.is-poked, .side-char__figure.is-poked, .side-char__figure.is-rising { animation: none; }
   .side-char__figure > img { transition: none; }
 }
+
+/* ── CONTEST insert: «Месяц открытых игр» (7.11–24.12.2026) ──
+   The contest's own night valley (the app's contest header art) under a dark
+   veil on the text side; the art is always a night scene, so the text on it is
+   light in every theme and only the frame and the button take the accent. */
+.contest-insert { padding: clamp(28px, 4vw, 48px) clamp(20px, 5vw, 64px) 0; max-width: 1160px; margin: 0 auto; }
+.contest-insert__card {
+  position: relative; overflow: hidden; border-radius: 14px;
+  border: 1px solid color-mix(in srgb, var(--accent) 55%, transparent);
+  background:
+    linear-gradient(90deg, rgba(8,10,22,0.92) 0%, rgba(8,10,22,0.78) 42%, rgba(8,10,22,0.18) 78%, rgba(8,10,22,0) 100%),
+    url('../img/contest/valley-fire.jpg') center 60% / cover no-repeat;
+  background:
+    linear-gradient(90deg, rgba(8,10,22,0.92) 0%, rgba(8,10,22,0.78) 42%, rgba(8,10,22,0.18) 78%, rgba(8,10,22,0) 100%),
+    image-set(url('../img/contest/valley-fire.webp') type('image/webp'), url('../img/contest/valley-fire.jpg') type('image/jpeg')) center 60% / cover no-repeat;
+  box-shadow: 0 18px 50px rgba(0,0,0,0.35);
+}
+.contest-insert__text { position: relative; max-width: 560px; padding: clamp(26px, 4vw, 48px); color: #f1e9d8; }
+.contest-insert__kicker { display: inline-flex; align-items: center; gap: 8px; color: #e8c97a; margin-bottom: 12px; }
+.contest-insert__kicker svg { width: 16px; height: 16px; fill: none; stroke: currentColor; }
+.contest-insert h2 { font-size: clamp(30px, 4vw, 46px); margin: 0 0 14px; color: #fbf3e2; }
+.contest-insert__call { font-size: 19px; line-height: 1.45; margin: 0 0 12px; color: #fbf3e2; }
+.contest-insert__lead, .contest-insert__prizes { font-size: 16px; line-height: 1.5; margin: 0 0 10px; color: rgba(241,233,216,0.86); }
+.contest-insert__prizes { margin-bottom: 22px; }
+.contest-insert__cta { text-decoration: none; }
+@media (max-width: 700px) {
+  /* Phone: the campfire as a strip on top, the text below it on the night. */
+  .contest-insert__card {
+    background:
+      linear-gradient(180deg, rgba(8,10,22,0) 0, rgba(8,10,22,0) 150px, rgba(8,10,22,0.96) 235px),
+      url('../img/contest/valley-fire.jpg') 58% 0 / auto 250px no-repeat,
+      #080a16;
+  }
+  .contest-insert__text { padding-top: 215px; }
+  .contest-insert__kicker { font-size: 12px; letter-spacing: 0.12em; }
+  .contest-insert__call { font-size: 17px; }
+  .contest-insert__cta { white-space: normal; text-align: center; }
+}
