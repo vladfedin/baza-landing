@@ -1555,40 +1555,94 @@ img.emoji { display: inline-block; width: 1.15em; height: 1.15em; vertical-align
   .side-char__figure > img { transition: none; }
 }
 
-/* ── CONTEST insert: «Месяц открытых игр» (7.11–24.12.2026) ──
-   The contest's own night valley (the app's contest header art) under a dark
-   veil on the text side; the art is always a night scene, so the text on it is
-   light in every theme and only the frame and the button take the accent. */
-.contest-insert { padding: clamp(28px, 4vw, 48px) clamp(20px, 5vw, 64px) 0; max-width: 1160px; margin: 0 auto; }
-.contest-insert__card {
-  position: relative; overflow: hidden; border-radius: 14px;
-  border: 1px solid color-mix(in srgb, var(--accent) 55%, transparent);
-  background:
-    linear-gradient(90deg, rgba(8,10,22,0.92) 0%, rgba(8,10,22,0.78) 42%, rgba(8,10,22,0.18) 78%, rgba(8,10,22,0) 100%),
-    url('../img/contest/valley-fire.jpg') center 60% / cover no-repeat;
-  background:
-    linear-gradient(90deg, rgba(8,10,22,0.92) 0%, rgba(8,10,22,0.78) 42%, rgba(8,10,22,0.18) 78%, rgba(8,10,22,0) 100%),
-    image-set(url('../img/contest/valley-fire.webp') type('image/webp'), url('../img/contest/valley-fire.jpg') type('image/jpeg')) center 60% / cover no-repeat;
-  box-shadow: 0 18px 50px rgba(0,0,0,0.35);
+/* ── CONTEST band: «Месяц открытых игр» (7.11–24.12.2026) ──
+   The app's home band (client contest-backdrop.css), edge to edge: the night
+   valley fitted like the app's (a box the picture's size, covered), two rules
+   with a gem above and below on strips of the page's own background. The
+   picture is a night scene in every theme, so the text and cards on it keep
+   their own light colours; only the rules and the button follow the theme. */
+.contest-band {
+  --cbd-strip: 10px;
+  --cbd-rule: var(--accent);
+  --cbd-rule-soft: color-mix(in srgb, var(--accent) 38%, transparent);
+  position: relative; overflow: hidden; isolation: isolate;
+  margin-top: clamp(20px, 3vw, 36px); padding-block: var(--cbd-strip);
+  color: #f6efe2; background: var(--bg);
 }
-.contest-insert__text { position: relative; max-width: 560px; padding: clamp(26px, 4vw, 48px); color: #f1e9d8; }
-.contest-insert__kicker { display: inline-flex; align-items: center; gap: 8px; color: #e8c97a; margin-bottom: 12px; }
-.contest-insert__kicker svg { width: 16px; height: 16px; fill: none; stroke: currentColor; }
-.contest-insert h2 { font-size: clamp(30px, 4vw, 46px); margin: 0 0 14px; color: #fbf3e2; }
-.contest-insert__call { font-size: 19px; line-height: 1.45; margin: 0 0 12px; color: #fbf3e2; }
-.contest-insert__lead, .contest-insert__prizes { font-size: 16px; line-height: 1.5; margin: 0 0 10px; color: rgba(241,233,216,0.86); }
-.contest-insert__prizes { margin-bottom: 22px; }
-.contest-insert__cta { text-decoration: none; }
-@media (max-width: 700px) {
+.cbd-artbox { position: absolute; inset: var(--cbd-strip) 0; z-index: -4; overflow: hidden; container-type: size; }
+.cbd-art {
+  position: absolute; left: 50%; top: 62%; width: max(100cqw, 235.8cqh); aspect-ratio: 2200 / 933;
+  transform: translate(-50%, -62%);
+  background: #0b0d1a url('../img/contest/valley-fire.jpg') 0 0 / 100% 100% no-repeat;
+  background-image: image-set(url('../img/contest/valley-fire.webp') type('image/webp'), url('../img/contest/valley-fire.jpg') type('image/jpeg'));
+}
+.cbd-shade { position: absolute; inset: var(--cbd-strip) 0; z-index: -1; pointer-events: none;
+  background: linear-gradient(90deg, rgba(6,8,18,0.9) 0%, rgba(6,8,18,0.7) 32%, rgba(6,8,18,0.14) 56%, rgba(6,8,18,0.5) 100%); }
+.cbd-stars, .cbd-fires { position: absolute; inset: 0; pointer-events: none; }
+.cbd-stars i { position: absolute; border-radius: 50%; background: #fff; box-shadow: 0 0 4px rgba(255,255,255,0.9); animation: cbd-twinkle 4s ease-in-out infinite; }
+@keyframes cbd-twinkle { 0%, 100% { opacity: 0.15; } 50% { opacity: 0.95; } }
+.cbd-fires i { position: absolute; transform: translate(-50%, -50%); border-radius: 50%; mix-blend-mode: screen;
+  background: radial-gradient(closest-side, rgba(255,170,70,0.5), rgba(255,140,40,0.18) 55%, transparent);
+  animation: cbd-flicker 1.7s ease-in-out infinite alternate; }
+@keyframes cbd-flicker { 0% { opacity: 0.55; transform: translate(-50%, -50%) scale(0.96); } 40% { opacity: 0.9; } 70% { opacity: 0.65; transform: translate(-50%, -51%) scale(1.03); } 100% { opacity: 1; transform: translate(-50%, -50%) scale(1); } }
+.cbd-fires .cbd-screenglow { background: radial-gradient(closest-side, rgba(120,220,255,0.45), rgba(80,180,255,0.12) 60%, transparent); animation: cbd-screen 3.1s ease-in-out infinite alternate; }
+@keyframes cbd-screen { 0%, 60% { opacity: 0.55; } 75% { opacity: 0.9; } 100% { opacity: 0.7; } }
+.cbd-sparks { position: absolute; width: 0; height: 0; pointer-events: none; }
+.cbd-sparks i { position: absolute; left: 0; top: 0; width: 3px; height: 3px; border-radius: 50%; opacity: 0;
+  background: #ffcf7a; box-shadow: 0 0 6px 1px rgba(255,170,70,0.9); animation: cbd-spark 3s ease-out infinite; }
+@keyframes cbd-spark { 0% { opacity: 0; transform: translate(0, 0) scale(1); } 12% { opacity: 1; } 100% { opacity: 0; transform: translate(var(--dx), -90px) scale(0.4); } }
+@media (prefers-reduced-motion: reduce) { .cbd-stars i, .cbd-fires i { animation: none; } .cbd-sparks { display: none; } }
+
+/* The frame: two thin rules on the strips above and below, a gem in the middle. */
+.contest-band::before, .contest-band::after { content: ''; position: absolute; left: 0; right: 0; height: var(--cbd-strip); z-index: 2; pointer-events: none;
+  background:
+    linear-gradient(90deg, transparent, var(--cbd-rule) 12%, var(--cbd-rule) 88%, transparent) 0 2px / 100% 1px no-repeat,
+    linear-gradient(90deg, transparent, var(--cbd-rule-soft) 20%, var(--cbd-rule-soft) 80%, transparent) 0 6px / 100% 1px no-repeat; }
+.contest-band::before { top: 0; }
+.contest-band::after { bottom: 0; transform: scaleY(-1); }
+.cbd-gem { position: absolute; left: 50%; width: 9px; height: 9px; z-index: 3; pointer-events: none;
+  transform: translate(-50%, -50%) rotate(45deg); background: var(--cbd-rule); box-shadow: 0 0 0 3px var(--bg); }
+.cbd-gem--top { top: calc(var(--cbd-strip) / 2); }
+.cbd-gem--bottom { top: calc(100% - var(--cbd-strip) / 2); }
+
+.cbd-inner { max-width: 1160px; margin: 0 auto; padding: clamp(30px, 4.5vw, 56px) clamp(20px, 5vw, 64px);
+  display: grid; grid-template-columns: minmax(0, 560px); gap: 32px; align-items: center; min-height: 380px; }
+.contest-band.cbd--with-games .cbd-inner { grid-template-columns: minmax(0, 540px) minmax(0, 1fr); }
+.cbd-eyebrow { display: inline-flex; align-items: center; gap: 7px; padding: 4px 12px; border-radius: 999px; margin-bottom: 14px;
+  font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+  color: #ffd98a; background: rgba(6,8,18,0.55); border: 1px solid rgba(255,217,138,0.35); }
+.cbd-eyebrow svg { width: 15px; height: 15px; fill: none; stroke: currentColor; }
+.contest-band h2 { font-size: clamp(30px, 4vw, 46px); margin: 0 0 14px; color: #fbf3e2; }
+.cbd-call { font-size: 19px; line-height: 1.45; margin: 0 0 12px; color: #fbf3e2; }
+.cbd-lead, .cbd-prizes { font-size: 16px; line-height: 1.5; margin: 0 0 10px; color: rgba(246,239,226,0.84); }
+.cbd-prizes { margin-bottom: 22px; }
+.cbd-cta { text-decoration: none; }
+
+/* The nearest day: the same live data as the app's home. */
+.cbd-nearest { justify-self: end; width: min(100%, 420px); }
+.cbd-nearest__head { font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #ffd98a; margin-bottom: 10px; }
+.cbd-games { display: grid; gap: 10px; }
+.cbd-game { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 12px; align-items: center; padding: 8px; border-radius: 10px;
+  text-decoration: none; color: inherit; background: rgba(6,8,18,0.62); border: 1px solid rgba(255,217,138,0.22);
+  backdrop-filter: blur(3px); transition: border-color 160ms ease, background 160ms ease; }
+.cbd-game:hover, .cbd-game:focus-visible { border-color: rgba(255,217,138,0.7); background: rgba(6,8,18,0.78); }
+.cbd-game__cover { position: relative; width: 64px; aspect-ratio: 3 / 4; border-radius: 6px; overflow: hidden; background: #141826; }
+.cbd-game__cover img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.cbd-game__live { position: absolute; left: 4px; bottom: 4px; padding: 1px 6px; border-radius: 999px; font-size: 10px; font-weight: 700; color: #fff; background: #c0392b; }
+.cbd-game__body { display: grid; gap: 3px; min-width: 0; }
+.cbd-game__time { font-size: 12px; font-weight: 700; color: #ffd98a; }
+.cbd-game__title { font-size: 16px; font-weight: 600; color: #fbf3e2; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cbd-game__meta { font-size: 13px; color: rgba(246,239,226,0.72); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cbd-more { justify-self: end; font-size: 13px; color: #ffd98a; text-decoration: underline; text-underline-offset: 3px; }
+
+@media (max-width: 860px) {
+  .contest-band.cbd--with-games .cbd-inner { grid-template-columns: minmax(0, 1fr); }
+  .cbd-nearest { justify-self: stretch; width: 100%; }
   /* Phone: the campfire as a strip on top, the text below it on the night. */
-  .contest-insert__card {
-    background:
-      linear-gradient(180deg, rgba(8,10,22,0) 0, rgba(8,10,22,0) 150px, rgba(8,10,22,0.96) 235px),
-      url('../img/contest/valley-fire.jpg') 58% 0 / auto 250px no-repeat,
-      #080a16;
-  }
-  .contest-insert__text { padding-top: 215px; }
-  .contest-insert__kicker { font-size: 12px; letter-spacing: 0.12em; }
-  .contest-insert__call { font-size: 17px; }
-  .contest-insert__cta { white-space: normal; text-align: center; }
+  .cbd-shade { background: linear-gradient(180deg, rgba(6,8,18,0.1) 0, rgba(6,8,18,0.1) 175px, rgba(6,8,18,0.9) 265px, rgba(6,8,18,0.95) 100%); }
+  .cbd-inner { padding-top: 245px; min-height: 0; }
+  .cbd-art { top: 0; transform: translate(-50%, 0); width: 600px; }
+  .cbd-call { font-size: 17px; }
+  .cbd-eyebrow { font-size: 11px; letter-spacing: 0.05em; }
+  .cbd-cta { white-space: normal; text-align: center; }
 }

@@ -57,6 +57,7 @@
 
     <!-- upcoming games and community blog posts from the app's public API -->
     <script defer src="js/live.js"></script>
+    <script defer src="js/contest-band.js"></script>
 
     <!-- the visitor's die throw answered with a roll card, as in the table's chat -->
     <script defer src="js/roll-card.js"></script>
@@ -250,27 +251,31 @@
     </header>
 
     <!-- ============ CONTEST: «Месяц открытых игр», 7.11–24.12.2026 ============
-         The app's contest page (/contest/open-games) is the source of truth for
-         dates, prizes and the schedule; this is its doorway. The block removes
-         itself after the results day (data-until), so nothing stale stays up. -->
-    <section class="contest-insert" id="contest" data-until="2026-12-27T21:00:00Z" aria-labelledby="contest-title">
-        <div class="contest-insert__card">
-            <div class="contest-insert__text">
-                <div class="kicker contest-insert__kicker"><svg aria-hidden="true"><use href="img/icons.svg#lu-trophy"/></svg>Конкурс · 7 ноября — 24 декабря</div>
+         The app's home band, edge to edge: the night valley with its stars and
+         fires, two rules with a gem above and below. The nearest contest day is
+         read live from the app's public API (js/contest-band.js) — the same
+         «nearest» the app shows; without an answer the band stays text only.
+         The band removes itself after the results day (data-until). -->
+    <section class="contest-band" id="contest" data-until="2026-12-27T21:00:00Z" aria-labelledby="contest-title">
+        <span class="cbd-artbox" aria-hidden="true"><span class="cbd-art"><span class="cbd-stars"></span><span class="cbd-fires"></span></span></span>
+        <span class="cbd-shade" aria-hidden="true"></span>
+        <span class="cbd-gem cbd-gem--top" aria-hidden="true"></span>
+        <span class="cbd-gem cbd-gem--bottom" aria-hidden="true"></span>
+        <div class="cbd-inner">
+            <div class="cbd-text">
+                <div class="cbd-eyebrow"><svg aria-hidden="true"><use href="img/icons.svg#lu-trophy"/></svg>Конкурс · 7 ноября — 24 декабря</div>
                 <h2 id="contest-title"><span class="ini">М</span>есяц открытых игр</h2>
-                <p class="contest-insert__call">Водите игры. Смотрите игры.<br>Знакомьтесь, учитесь, делитесь, получайте удовольствие.</p>
-                <p class="contest-insert__lead">Водите открытые игры: их видят, выбирают и приходят смотреть. Итоги — 27 декабря.</p>
-                <p class="contest-insert__prizes">«Мастер» до 6 месяцев · особый набор кубиков · плашки «Дебютант → Кумир». Всем участникам — особый статус.</p>
-                <a class="btn-create btn-create--big contest-insert__cta" href="https://beta.rolebaza.ru/contest/open-games?utm_source=rolebaza.ru&amp;utm_medium=landing&amp;utm_content=contest" data-goal="contest_open"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="img/icons.svg#lu-trophy"/></svg>Расписание игр и условия</a>
+                <p class="cbd-call">Водите игры. Смотрите игры.<br>Знакомьтесь, учитесь, делитесь, получайте удовольствие.</p>
+                <p class="cbd-lead">Водите открытые игры: их видят, выбирают и приходят смотреть. Итоги — 27 декабря.</p>
+                <p class="cbd-prizes">«Мастер» до 6 месяцев · особый набор кубиков · плашки «Дебютант → Кумир». Всем участникам — особый статус.</p>
+                <a class="btn-create btn-create--big cbd-cta" href="https://beta.rolebaza.ru/contest/open-games?utm_source=rolebaza.ru&amp;utm_medium=landing&amp;utm_content=contest" data-goal="contest_open"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="img/icons.svg#lu-trophy"/></svg>Расписание игр и условия</a>
             </div>
+            <aside class="cbd-nearest" aria-label="Ближайшие игры конкурса" hidden>
+                <div class="cbd-nearest__head"></div>
+                <div class="cbd-games"></div>
+            </aside>
         </div>
     </section>
-    <script>
-        (function () {
-            var el = document.getElementById('contest');
-            if (el && Date.now() > Date.parse(el.getAttribute('data-until'))) el.remove();
-        })();
-    </script>
 
     <!-- ============ FREE: a whole campaign at no cost ============ -->
     <section class="section" id="free">
